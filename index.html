@@ -6,9 +6,8 @@
 <meta name="theme-color" content="#0a0f0d">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>El Nino Command</title>
+<title>El Niño Command</title>
 <script src="https://cdn.tailwindcss.com"></script>
-<link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700;800&family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <script>
@@ -29,695 +28,1133 @@ tailwind.config = {
 }
 </script>
 <style>
-/* Base */
-body{background-color:#0a0f0d;color:#e2e8f0;overflow-x:hidden;-webkit-tap-highlight-color:transparent}
-.scanline{position:fixed;top:0;left:0;width:100%;height:100%;background:linear-gradient(to bottom,transparent 50%,rgba(0,255,128,0.015) 50%);background-size:100% 4px;pointer-events:none;z-index:50}
-::-webkit-scrollbar{width:6px}
-::-webkit-scrollbar-track{background:#0a0f0d}
-::-webkit-scrollbar-thumb{background:#2d4a3e;border-radius:3px}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{background:#0a0f0d;color:#e2e8f0;font-family:'Inter',sans-serif;overflow-x:hidden;touch-action:manipulation}
 
-/* Desktop Layout */
-.desktop-only{display:block}
-.mobile-only{display:none}
+/* ANDROID HOME SCREEN */
+.android-home{position:fixed;inset:0;z-index:1000;display:flex;flex-direction:column;background:linear-gradient(180deg,#0d1412 0%,#111a16 40%,#0a0f0d 100%);padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom)}
+.android-home.hidden{display:none}
+.android-status-bar{display:flex;justify-content:space-between;align-items:center;padding:8px 16px;font-size:12px;font-family:'JetBrains Mono',monospace;color:#5a9e7a}
+.android-clock{font-size:42px;font-weight:300;color:#fff;font-family:'Inter',sans-serif;letter-spacing:-1px}
+.android-date{font-size:14px;color:#7bc9a0;margin-top:4px}
+.android-weather{display:flex;align-items:center;gap:8px;margin-top:16px;padding:12px 16px;background:rgba(45,74,62,0.3);border-radius:16px;border:1px solid rgba(45,74,62,0.5)}
+.android-widgets{padding:20px 16px}
+.android-widget-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+.android-widget{background:rgba(26,46,36,0.6);border:1px solid rgba(45,74,62,0.4);border-radius:20px;padding:16px;backdrop-filter:blur(10px)}
+.android-widget.alert{border-color:rgba(239,68,68,0.3);background:rgba(239,68,68,0.08)}
+.android-widget-title{font-size:11px;font-family:'JetBrains Mono',monospace;color:#5a9e7a;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
+.android-widget-value{font-size:28px;font-weight:800;color:#fff;font-family:'JetBrains Mono',monospace}
+.android-widget-sub{font-size:12px;color:#7bc9a0;margin-top:4px}
 
-/* Mobile App Launcher */
-.mobile-home{position:fixed;inset:0;background:#0a0f0d;z-index:90;overflow-y:auto;overflow-x:hidden;padding-bottom:80px;display:none}
-.mobile-home.active{display:block}
-.mobile-home::-webkit-scrollbar{display:none}
+/* APP GRID */
+.android-apps{flex:1;overflow-y:auto;padding:0 16px 20px}
+.android-apps-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px 8px;padding-top:8px}
+.android-app{display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;transition:transform 0.15s}
+.android-app:active{transform:scale(0.92)}
+.android-app-icon{width:58px;height:58px;border-radius:18px;display:flex;align-items:center;justify-content:center;font-size:24px;position:relative;overflow:hidden;box-shadow:0 4px 15px rgba(0,0,0,0.3)}
+.android-app-icon::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,0.1) 0%,transparent 50%)}
+.android-app-icon .badge{position:absolute;top:-2px;right:-2px;min-width:18px;height:18px;border-radius:9px;background:#ef4444;color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;padding:0 5px;font-family:'JetBrains Mono',monospace;border:2px solid #0a0f0d}
+.android-app-label{font-size:11px;color:#e2e8f0;text-align:center;font-weight:500;max-width:70px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 
-.mobile-status-bar{height:28px;background:#0a0f0d;display:flex;align-items:center;justify-content:space-between;padding:0 16px;font-size:11px;font-family:'JetBrains Mono',monospace;color:#5a9e7a;position:sticky;top:0;z-index:10}
-.mobile-status-bar .time{font-weight:700}
+/* APP ICON COLORS */
+.app-dashboard{background:linear-gradient(135deg,#3d6b54,#2d4a3e)}
+.app-threats{background:linear-gradient(135deg,#ef4444,#b91c1c)}
+.app-classes{background:linear-gradient(135deg,#3b82f6,#1d4ed8)}
+.app-checklist{background:linear-gradient(135deg,#22c55e,#15803d)}
+.app-profile{background:linear-gradient(135deg,#a855f7,#7c3aed)}
+.app-inventory{background:linear-gradient(135deg,#f59e0b,#b45309)}
+.app-calculator{background:linear-gradient(135deg,#06b6d4,#0891b2)}
+.app-supplies{background:linear-gradient(135deg,#ec4899,#be185d)}
+.app-intel{background:linear-gradient(135deg,#6366f1,#4338ca)}
+.app-alerts{background:linear-gradient(135deg,#dc2626,#991b1b)}
+.app-offline{background:linear-gradient(135deg,#6b7280,#374151)}
+.app-settings{background:linear-gradient(135deg,#4b5563,#1f2937)}
 
-.mobile-app-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px 8px;padding:20px 16px}
-.mobile-app-item{display:flex;flex-direction:column;align-items:center;cursor:pointer;transition:transform 0.15s ease}
-.mobile-app-item:active{transform:scale(0.92)}
-.mobile-app-icon{width:60px;height:60px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:26px;margin-bottom:6px;position:relative;box-shadow:0 4px 15px rgba(0,0,0,0.4)}
-.mobile-app-icon .badge{position:absolute;top:-4px;right:-4px;min-width:18px;height:18px;border-radius:9px;background:#ef4444;color:white;font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center;padding:0 5px;font-family:'JetBrains Mono',monospace}
-.mobile-app-icon .live-dot{position:absolute;top:4px;right:4px;width:8px;height:8px;border-radius:50%;background:#22c55e;animation:pulse-dot 2s infinite}
-@keyframes pulse-dot{0%,100%{opacity:1}50%{opacity:0.3}}
-.mobile-app-label{font-size:11px;color:#b0c4b1;text-align:center;font-family:'Inter',sans-serif;font-weight:500;max-width:70px;line-height:1.2}
+/* DOCK */
+.android-dock{display:flex;justify-content:space-around;align-items:center;padding:12px 24px;background:rgba(17,26,22,0.9);backdrop-filter:blur(20px);border-top:1px solid rgba(45,74,62,0.2);padding-bottom:calc(12px + env(safe-area-inset-bottom))}
+.android-dock .android-app-icon{width:52px;height:52px;border-radius:16px}
 
-.mobile-dock{position:fixed;bottom:0;left:0;right:0;background:rgba(10,15,13,0.92);backdrop-filter:blur(20px);border-top:1px solid rgba(45,74,62,0.3);padding:10px 20px 24px;display:flex;justify-content:space-around;z-index:100}
-.mobile-dock-item{display:flex;flex-direction:column;align-items:center;cursor:pointer;transition:transform 0.15s ease}
-.mobile-dock-item:active{transform:scale(0.9)}
-.mobile-dock-icon{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:0 3px 12px rgba(0,0,0,0.3)}
+/* APP SCREENS (FULL SCREEN OVERLAYS) */
+.app-screen{position:fixed;inset:0;z-index:2000;background:#0a0f0d;display:none;flex-direction:column;animation:slideUp 0.3s ease}
+.app-screen.active{display:flex}
+@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+@keyframes slideDown{from{transform:translateY(0)}to{transform:translateY(100%)}}
+.app-screen.closing{animation:slideDown 0.25s ease forwards}
 
-/* Mobile App Pages */
-.mobile-page{position:fixed;inset:0;background:#0a0f0d;z-index:95;display:none;flex-direction:column;overflow:hidden}
-.mobile-page.active{display:flex}
-.mobile-page-header{height:52px;background:rgba(10,15,13,0.95);backdrop-filter:blur(20px);border-bottom:1px solid rgba(45,74,62,0.3);display:flex;align-items:center;padding:0 12px;flex-shrink:0;z-index:5}
-.mobile-page-back{width:36px;height:36px;border-radius:50%;background:rgba(45,74,62,0.3);display:flex;align-items:center;justify-content:center;color:#5a9e7a;font-size:16px;cursor:pointer;margin-right:10px;transition:all 0.2s}
-.mobile-page-back:active{background:rgba(45,74,62,0.6)}
-.mobile-page-title{flex:1;font-family:'JetBrains Mono',monospace;font-weight:700;font-size:15px;color:white;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.mobile-page-actions{display:flex;gap:8px}
-.mobile-page-action{width:36px;height:36px;border-radius:50%;background:rgba(45,74,62,0.3);display:flex;align-items:center;justify-content:center;color:#5a9e7a;font-size:14px;cursor:pointer}
-.mobile-page-content{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch}
-.mobile-page-content::-webkit-scrollbar{width:4px}
-.mobile-page-content::-webkit-scrollbar-thumb{background:#2d4a3e;border-radius:2px}
+.app-header{display:flex;align-items:center;gap:12px;padding:12px 16px;background:rgba(17,26,22,0.95);backdrop-filter:blur(20px);border-bottom:1px solid rgba(45,74,62,0.3);position:sticky;top:0;z-index:10}
+.app-back-btn{width:36px;height:36px;border-radius:50%;background:rgba(45,74,62,0.3);border:none;color:#5a9e7a;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px}
+.app-title{font-size:16px;font-weight:700;color:#fff;font-family:'JetBrains Mono',monospace;flex:1}
+.app-content{flex:1;overflow-y:auto;padding:16px;-webkit-overflow-scrolling:touch}
 
-/* App icon colors */
-.app-dashboard{background:linear-gradient(135deg,#1a2e24,#2d4a3e);color:#5a9e7a}
-.app-threats{background:linear-gradient(135deg,#3d1f1f,#5a2a2a);color:#ef4444}
-.app-classes{background:linear-gradient(135deg,#1f2d3d,#2a3d5a);color:#3b82f6}
-.app-checklist{background:linear-gradient(135deg,#2d2d1f,#5a5a2a);color:#f59e0b}
-.app-profile{background:linear-gradient(135deg,#2d1f3d,#4a2a5a);color:#a78bfa}
-.app-inventory{background:linear-gradient(135deg,#1f3d2d,#2a5a3d);color:#22c55e}
-.app-supplies{background:linear-gradient(135deg,#3d2d1f,#5a4a2a);color:#ff6b35}
-.app-calculator{background:linear-gradient(135deg,#1f2d2d,#2a4a4a);color:#22d3ee}
-.app-intel{background:linear-gradient(135deg,#2d1f1f,#4a2a2a);color:#f87171}
-.app-alerts{background:linear-gradient(135deg,#3d1f1f,#5a2020);color:#ef4444}
-.app-offline{background:linear-gradient(135deg,#1f1f2d,#2a2a4a);color:#818cf8}
+/* ANDROID UI COMPONENTS */
+.android-card{background:rgba(26,46,36,0.5);border:1px solid rgba(45,74,62,0.3);border-radius:16px;padding:16px;margin-bottom:12px}
+.android-card-header{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.android-card-icon{width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:18px}
+.android-card-title{font-size:15px;font-weight:700;color:#fff}
+.android-card-sub{font-size:12px;color:#5a9e7a}
+.android-progress{height:6px;background:rgba(45,74,62,0.3);border-radius:3px;overflow:hidden;margin-top:8px}
+.android-progress-fill{height:100%;border-radius:3px;transition:width 0.5s ease}
+.android-list-item{display:flex;align-items:center;gap:12px;padding:14px 0;border-bottom:1px solid rgba(45,74,62,0.2)}
+.android-list-item:last-child{border-bottom:none;padding-bottom:0}
+.android-list-item:first-child{padding-top:0}
+.android-list-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.android-list-content{flex:1;min-width:0}
+.android-list-title{font-size:14px;font-weight:600;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.android-list-desc{font-size:12px;color:#5a9e7a;margin-top:2px}
+.android-badge{display:inline-flex;align-items:center;padding:3px 10px;border-radius:20px;font-size:10px;font-weight:700;font-family:'JetBrains Mono',monospace;letter-spacing:0.5px}
+.android-btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:14px;border-radius:14px;border:none;font-size:14px;font-weight:700;font-family:'JetBrains Mono',monospace;cursor:pointer;transition:all 0.2s;margin-top:12px}
+.android-btn:active{transform:scale(0.97)}
+.android-btn-primary{background:#3d6b54;color:#fff}
+.android-btn-danger{background:rgba(239,68,68,0.15);color:#ef4444;border:1px solid rgba(239,68,68,0.3)}
+.android-input{width:100%;background:rgba(10,15,13,0.8);border:1px solid rgba(45,74,62,0.4);border-radius:12px;padding:12px 14px;color:#fff;font-size:14px;font-family:'JetBrains Mono',monospace;outline:none}
+.android-input:focus{border-color:#5a9e7a}
+.android-select{width:100%;background:rgba(10,15,13,0.8);border:1px solid rgba(45,74,62,0.4);border-radius:12px;padding:12px 14px;color:#fff;font-size:14px;font-family:'JetBrains Mono',monospace;outline:none;appearance:none}
+.android-textarea{width:100%;background:rgba(10,15,13,0.8);border:1px solid rgba(45,74,62,0.4);border-radius:12px;padding:12px 14px;color:#fff;font-size:14px;font-family:'JetBrains Mono',monospace;outline:none;resize:none;min-height:80px}
 
-/* Widget on home */
-.mobile-widget{background:rgba(26,46,36,0.4);border:1px solid rgba(45,74,62,0.3);border-radius:16px;padding:14px;margin:0 16px 16px}
-.widget-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
-.widget-title{font-family:'JetBrains Mono',monospace;font-size:11px;color:#5a9e7a;font-weight:700}
-.widget-value{font-family:'JetBrains Mono',monospace;font-size:28px;font-weight:800;color:#ef4444}
-.widget-sub{font-size:10px;color:#6b8f6e;margin-top:2px}
+/* CHECKBOX */
+.android-check{display:flex;align-items:flex-start;gap:12px;padding:14px;background:rgba(26,46,36,0.3);border-radius:12px;margin-bottom:8px;cursor:pointer;transition:all 0.2s;border:1px solid transparent}
+.android-check:active{background:rgba(26,46,36,0.5)}
+.android-check.checked{background:rgba(45,74,62,0.2);border-color:rgba(90,158,122,0.3)}
+.android-check input[type="checkbox"]{width:22px;height:22px;border-radius:6px;border:2px solid rgba(45,74,62,0.6);background:transparent;appearance:none;cursor:pointer;flex-shrink:0;margin-top:1px;position:relative}
+.android-check input[type="checkbox"]:checked{background:#3d6b54;border-color:#3d6b54}
+.android-check input[type="checkbox"]:checked::after{content:'\f00c';font-family:'Font Awesome 6 Free';font-weight:900;color:#fff;font-size:12px;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%)}
+.android-check-text{font-size:13px;color:#e2e8f0;line-height:1.4}
+.android-check-text.checked{color:#7bc9a0;text-decoration:line-through;opacity:0.6}
 
-/* Common styles */
-.threat-level{box-shadow:0 0 20px rgba(239,68,68,0.3)}
-.check-item{transition:all 0.2s ease;padding:10px;border-radius:8px;display:flex;align-items:center;gap:10px}
-.check-item.checked{background:rgba(45,74,62,0.3);border-left:3px solid #5a9e7a}
-.check-item input[type="checkbox"]{width:20px;height:20px;accent-color:#3d6b54;flex-shrink:0}
-.check-item span{font-size:13px;color:#d1d5db;line-height:1.4}
-.progress-bar{transition:width 0.5s ease}
-.tier-badge{display:inline-flex;align-items:center;padding:0.25rem 0.75rem;border-radius:9999px;font-size:0.7rem;font-weight:700;font-family:'JetBrains Mono',monospace;letter-spacing:0.05em}
+/* INVENTORY GRID */
+.inv-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.inv-slot{background:rgba(26,46,36,0.4);border:2px dashed rgba(45,74,62,0.4);border-radius:14px;padding:10px;display:flex;flex-direction:column;align-items:center;gap:6px;min-height:100px;position:relative;cursor:pointer;transition:all 0.2s}
+.inv-slot:active{transform:scale(0.95)}
+.inv-slot.filled{border-style:solid;border-color:rgba(45,74,62,0.6);background:rgba(26,46,36,0.6)}
+.inv-slot-img{width:100%;height:60px;object-fit:cover;border-radius:8px}
+.inv-slot-icon{font-size:28px;color:#2d4a3e}
+.inv-slot-name{font-size:10px;color:#e2e8f0;text-align:center;font-weight:600;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.inv-slot-qty{font-size:9px;color:#5a9e7a;font-family:'JetBrains Mono',monospace}
+.inv-slot-del{position:absolute;top:4px;right:4px;width:20px;height:20px;border-radius:50%;background:rgba(239,68,68,0.8);color:#fff;border:none;font-size:10px;display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0;transition:opacity 0.2s}
+.inv-slot:hover .inv-slot-del,.inv-slot:active .inv-slot-del{opacity:1}
+.inv-add{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;color:#5a9e7a}
+.inv-add i{font-size:24px}
+.inv-add span{font-size:10px;font-weight:600}
 
-/* Profile */
-.profile-avatar{width:100px;height:100px;border-radius:50%;object-fit:cover;border:3px solid #3d6b54;background:#1a2e24;display:flex;align-items:center;justify-content:center;cursor:pointer;margin:0 auto}
-.profile-avatar img{width:100%;height:100%;object-fit:cover;border-radius:50%}
-.profile-avatar i{font-size:40px;color:#5a9e7a}
+/* MODAL */
+.android-modal{position:fixed;inset:0;z-index:3000;background:rgba(0,0,0,0.85);display:none;align-items:flex-end;justify-content:center;padding:0}
+.android-modal.active{display:flex}
+.android-modal-sheet{background:#111a16;border-radius:24px 24px 0 0;padding:20px;width:100%;max-height:90vh;overflow-y:auto;animation:slideUp 0.25s ease;border-top:1px solid rgba(45,74,62,0.3)}
+.android-modal-handle{width:36px;height:4px;background:rgba(45,74,62,0.5);border-radius:2px;margin:0 auto 16px}
+.android-modal-title{font-size:18px;font-weight:700;color:#fff;margin-bottom:16px;font-family:'JetBrains Mono',monospace}
 
-/* Inventory */
-.inventory-slot{background:#1a2e24;border:2px dashed #2d4a3e;border-radius:10px;padding:10px;transition:all 0.3s;position:relative;min-height:100px;display:flex;flex-direction:column;align-items:center;justify-content:center}
-.inventory-slot.filled{border-style:solid;border-color:#3d6b54;background:#15211c}
-.inventory-slot img{width:100%;height:60px;object-fit:cover;border-radius:6px;margin-bottom:6px}
-.inventory-slot .slot-name{font-size:11px;color:#e2e8f0;font-weight:600;text-align:center;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;width:100%}
-.inventory-slot .slot-qty{font-size:10px;color:#7bc9a0;text-align:center}
-.inventory-slot .slot-actions{position:absolute;top:4px;right:4px;display:none;gap:3px}
-.inventory-slot:hover .slot-actions{display:flex}
-.inventory-slot .slot-actions button{width:22px;height:22px;border-radius:4px;border:none;background:rgba(239,68,68,0.85);color:white;cursor:pointer;font-size:9px;display:flex;align-items:center;justify-content:center}
-.inventory-slot .slot-actions button.edit-btn{background:rgba(59,130,246,0.85)}
-.add-slot-btn{background:#0d1412;border:2px dashed #3d6b54;border-radius:10px;padding:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;min-height:100px}
-.add-slot-btn:active{transform:scale(0.95)}
+/* TOAST */
+.android-toast{position:fixed;bottom:calc(80px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%) translateY(100px);background:rgba(17,26,22,0.95);border:1px solid rgba(45,74,62,0.5);border-radius:14px;padding:12px 20px;color:#7bc9a0;font-size:13px;font-family:'JetBrains Mono',monospace;z-index:5000;opacity:0;transition:all 0.3s ease;white-space:nowrap;backdrop-filter:blur(10px);box-shadow:0 8px 32px rgba(0,0,0,0.4)}
+.android-toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+.android-toast.error{color:#ef4444;border-color:rgba(239,68,68,0.3)}
 
-/* Modal */
-.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:200;display:none;align-items:center;justify-content:center;padding:16px}
-.modal-overlay.active{display:flex}
-.modal-content{background:#111a16;border:1px solid #2d4a3e;border-radius:16px;max-width:420px;width:100%;max-height:85vh;overflow-y:auto;padding:20px;position:relative}
-.modal-close{position:absolute;top:12px;right:12px;background:none;border:none;color:#5a9e7a;cursor:pointer;font-size:18px;width:32px;height:32px;display:flex;align-items:center;justify-content:center;border-radius:50%}
-.modal-close:active{background:rgba(45,74,62,0.3)}
+/* SCANLINE */
+.scanline{position:fixed;inset:0;background:linear-gradient(to bottom,transparent 50%,rgba(0,255,128,0.015) 50%);background-size:100% 3px;pointer-events:none;z-index:9999}
 
-/* Toast */
-.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(100px);background:#1a2e24;border:1px solid #3d6b54;color:#e2e8f0;padding:10px 20px;border-radius:10px;font-family:'JetBrains Mono',monospace;font-size:12px;z-index:300;opacity:0;transition:all 0.3s ease;white-space:nowrap;box-shadow:0 4px 20px rgba(0,0,0,0.5)}
-.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-.toast.error{border-color:#ef4444;color:#fca5a5}
+/* DESKTOP HIDE */
+@media(min-width:769px){.android-home,.app-screen{display:none!important}.desktop-only{display:block}}
+@media(max-width:768px){.desktop-only{display:none}}
 
-/* Income tabs */
-.income-tab{transition:all 0.3s;cursor:pointer;padding:12px;border-radius:10px;text-align:center;border:2px solid transparent}
-.income-tab.active{transform:scale(1.02);border-color:currentColor;background:rgba(255,255,255,0.05)}
-.income-tab:not(.active){opacity:0.5}
-.class-panel{display:none}
-.class-panel.active{display:block;animation:fadeIn 0.3s ease}
-@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-
-/* Comparison table */
-.comparison-row:nth-child(even){background:rgba(45,74,62,0.08)}
-
-/* Desktop responsive */
-@media (min-width: 769px) {
-    .desktop-only{display:block !important}
-    .mobile-only{display:none !important}
-    .mobile-home{display:none !important}
-    .mobile-page{display:none !important}
-}
-
-/* Mobile responsive */
-@media (max-width: 768px) {
-    .desktop-only{display:none !important}
-    .mobile-only{display:block !important}
-    .mobile-home.active{display:block !important}
-}
-
-/* Desktop nav */
-.desktop-nav{display:flex}
-@media (max-width: 768px){.desktop-nav{display:none}}
-
-/* Grid bg */
-.grid-bg{background-image:linear-gradient(rgba(45,74,62,0.08) 1px,transparent 1px),linear-gradient(90deg,rgba(45,74,62,0.08) 1px,transparent 1px);background-size:20px 20px}
-
-/* Glitch */
-.glitch-text{position:relative}
-.glitch-text::before,.glitch-text::after{content:attr(data-text);position:absolute;top:0;left:0;width:100%;height:100%}
-.glitch-text::before{left:1px;text-shadow:-1px 0 #ff6b35;clip:rect(20px,550px,80px,0);animation:glitch-anim 3s infinite linear alternate-reverse}
-.glitch-text::after{left:-1px;text-shadow:-1px 0 #3b82f6;clip:rect(80px,550px,130px,0);animation:glitch-anim 2s infinite linear alternate-reverse}
-@keyframes glitch-anim{0%{clip:rect(10px,9999px,80px,0)}20%{clip:rect(60px,9999px,120px,0)}40%{clip:rect(20px,9999px,140px,0)}60%{clip:rect(10px,9999px,70px,0)}80%{clip:rect(45px,9999px,110px,0)}100%{clip:rect(85px,9999px,95px,0)}}
+/* DESKTOP STYLES */
+.desktop-nav{background:#0a0f0d;border-bottom:1px solid rgba(45,74,62,0.3);padding:12px 24px;position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between}
+.desktop-nav a{color:#5a9e7a;text-decoration:none;font-size:13px;font-family:'JetBrains Mono',monospace;padding:6px 12px;border-radius:6px;transition:all 0.2s}
+.desktop-nav a:hover{background:rgba(45,74,62,0.2);color:#7bc9a0}
+.desktop-section{max-width:1200px;margin:0 auto;padding:40px 24px}
 </style>
-<base target="_blank">
 </head>
-<body class="font-sans antialiased">
+<body>
 <div class="scanline"></div>
 
-<!-- ==================== DESKTOP LAYOUT ==================== -->
-<div class="desktop-only">
-
-<!-- Top Alert -->
-<div class="bg-tactical-danger/20 border-b border-tactical-danger/30 text-tactical-danger px-4 py-2 text-center font-mono text-xs tracking-wider">
-<i class="fas fa-exclamation-triangle mr-2 animate-pulse"></i>WMO ALERT: 80% PROBABILITY SUPER EL NINO JUNE-AUGUST 2026 | THREAT: CRITICAL
+<!-- ==================== ANDROID HOME SCREEN ==================== -->
+<div class="android-home" id="androidHome">
+<!-- Status Bar -->
+<div class="android-status-bar">
+<div style="display:flex;gap:8px;align-items:center">
+<i class="fas fa-signal"></i>
+<i class="fas fa-wifi"></i>
+<i class="fas fa-battery-three-quarters"></i>
+</div>
+<div id="androidStatusTime">12:00</div>
 </div>
 
-<!-- Desktop Nav -->
-<nav class="bg-tactical-900/95 backdrop-blur-md border-b border-tactical-700 sticky top-0 z-40">
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-<div class="flex justify-between h-16 items-center">
-<div class="flex items-center space-x-3">
-<div class="relative"><i class="fas fa-shield-halved text-tactical-400 text-2xl"></i><div class="absolute -top-1 -right-1 w-2 h-2 bg-tactical-danger rounded-full animate-pulse"></div></div>
-<div><h1 class="font-mono font-bold text-lg tracking-tight text-white glitch-text" data-text="EL NINO COMMAND">EL NINO COMMAND</h1><p class="text-xs text-tactical-400 font-mono">TACTICAL PREPAREDNESS UNIT</p></div>
-</div>
-<div class="desktop-nav items-center space-x-1">
-<button onclick="scrollToSection('dashboard')" class="px-3 py-2 rounded text-xs font-mono text-tactical-300 hover:bg-tactical-700 hover:text-white transition-colors">DASHBOARD</button>
-<button onclick="scrollToSection('threats')" class="px-3 py-2 rounded text-xs font-mono text-tactical-300 hover:bg-tactical-700 hover:text-white transition-colors">THREATS</button>
-<button onclick="scrollToSection('classes')" class="px-3 py-2 rounded text-xs font-mono text-tactical-accent hover:bg-tactical-700 transition-colors">CLASSES</button>
-<button onclick="scrollToSection('checklist')" class="px-3 py-2 rounded text-xs font-mono text-tactical-300 hover:bg-tactical-700 hover:text-white transition-colors">CHECKLIST</button>
-<button onclick="scrollToSection('profile')" class="px-3 py-2 rounded text-xs font-mono text-tactical-300 hover:bg-tactical-700 hover:text-white transition-colors">PROFILE</button>
-<button onclick="scrollToSection('inventory')" class="px-3 py-2 rounded text-xs font-mono text-tactical-300 hover:bg-tactical-700 hover:text-white transition-colors">INVENTORY</button>
-<button onclick="scrollToSection('supplies')" class="px-3 py-2 rounded text-xs font-mono text-tactical-300 hover:bg-tactical-700 hover:text-white transition-colors">SUPPLIES</button>
-<button onclick="scrollToSection('calculator')" class="px-3 py-2 rounded text-xs font-mono text-tactical-300 hover:bg-tactical-700 hover:text-white transition-colors">CALC</button>
-<button onclick="scrollToSection('intel')" class="px-3 py-2 rounded text-xs font-mono text-tactical-accent hover:bg-tactical-700 transition-colors">INTEL</button>
-<button onclick="scrollToSection('alerts')" class="px-3 py-2 rounded text-xs font-mono text-tactical-danger hover:bg-tactical-700 transition-colors animate-pulse">ALERTS</button>
-</div>
-<button onclick="downloadOffline()" class="hidden md:flex items-center px-3 py-2 rounded text-xs font-mono bg-tactical-700 text-tactical-300 hover:bg-tactical-600 transition-colors border border-tactical-600" title="Download for offline"><i class="fas fa-download mr-1"></i>OFFLINE</button>
-</div>
-</div>
-</nav>
-
-<!-- Desktop Hero -->
-<section class="relative min-h-[55vh] flex items-center justify-center grid-bg overflow-hidden">
-<div class="absolute inset-0 bg-gradient-to-b from-tactical-900/50 via-tactical-900/80 to-tactical-900"></div>
-<div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-<div class="inline-flex items-center space-x-2 bg-tactical-danger/10 border border-tactical-danger/30 rounded-full px-4 py-1 mb-6">
-<span class="w-2 h-2 bg-tactical-danger rounded-full animate-pulse"></span>
-<span class="text-tactical-danger font-mono text-xs tracking-wider">OPERATION THERMAL SHIELD // 2026</span>
-</div>
-<h2 class="text-4xl md:text-6xl lg:text-7xl font-black font-mono text-white mb-6 leading-tight">SUPER EL NINO<br><span class="text-tactical-accent">PREPAREDNESS</span></h2>
-<p class="text-lg md:text-xl text-tactical-400 max-w-3xl mx-auto mb-8 font-light">Pacific Ocean temps exceeding <span class="text-tactical-warning font-bold">+6C above average</span>. Multi-hazard scenario requiring immediate readiness.</p>
-<div class="flex flex-col sm:flex-row gap-4 justify-center">
-<button onclick="scrollToSection('classes')" class="bg-tactical-accent hover:bg-orange-600 text-white px-8 py-4 rounded font-mono font-bold tracking-wider transition-all transform hover:scale-105 shadow-lg"><i class="fas fa-layer-group mr-2"></i>FIND YOUR CLASS</button>
-<button onclick="scrollToSection('calculator')" class="bg-tactical-700 hover:bg-tactical-600 text-white px-8 py-4 rounded font-mono font-bold tracking-wider transition-all border border-tactical-500"><i class="fas fa-calculator mr-2"></i>SUPPLY CALC</button>
-</div>
-<div class="mt-4">
-<button onclick="downloadOffline()" class="inline-flex items-center px-4 py-2 rounded text-sm font-mono bg-tactical-800 text-tactical-300 hover:bg-tactical-700 transition-colors border border-tactical-600"><i class="fas fa-download mr-2 text-tactical-accent"></i>Download Offline Version</button>
-</div>
-</div>
-<div class="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-tactical-900 to-transparent"></div>
-</section>
-
-<!-- Desktop Dashboard -->
-<section id="dashboard" class="py-16 bg-tactical-800 relative">
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-<div class="flex items-center space-x-3 mb-8"><i class="fas fa-gauge-high text-tactical-accent text-2xl"></i><h3 class="text-2xl font-mono font-bold text-white">TACTICAL DASHBOARD</h3></div>
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-<div class="bg-tactical-900 border border-tactical-danger/50 rounded-lg p-6 threat-level relative overflow-hidden">
-<div class="absolute top-0 right-0 p-2"><i class="fas fa-radiation text-tactical-danger/20 text-4xl"></i></div>
-<p class="text-tactical-400 text-xs font-mono mb-1">THREAT LEVEL</p><p class="text-3xl font-black text-tactical-danger font-mono">CRITICAL</p>
-<p class="text-xs text-tactical-400 mt-2">WMO Probability: 80-90%</p>
-<div class="mt-4 h-1 bg-tactical-800 rounded-full overflow-hidden"><div class="h-full bg-tactical-danger w-[90%] animate-pulse"></div></div>
-</div>
-<div class="bg-tactical-900 border border-tactical-warning/50 rounded-lg p-6 relative overflow-hidden">
-<div class="absolute top-0 right-0 p-2"><i class="fas fa-clock text-tactical-warning/20 text-4xl"></i></div>
-<p class="text-tactical-400 text-xs font-mono mb-1">EST. ONSET</p><p class="text-3xl font-black text-tactical-warning font-mono">JUNE-AUG</p>
-<p class="text-xs text-tactical-400 mt-2">Peak: November 2026</p>
-<div class="mt-4 h-1 bg-tactical-800 rounded-full overflow-hidden"><div class="h-full bg-tactical-warning w-[65%]"></div></div>
-</div>
-<div class="bg-tactical-900 border border-tactical-accent/50 rounded-lg p-6 relative overflow-hidden">
-<div class="absolute top-0 right-0 p-2"><i class="fas fa-temperature-high text-tactical-accent/20 text-4xl"></i></div>
-<p class="text-tactical-400 text-xs font-mono mb-1">PACIFIC ANOMALY</p><p class="text-3xl font-black text-tactical-accent font-mono">+6.2C</p>
-<p class="text-xs text-tactical-400 mt-2">Subsurface reservoir heat</p>
-<div class="mt-4 h-1 bg-tactical-800 rounded-full overflow-hidden"><div class="h-full bg-tactical-accent w-[85%]"></div></div>
-</div>
-<div class="bg-tactical-900 border border-tactical-500/50 rounded-lg p-6 relative overflow-hidden">
-<div class="absolute top-0 right-0 p-2"><i class="fas fa-shield-halved text-tactical-500/20 text-4xl"></i></div>
-<p class="text-tactical-400 text-xs font-mono mb-1">YOUR READINESS</p><p class="text-3xl font-black text-tactical-400 font-mono" id="readinessScore">0%</p>
-<p class="text-xs text-tactical-400 mt-2">Complete checklist to improve</p>
-<div class="mt-4 h-1 bg-tactical-800 rounded-full overflow-hidden"><div class="h-full bg-tactical-500 w-[0%] progress-bar" id="readinessBar"></div></div>
-</div>
-</div>
-</div>
-</section>
-
-<!-- Desktop Threats -->
-<section id="threats" class="py-16 bg-tactical-900">
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-<div class="flex items-center space-x-3 mb-8"><i class="fas fa-triangle-exclamation text-tactical-danger text-2xl"></i><h3 class="text-2xl font-mono font-bold text-white">MULTI-HAZARD THREAT ASSESSMENT</h3></div>
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-<div class="bg-tactical-800 border border-tactical-700 rounded-lg p-6 hover:border-tactical-warning/50 transition-colors">
-<div class="flex items-center justify-between mb-4"><i class="fas fa-sun text-tactical-warning text-3xl"></i><span class="bg-tactical-warning/20 text-tactical-warning text-xs font-mono px-2 py-1 rounded">HIGH RISK</span></div>
-<h4 class="text-xl font-bold text-white mb-2">SEVERE DROUGHT</h4>
-<p class="text-tactical-400 text-sm mb-4">Central America, Caribbean, Philippines, Australia, Indonesia. Agricultural losses and water scarcity.</p>
-<ul class="space-y-2 text-sm text-tactical-300">
-<li class="flex items-start"><i class="fas fa-caret-right text-tactical-warning mt-1 mr-2"></i>Crop failure & food insecurity</li>
-<li class="flex items-start"><i class="fas fa-caret-right text-tactical-warning mt-1 mr-2"></i>Water rationing & reservoir depletion</li>
-<li class="flex items-start"><i class="fas fa-caret-right text-tactical-warning mt-1 mr-2"></i>Wildfire risk amplification</li>
-</ul>
-</div>
-<div class="bg-tactical-800 border border-tactical-700 rounded-lg p-6 hover:border-tactical-info/50 transition-colors">
-<div class="flex items-center justify-between mb-4"><i class="fas fa-water text-tactical-info text-3xl"></i><span class="bg-tactical-info/20 text-tactical-info text-xs font-mono px-2 py-1 rounded">HIGH RISK</span></div>
-<h4 class="text-xl font-bold text-white mb-2">CATASTROPHIC FLOODING</h4>
-<p class="text-tactical-400 text-sm mb-4">Southern US, Peru, Ecuador, Southern Brazil, Uruguay. Infrastructure damage and landslides.</p>
-<ul class="space-y-2 text-sm text-tactical-300">
-<li class="flex items-start"><i class="fas fa-caret-right text-tactical-info mt-1 mr-2"></i>River overflow & flash floods</li>
-<li class="flex items-start"><i class="fas fa-caret-right text-tactical-info mt-1 mr-2"></i>Mudslides & structural collapse</li>
-<li class="flex items-start"><i class="fas fa-caret-right text-tactical-info mt-1 mr-2"></i>Waterborne disease outbreaks</li>
-</ul>
-</div>
-<div class="bg-tactical-800 border border-tactical-700 rounded-lg p-6 hover:border-tactical-danger/50 transition-colors">
-<div class="flex items-center justify-between mb-4"><i class="fas fa-temperature-arrow-up text-tactical-danger text-3xl"></i><span class="bg-tactical-danger/20 text-tactical-danger text-xs font-mono px-2 py-1 rounded">EXTREME</span></div>
-<h4 class="text-xl font-bold text-white mb-2">EXTREME HEAT</h4>
-<p class="text-tactical-400 text-sm mb-4">Global temperature records. Heat stress on populations, livestock, and power grids.</p>
-<ul class="space-y-2 text-sm text-tactical-300">
-<li class="flex items-start"><i class="fas fa-caret-right text-tactical-danger mt-1 mr-2"></i>Heatstroke & mortality spikes</li>
-<li class="flex items-start"><i class="fas fa-caret-right text-tactical-danger mt-1 mr-2"></i>Grid failure from AC overload</li>
-<li class="flex items-start"><i class="fas fa-caret-right text-tactical-danger mt-1 mr-2"></i>Livestock & crop heat stress</li>
-</ul>
-</div>
-<div class="bg-tactical-800 border border-tactical-700 rounded-lg p-6 hover:border-tactical-accent/50 transition-colors">
-<div class="flex items-center justify-between mb-4"><i class="fas fa-truck-medical text-tactical-accent text-3xl"></i><span class="bg-tactical-accent/20 text-tactical-accent text-xs font-mono px-2 py-1 rounded">SYSTEMIC</span></div>
-<h4 class="text-xl font-bold text-white mb-2">SUPPLY CHAIN COLLAPSE</h4>
-<p class="text-tactical-400 text-sm mb-4">Compounded by geopolitical fuel/fertilizer shortages. Rice and staple grain disruptions.</p>
-<ul class="space-y-2 text-sm text-tactical-300">
-<li class="flex items-start"><i class="fas fa-caret-right text-tactical-accent mt-1 mr-2"></i>Fertilizer scarcity (Iran conflict)</li>
-<li class="flex items-start"><i class="fas fa-caret-right text-tactical-accent mt-1 mr-2"></i>Fuel price spikes & transport halt</li>
-<li class="flex items-start"><i class="fas fa-caret-right text-tactical-accent mt-1 mr-2"></i>Export controls & rationing</li>
-</ul>
-</div>
-<div class="bg-tactical-800 border border-tactical-700 rounded-lg p-6 hover:border-tactical-500/50 transition-colors">
-<div class="flex items-center justify-between mb-4"><i class="fas fa-hurricane text-tactical-500 text-3xl"></i><span class="bg-tactical-500/20 text-tactical-500 text-xs font-mono px-2 py-1 rounded">MODERATE</span></div>
-<h4 class="text-xl font-bold text-white mb-2">PACIFIC TYPHOONS</h4>
-<p class="text-tactical-400 text-sm mb-4">Atlantic cyclones may decrease, but Pacific storm formation intensifies with warmer seas.</p>
-<ul class="space-y-2 text-sm text-tactical-300">
-<li class="flex items-start"><i class="fas fa-caret-right text-tactical-500 mt-1 mr-2"></i>Intensified Pacific hurricanes</li>
-<li class="flex items-start"><i class="fas fa-caret-right text-tactical-500 mt-1 mr-2"></i>Storm surge & coastal flooding</li>
-<li class="flex items-start"><i class="fas fa-caret-right text-tactical-500 mt-1 mr-2"></i>Single landfall = devastation</li>
-</ul>
-</div>
-<div class="bg-tactical-800 border border-tactical-700 rounded-lg p-6 hover:border-purple-500/50 transition-colors">
-<div class="flex items-center justify-between mb-4"><i class="fas fa-virus text-purple-400 text-3xl"></i><span class="bg-purple-500/20 text-purple-400 text-xs font-mono px-2 py-1 rounded">ELEVATED</span></div>
-<h4 class="text-xl font-bold text-white mb-2">HEALTH CRISES</h4>
-<p class="text-tactical-400 text-sm mb-4">Water scarcity, heat stress, and displacement create vector-borne disease vectors.</p>
-<ul class="space-y-2 text-sm text-tactical-300">
-<li class="flex items-start"><i class="fas fa-caret-right text-purple-400 mt-1 mr-2"></i>Mosquito-borne disease spread</li>
-<li class="flex items-start"><i class="fas fa-caret-right text-purple-400 mt-1 mr-2"></i>Respiratory issues from haze/smoke</li>
-<li class="flex items-start"><i class="fas fa-caret-right text-purple-400 mt-1 mr-2"></i>Contaminated water diseases</li>
-</ul>
-</div>
-</div>
-</div>
-</section>
-
-<!-- Desktop Classes -->
-<section id="classes" class="py-16 bg-tactical-850 grid-bg">
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-<div class="flex items-center space-x-3 mb-2"><i class="fas fa-layer-group text-tactical-accent text-2xl"></i><h3 class="text-2xl font-mono font-bold text-white">PREPAREDNESS BY INCOME CLASS</h3></div>
-<p class="text-tactical-400 text-sm mb-8 max-w-3xl">Not everyone has the same resources. Select your classification for tailored recommendations.</p>
-<div class="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-8">
-<div class="income-tab active bg-tactical-800 border-2 border-tactical-budget rounded-lg p-4 text-center" onclick="selectClass('budget')" id="tab-budget">
-<i class="fas fa-piggy-bank text-tactical-budget text-2xl mb-2"></i>
-<h4 class="font-mono font-bold text-tactical-budget text-sm">BUDGET SURVIVOR</h4>
-<p class="text-xs text-tactical-400 mt-1">&lt;$30k / P1.7M</p>
-</div>
-<div class="income-tab bg-tactical-800 border-2 border-tactical-citizen rounded-lg p-4 text-center" onclick="selectClass('citizen')" id="tab-citizen">
-<i class="fas fa-shield-halved text-tactical-citizen text-2xl mb-2"></i>
-<h4 class="font-mono font-bold text-tactical-citizen text-sm">TACTICAL CITIZEN</h4>
-<p class="text-xs text-tactical-400 mt-1">$30-75k / P1.7-4.3M</p>
-</div>
-<div class="income-tab bg-tactical-800 border-2 border-tactical-operator rounded-lg p-4 text-center" onclick="selectClass('operator')" id="tab-operator">
-<i class="fas fa-user-shield text-tactical-operator text-2xl mb-2"></i>
-<h4 class="font-mono font-bold text-tactical-operator text-sm">OPERATOR CLASS</h4>
-<p class="text-xs text-tactical-400 mt-1">$75-150k / P4.3-8.7M</p>
-</div>
-<div class="income-tab bg-tactical-800 border-2 border-tactical-elite rounded-lg p-4 text-center" onclick="selectClass('elite')" id="tab-elite">
-<i class="fas fa-crown text-tactical-elite text-2xl mb-2"></i>
-<h4 class="font-mono font-bold text-tactical-elite text-sm">COMMAND ELITE</h4>
-<p class="text-xs text-tactical-400 mt-1">&gt;$150k / P8.7M+</p>
-</div>
-</div>
-
-<div class="class-panel active" id="panel-budget">
-<div class="bg-tactical-900 border border-tactical-budget/30 rounded-lg overflow-hidden">
-<div class="bg-tactical-budget/10 px-6 py-4 border-b border-tactical-budget/20">
-<div class="flex items-center justify-between flex-wrap gap-2">
-<div class="flex items-center space-x-3"><i class="fas fa-piggy-bank text-tactical-budget text-xl"></i><div><h4 class="font-mono font-bold text-tactical-budget text-lg">BUDGET SURVIVOR</h4><p class="text-xs text-tactical-400">&lt;$30,000/year | &lt;P1.7M/year</p></div></div>
-<span class="tier-badge bg-tactical-budget/20 text-tactical-budget border border-tactical-budget/30"><i class="fas fa-wallet mr-1"></i>$50-150 | P2,900-8,700</span>
-</div>
-<p class="text-sm text-tactical-300 mt-3">Essential survival with minimal resources. DIY solutions, community reliance, and government aid coordination.</p>
-</div>
-<div class="p-6">
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-<div class="bg-tactical-800/50 rounded-lg p-4 border border-tactical-700"><h5 class="font-mono text-tactical-budget text-sm mb-3"><i class="fas fa-droplet mr-2"></i>WATER</h5><ul class="space-y-2 text-sm text-tactical-300"><li>2L soda bottles (cleaned)</li><li>Rain barrels from discarded drums</li><li>Boiling + cloth filtration</li><li>Community well mapping</li></ul></div>
-<div class="bg-tactical-800/50 rounded-lg p-4 border border-tactical-700"><h5 class="font-mono text-tactical-budget text-sm mb-3"><i class="fas fa-burger mr-2"></i>FOOD</h5><ul class="space-y-2 text-sm text-tactical-300"><li>Rice & beans bulk (50kg sacks)</li><li>Dried fish / ikan bilis</li><li>Root crops: kamote, cassava</li><li>Gov't relief pre-registration</li></ul></div>
-<div class="bg-tactical-800/50 rounded-lg p-4 border border-tactical-700"><h5 class="font-mono text-tactical-budget text-sm mb-3"><i class="fas fa-bolt mr-2"></i>POWER</h5><ul class="space-y-2 text-sm text-tactical-300"><li>Hand-crank emergency radio</li><li>Candles + waterproof matches</li><li>Car battery inverter (borrowed)</li><li>Solar bottle lights (DIY)</li></ul></div>
-<div class="bg-tactical-800/50 rounded-lg p-4 border border-tactical-700"><h5 class="font-mono text-tactical-budget text-sm mb-3"><i class="fas fa-house-crack mr-2"></i>SHELTER</h5><ul class="space-y-2 text-sm text-tactical-300"><li>Sandbags: sack + soil (DIY)</li><li>Plastic sheet tarpaulins</li><li>Mosquito nets (DOH free)</li><li>Raised sleeping platforms</li></ul></div>
-<div class="bg-tactical-800/50 rounded-lg p-4 border border-tactical-700"><h5 class="font-mono text-tactical-budget text-sm mb-3"><i class="fas fa-kit-medical mr-2"></i>MEDICAL</h5><ul class="space-y-2 text-sm text-tactical-300"><li>Generic pharmacy meds</li><li>Herbal: lagundi, sambong</li><li>Barangay health center</li><li>Free vaccination programs</li></ul></div>
-<div class="bg-tactical-800/50 rounded-lg p-4 border border-tactical-700"><h5 class="font-mono text-tactical-budget text-sm mb-3"><i class="fas fa-person-walking mr-2"></i>EVACUATION</h5><ul class="space-y-2 text-sm text-tactical-300"><li>Go-bag from repurposed backpack</li><li>Foot evacuation routes</li><li>Barangay assembly point</li><li>Relative network mapping</li></ul></div>
-</div>
+<!-- Clock & Weather Widget -->
+<div class="android-widgets">
+<div class="android-clock" id="androidClock">12:00</div>
+<div class="android-date" id="androidDate">Monday, June 17</div>
+<div class="android-weather">
+<i class="fas fa-temperature-high text-tactical-warning" style="font-size:20px"></i>
+<div>
+<div style="font-size:16px;font-weight:700;color:#fff">+6.2°C ANOMALY</div>
+<div style="font-size:12px;color:#5a9e7a">Pacific Ocean | El Niño Watch</div>
 </div>
 </div>
 </div>
 
-<div class="class-panel" id="panel-citizen">
-<div class="bg-tactical-900 border border-tactical-citizen/30 rounded-lg overflow-hidden">
-<div class="bg-tactical-citizen/10 px-6 py-4 border-b border-tactical-citizen/20">
-<div class="flex items-center justify-between flex-wrap gap-2">
-<div class="flex items-center space-x-3"><i class="fas fa-shield-halved text-tactical-citizen text-xl"></i><div><h4 class="font-mono font-bold text-tactical-citizen text-lg">TACTICAL CITIZEN</h4><p class="text-xs text-tactical-400">$30-75k/year | P1.7-4.3M/year</p></div></div>
-<span class="tier-badge bg-tactical-citizen/20 text-tactical-citizen border border-tactical-citizen/30"><i class="fas fa-wallet mr-1"></i>$300-800 | P17,400-46,400</span>
+<!-- Alert Widgets -->
+<div class="android-widget-grid" style="padding:0 16px">
+<div class="android-widget alert">
+<div class="android-widget-title">Threat Level</div>
+<div class="android-widget-value" style="color:#ef4444;font-size:24px">CRITICAL</div>
+<div class="android-widget-sub">WMO: 80-90% probability</div>
 </div>
-<p class="text-sm text-tactical-300 mt-3">Balanced preparedness with commercial gear. Family-focused with moderate investment in redundancy.</p>
+<div class="android-widget">
+<div class="android-widget-title">Readiness</div>
+<div class="android-widget-value" id="widgetReadiness" style="color:#5a9e7a;font-size:24px">0%</div>
+<div class="android-widget-sub">Checklist completion</div>
 </div>
-<div class="p-6">
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-<div class="bg-tactical-800/50 rounded-lg p-4 border border-tactical-700"><h5 class="font-mono text-tactical-citizen text-sm mb-3"><i class="fas fa-droplet mr-2"></i>WATER</h5><ul class="space-y-2 text-sm text-tactical-300"><li>Aqua-Tainer 7-gal x4</li><li>LifeStraw Family filter</li><li>Rainwater catchment system</li><li>Bleach purification protocol</li></ul></div>
-<div class="bg-tactical-800/50 rounded-lg p-4 border border-tactical-700"><h5 class="font-mono text-tactical-citizen text-sm mb-3"><i class="fas fa-burger mr-2"></i>FOOD</h5><ul class="space-y-2 text-sm text-tactical-300"><li>30-day canned/dried stock</li><li>Propane camp stove + 4 tanks</li><li>Mylar bag + O2 absorber</li><li>Sprouting jars for greens</li></ul></div>
-<div class="bg-tactical-800/50 rounded-lg p-4 border border-tactical-700"><h5 class="font-mono text-tactical-citizen text-sm mb-3"><i class="fas fa-bolt mr-2"></i>POWER</h5><ul class="space-y-2 text-sm text-tactical-300"><li>2x 20,000mAh power banks</li><li>20W solar panel charger</li><li>LED lantern + headlamp</li><li>Car inverter + spare battery</li></ul></div>
-<div class="bg-tactical-800/50 rounded-lg p-4 border border-tactical-700"><h5 class="font-mono text-tactical-citizen text-sm mb-3"><i class="fas fa-house-crack mr-2"></i>SHELTER</h5><ul class="space-y-2 text-sm text-tactical-300"><li>Commercial sandbags (50ct)</li><li>Portable sump pump</li><li>Window plywood pre-cut</li><li>Fire extinguisher (2x ABC)</li></ul></div>
-<div class="bg-tactical-800/50 rounded-lg p-4 border border-tactical-700"><h5 class="font-mono text-tactical-citizen text-sm mb-3"><i class="fas fa-kit-medical mr-2"></i>MEDICAL</h5><ul class="space-y-2 text-sm text-tactical-300"><li>Adventure Medical Kit 2.0</li><li>90-day prescription buffer</li><li>Water purification tablets</li><li>N95 masks (box of 20)</li></ul></div>
-<div class="bg-tactical-800/50 rounded-lg p-4 border border-tactical-700"><h5 class="font-mono text-tactical-citizen text-sm mb-3"><i class="fas fa-car mr-2"></i>EVACUATION</h5><ul class="space-y-2 text-sm text-tactical-300"><li>72-hour bug-out bags</li><li>Roof rack cargo box</li><li>Physical maps + offline GPS</li><li>Cash stash ($300)</li></ul></div>
 </div>
+
+<!-- App Grid -->
+<div class="android-apps">
+<div class="android-apps-grid" id="appGrid">
+<!-- Apps injected by JS -->
+</div>
+</div>
+
+<!-- Dock -->
+<div class="android-dock">
+<div class="android-app" onclick="openApp('phone')">
+<div class="android-app-icon app-dashboard"><i class="fas fa-phone" style="color:#fff"></i></div>
+</div>
+<div class="android-app" onclick="openApp('messages')">
+<div class="android-app-icon app-classes"><i class="fas fa-comment" style="color:#fff"></i><span class="badge">3</span></div>
+</div>
+<div class="android-app" onclick="openApp('browser')">
+<div class="android-app-icon app-info"><i class="fas fa-globe" style="color:#fff"></i></div>
+</div>
+<div class="android-app" onclick="openApp('camera')">
+<div class="android-app-icon app-supplies"><i class="fas fa-camera" style="color:#fff"></i></div>
 </div>
 </div>
 </div>
 
-<div class="class-panel" id="panel-operator">
-<div class="bg-tactical-900 border border-tactical-operator/30 rounded-lg overflow-hidden">
-<div class="bg-tactical-operator/10 px-6 py-4 border-b border-tactical-operator/20">
-<div class="flex items-center justify-between flex-wrap gap-2">
-<div class="flex items-center space-x-3"><i class="fas fa-user-shield text-tactical-operator text-xl"></i><div><h4 class="font-mono font-bold text-tactical-operator text-lg">OPERATOR CLASS</h4><p class="text-xs text-tactical-400">$75-150k/year | P4.3-8.7M/year</p></div></div>
-<span class="tier-badge bg-tactical-operator/20 text-tactical-operator border border-tactical-operator/30"><i class="fas fa-wallet mr-1"></i>$1,500-5,000 | P87,000-290,000</span>
+<!-- ==================== APP SCREENS ==================== -->
+
+<!-- DASHBOARD APP -->
+<div class="app-screen" id="app-dashboard">
+<div class="app-header">
+<button class="app-back-btn" onclick="closeApp()"><i class="fas fa-arrow-left"></i></button>
+<div class="app-title"><i class="fas fa-gauge-high mr-2" style="color:#3d6b54"></i>DASHBOARD</div>
 </div>
-<p class="text-sm text-tactical-300 mt-3">Professional-grade redundancy. Off-grid capability, vehicle-based systems, and neighborhood coordination.</p>
+<div class="app-content">
+<div class="android-card" style="border-color:rgba(239,68,68,0.3);background:rgba(239,68,68,0.05)">
+<div class="android-card-header">
+<div class="android-card-icon" style="background:rgba(239,68,68,0.15);color:#ef4444"><i class="fas fa-radiation"></i></div>
+<div>
+<div class="android-card-title">THREAT LEVEL: CRITICAL</div>
+<div class="android-card-sub">Super El Niño 2026</div>
 </div>
-<div class="p-6">
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-<div class="bg-tactical-800/50 rounded-lg p-4 border border-tactical-700"><h5 class="font-mono text-tactical-operator text-sm mb-3"><i class="fas fa-droplet mr-2"></i>WATER</h5><ul class="space-y-2 text-sm text-tactical-300"><li>Berkey gravity filter</li><li>500-gal cistern / IBC tote</li><li>UV sterilizer (SteriPen)</li><li>Well pump + hand pump backup</li></ul></div>
-<div class="bg-tactical-800/50 rounded-lg p-4 border border-tactical-700"><h5 class="font-mono text-tactical-operator text-sm mb-3"><i class="fas fa-burger mr-2"></i>FOOD</h5><ul class="space-y-2 text-sm text-tactical-300"><li>90-day freeze-dried</li><li>Home canning setup</li><li>Solar dehydrator</li><li>Hunting/fishing gear + licenses</li><li>Heirloom seed vault</li></ul></div>
-<div class="bg-tactical-800/50 rounded-lg p-4 border border-tactical-700"><h5 class="font-mono text-tactical-operator text-sm mb-3"><i class="fas fa-bolt mr-2"></i>POWER</h5><ul class="space-y-2 text-sm text-tactical-300"><li>Jackery 1000 + solar panels</li><li>Honda EU2200i generator</li><li>Deep cycle battery bank</li><li>Whole-house surge protector</li></ul></div>
-<div class="bg-tactical-800/50 rounded-lg p-4 border border-tactical-700"><h5 class="font-mono text-tactical-operator text-sm mb-3"><i class="fas fa-house-crack mr-2"></i>SHELTER</h5><ul class="space-y-2 text-sm text-tactical-300"><li>Flood barrier system (Quick Dam)</li><li>Backup sump + battery</li><li>Storm shutters</li><li>Safe room / reinforced interior</li></ul></div>
-<div class="bg-tactical-800/50 rounded-lg p-4 border border-tactical-700"><h5 class="font-mono text-tactical-operator text-sm mb-3"><i class="fas fa-kit-medical mr-2"></i>MEDICAL</h5><ul class="space-y-2 text-sm text-tactical-300"><li>Tactical trauma kit (CAT tourniquet)</li><li>Antibiotics stock</li><li>Dental emergency kit</li><li>Pulse oximeter + BP cuff</li></ul></div>
-<div class="bg-tactical-800/50 rounded-lg p-4 border border-tactical-700"><h5 class="font-mono text-tactical-operator text-sm mb-3"><i class="fas fa-car mr-2"></i>EVACUATION</h5><ul class="space-y-2 text-sm text-tactical-300"><li>4WD vehicle kit (winch, snorkel)</li><li>Ham radio license + Baofeng</li><li>Cache locations mapped</li><li>Secondary property / rural land</li></ul></div>
 </div>
+<div class="android-progress"><div class="android-progress-fill" style="width:90%;background:#ef4444"></div></div>
+</div>
+<div class="android-card">
+<div class="android-card-header">
+<div class="android-card-icon" style="background:rgba(245,158,11,0.15);color:#f59e0b"><i class="fas fa-clock"></i></div>
+<div>
+<div class="android-card-title">EST. ONSET: JUNE-AUG</div>
+<div class="android-card-sub">Peak: November 2026</div>
+</div>
+</div>
+<div class="android-progress"><div class="android-progress-fill" style="width:65%;background:#f59e0b"></div></div>
+</div>
+<div class="android-card">
+<div class="android-card-header">
+<div class="android-card-icon" style="background:rgba(255,107,53,0.15);color:#ff6b35"><i class="fas fa-temperature-high"></i></div>
+<div>
+<div class="android-card-title">PACIFIC ANOMALY: +6.2°C</div>
+<div class="android-card-sub">Subsurface reservoir heat</div>
+</div>
+</div>
+<div class="android-progress"><div class="android-progress-fill" style="width:85%;background:#ff6b35"></div></div>
+</div>
+<div class="android-card">
+<div class="android-card-header">
+<div class="android-card-icon" style="background:rgba(90,158,122,0.15);color:#5a9e7a"><i class="fas fa-shield-halved"></i></div>
+<div>
+<div class="android-card-title">YOUR READINESS</div>
+<div class="android-card-sub" id="appReadinessSub">Complete checklist</div>
+</div>
+</div>
+<div class="android-progress"><div class="android-progress-fill" id="appReadinessBar" style="width:0%;background:#5a9e7a"></div></div>
 </div>
 </div>
 </div>
 
-<div class="class-panel" id="panel-elite">
-<div class="bg-tactical-900 border border-tactical-elite/30 rounded-lg overflow-hidden">
-<div class="bg-tactical-elite/10 px-6 py-4 border-b border-tactical-elite/20">
-<div class="flex items-center justify-between flex-wrap gap-2">
-<div class="flex items-center space-x-3"><i class="fas fa-crown text-tactical-elite text-xl"></i><div><h4 class="font-mono font-bold text-tactical-elite text-lg">COMMAND ELITE</h4><p class="text-xs text-tactical-400">&gt;$150,000/year | &gt;P8.7M/year</p></div></div>
-<span class="tier-badge bg-tactical-elite/20 text-tactical-elite border border-tactical-elite/30"><i class="fas fa-wallet mr-1"></i>$10,000+ | P580,000+</span>
+<!-- THREATS APP -->
+<div class="app-screen" id="app-threats">
+<div class="app-header">
+<button class="app-back-btn" onclick="closeApp()"><i class="fas fa-arrow-left"></i></button>
+<div class="app-title"><i class="fas fa-triangle-exclamation mr-2" style="color:#ef4444"></i>THREATS</div>
 </div>
-<p class="text-sm text-tactical-300 mt-3">Full-spectrum resilience. Property hardening, professional consulting, and long-term autonomous operation.</p>
+<div class="app-content" id="threatsContent">
+<!-- Injected by JS -->
 </div>
-<div class="p-6">
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-<div class="bg-tactical-800/50 rounded-lg p-4 border border-tactical-700"><h5 class="font-mono text-tactical-elite text-sm mb-3"><i class="fas fa-droplet mr-2"></i>WATER</h5><ul class="space-y-2 text-sm text-tactical-300"><li>Whole-house rainwater harvesting</li><li>RO + UV + charcoal triple</li><li>Borehole with solar pump</li><li>Swimming pool conversion kit</li></ul></div>
-<div class="bg-tactical-800/50 rounded-lg p-4 border border-tactical-700"><h5 class="font-mono text-tactical-elite text-sm mb-3"><i class="fas fa-burger mr-2"></i>FOOD</h5><ul class="space-y-2 text-sm text-tactical-300"><li>1-year+ long-term storage</li><li>Aquaponics / hydroponics</li><li>Livestock: chickens, goats</li><li>Solar freezer</li><li>Professional nutritionist</li></ul></div>
-<div class="bg-tactical-800/50 rounded-lg p-4 border border-tactical-700"><h5 class="font-mono text-tactical-elite text-sm mb-3"><i class="fas fa-bolt mr-2"></i>POWER</h5><ul class="space-y-2 text-sm text-tactical-300"><li>Tesla Powerwall + 10kW solar</li><li>Diesel generator (20kW)</li><li>Automatic transfer switch</li><li>Faraday cage</li></ul></div>
-<div class="bg-tactical-800/50 rounded-lg p-4 border border-tactical-700"><h5 class="font-mono text-tactical-elite text-sm mb-3"><i class="fas fa-house-crack mr-2"></i>SHELTER</h5><ul class="space-y-2 text-sm text-tactical-300"><li>Architectural flood-proofing</li><li>Underground storm shelter</li><li>Fire suppression system</li><li>Perimeter security + drones</li></ul></div>
-<div class="bg-tactical-800/50 rounded-lg p-4 border border-tactical-700"><h5 class="font-mono text-tactical-elite text-sm mb-3"><i class="fas fa-kit-medical mr-2"></i>MEDICAL</h5><ul class="space-y-2 text-sm text-tactical-300"><li>Telemedicine subscription</li><li>Emergency dental kit</li><li>AED (defibrillator)</li><li>Yearly physical + boosters</li><li>EMT certification</li></ul></div>
-<div class="bg-tactical-800/50 rounded-lg p-4 border border-tactical-700"><h5 class="font-mono text-tactical-elite text-sm mb-3"><i class="fas fa-car mr-2"></i>EVACUATION</h5><ul class="space-y-2 text-sm text-tactical-300"><li>Secondary property (diff climate)</li><li>Private vehicle fleet prepared</li><li>Air evacuation retainer</li><li>Private security consultation</li><li>Offshore asset protection</li></ul></div>
 </div>
+
+<!-- CLASSES APP -->
+<div class="app-screen" id="app-classes">
+<div class="app-header">
+<button class="app-back-btn" onclick="closeApp()"><i class="fas fa-arrow-left"></i></button>
+<div class="app-title"><i class="fas fa-layer-group mr-2" style="color:#3b82f6"></i>CLASSES</div>
+</div>
+<div class="app-content" id="classesContent">
+<!-- Injected by JS -->
+</div>
+</div>
+
+<!-- CHECKLIST APP -->
+<div class="app-screen" id="app-checklist">
+<div class="app-header">
+<button class="app-back-btn" onclick="closeApp()"><i class="fas fa-arrow-left"></i></button>
+<div class="app-title"><i class="fas fa-list-check mr-2" style="color:#22c55e"></i>CHECKLIST</div>
+<div class="android-badge" style="background:rgba(90,158,122,0.15);color:#5a9e7a" id="checklistBadge">0%</div>
+</div>
+<div class="app-content" id="checklistContent">
+<!-- Injected by JS -->
+</div>
+</div>
+
+<!-- PROFILE APP -->
+<div class="app-screen" id="app-profile">
+<div class="app-header">
+<button class="app-back-btn" onclick="closeApp()"><i class="fas fa-arrow-left"></i></button>
+<div class="app-title"><i class="fas fa-user mr-2" style="color:#a855f7"></i>PROFILE</div>
+</div>
+<div class="app-content">
+<div style="display:flex;flex-direction:column;align-items:center;gap:12px;margin-bottom:20px">
+<div class="profile-avatar" id="profileAvatar" onclick="openAvatarModal()" style="width:100px;height:100px;border-radius:50%;border:3px solid #3d6b54;background:#1a2e24;display:flex;align-items:center;justify-content:center;cursor:pointer;overflow:hidden">
+<img id="avatarImg" src="" alt="" style="display:none;width:100%;height:100%;object-fit:cover">
+<i class="fas fa-user" id="avatarIcon" style="font-size:40px;color:#5a9e7a"></i>
+</div>
+<button onclick="openAvatarModal()" class="android-badge" style="background:rgba(61,107,84,0.2);color:#7bc9a0"><i class="fas fa-camera mr-1"></i>CHANGE PHOTO</button>
+</div>
+<div class="space-y-3">
+<div><label class="text-xs font-mono text-tactical-400">CALLSIGN / NAME</label><input type="text" id="profileName" class="android-input mt-1" placeholder="Enter callsign..." onchange="saveProfile()"></div>
+<div><label class="text-xs font-mono text-tactical-400">INCOME CLASS</label><select id="profileClass" class="android-select mt-1" onchange="saveProfile()"><option value="">Select...</option><option value="budget">Budget Survivor</option><option value="citizen">Tactical Citizen</option><option value="operator">Operator Class</option><option value="elite">Command Elite</option></select></div>
+<div class="grid grid-cols-2 gap-3">
+<div><label class="text-xs font-mono text-tactical-400">HOUSEHOLD</label><input type="number" id="profileHousehold" class="android-input mt-1" min="1" value="1" onchange="saveProfile()"></div>
+<div><label class="text-xs font-mono text-tactical-400">BLOOD TYPE</label><select id="profileBlood" class="android-select mt-1" onchange="saveProfile()"><option value="">Unknown</option><option>A+</option><option>A-</option><option>B+</option><option>B-</option><option>AB+</option><option>AB-</option><option>O+</option><option>O-</option></select></div>
+</div>
+<div><label class="text-xs font-mono text-tactical-400">LOCATION</label><input type="text" id="profileLocation" class="android-input mt-1" placeholder="Metro Manila, Cebu..." onchange="saveProfile()"></div>
+<div><label class="text-xs font-mono text-tactical-400">EMERGENCY CONTACT</label><input type="text" id="profileEmergency" class="android-input mt-1" placeholder="Name + Phone..." onchange="saveProfile()"></div>
+<div><label class="text-xs font-mono text-tactical-400">SPECIAL SKILLS / NOTES</label><textarea id="profileNotes" class="android-textarea mt-1" placeholder="Medical training, ham radio, etc..." onchange="saveProfile()"></textarea></div>
+<button onclick="clearProfile()" class="android-btn android-btn-danger"><i class="fas fa-trash"></i>CLEAR PROFILE</button>
 </div>
 </div>
 </div>
 
-<div class="mt-12">
-<h4 class="font-mono font-bold text-white text-lg mb-4"><i class="fas fa-table-columns mr-2 text-tactical-400"></i>CLASS COMPARISON MATRIX</h4>
-<div class="bg-tactical-900 border border-tactical-700 rounded-lg overflow-x-auto">
-<table class="w-full text-sm">
-<thead><tr class="bg-tactical-800 border-b border-tactical-700"><th class="text-left p-4 font-mono text-tactical-400">CATEGORY</th><th class="text-left p-4 font-mono text-tactical-budget">BUDGET</th><th class="text-left p-4 font-mono text-tactical-citizen">CITIZEN</th><th class="text-left p-4 font-mono text-tactical-operator">OPERATOR</th><th class="text-left p-4 font-mono text-tactical-elite">ELITE</th></tr></thead>
-<tbody>
-<tr class="comparison-row border-b border-tactical-800"><td class="p-4 font-mono text-tactical-300">Water Storage</td><td class="p-4 text-tactical-400">2L bottles / drums</td><td class="p-4 text-tactical-400">7-gal containers x4</td><td class="p-4 text-tactical-400">500-gal cistern</td><td class="p-4 text-tactical-400">Whole-house + borehole</td></tr>
-<tr class="comparison-row border-b border-tactical-800"><td class="p-4 font-mono text-tactical-300">Food Duration</td><td class="p-4 text-tactical-400">7-14 days</td><td class="p-4 text-tactical-400">30 days</td><td class="p-4 text-tactical-400">90 days</td><td class="p-4 text-tactical-400">1+ year</td></tr>
-<tr class="comparison-row border-b border-tactical-800"><td class="p-4 font-mono text-tactical-300">Power Backup</td><td class="p-4 text-tactical-400">Candles / crank</td><td class="p-4 text-tactical-400">Power banks + solar</td><td class="p-4 text-tactical-400">Generator + solar</td><td class="p-4 text-tactical-400">Powerwall + diesel</td></tr>
-<tr class="comparison-row border-b border-tactical-800"><td class="p-4 font-mono text-tactical-300">Medical</td><td class="p-4 text-tactical-400">Generic / herbal</td><td class="p-4 text-tactical-400">First aid kit</td><td class="p-4 text-tactical-400">Trauma kit + meds</td><td class="p-4 text-tactical-400">Telemedicine + AED</td></tr>
-<tr class="comparison-row border-b border-tactical-800"><td class="p-4 font-mono text-tactical-300">Comms</td><td class="p-4 text-tactical-400">Word of mouth</td><td class="p-4 text-tactical-400">Phone + radio</td><td class="p-4 text-tactical-400">Ham radio license</td><td class="p-4 text-tactical-400">Satellite + mesh</td></tr>
-<tr class="comparison-row border-b border-tactical-800"><td class="p-4 font-mono text-tactical-300">Evacuation</td><td class="p-4 text-tactical-400">Foot / bus</td><td class="p-4 text-tactical-400">Family vehicle</td><td class="p-4 text-tactical-400">4WD + cache</td><td class="p-4 text-tactical-400">Air + multiple properties</td></tr>
-<tr class="comparison-row"><td class="p-4 font-mono text-tactical-300">Setup Cost</td><td class="p-4 text-tactical-budget font-bold">$50-150</td><td class="p-4 text-tactical-citizen font-bold">$300-800</td><td class="p-4 text-tactical-operator font-bold">$1,500-5,000</td><td class="p-4 text-tactical-elite font-bold">$10,000+</td></tr>
-</tbody>
-</table>
+<!-- INVENTORY APP -->
+<div class="app-screen" id="app-inventory">
+<div class="app-header">
+<button class="app-back-btn" onclick="closeApp()"><i class="fas fa-arrow-left"></i></button>
+<div class="app-title"><i class="fas fa-boxes-stacked mr-2" style="color:#f59e0b"></i>INVENTORY</div>
+<div class="android-badge" style="background:rgba(245,158,11,0.15);color:#f59e0b" id="inventoryBadge">0</div>
+</div>
+<div class="app-content">
+<div style="display:flex;gap:8px;overflow-x:auto;padding-bottom:12px;margin-bottom:8px;scrollbar-width:none">
+<button onclick="filterInventory('all')" class="inv-filter android-badge" style="background:#3d6b54;color:#fff;white-space:nowrap;border:none;cursor:pointer" data-f="all">ALL</button>
+<button onclick="filterInventory('water')" class="inv-filter android-badge" style="background:rgba(45,74,62,0.3);color:#5a9e7a;white-space:nowrap;border:none;cursor:pointer" data-f="water">WATER</button>
+<button onclick="filterInventory('food')" class="inv-filter android-badge" style="background:rgba(45,74,62,0.3);color:#5a9e7a;white-space:nowrap;border:none;cursor:pointer" data-f="food">FOOD</button>
+<button onclick="filterInventory('power')" class="inv-filter android-badge" style="background:rgba(45,74,62,0.3);color:#5a9e7a;white-space:nowrap;border:none;cursor:pointer" data-f="power">POWER</button>
+<button onclick="filterInventory('medical')" class="inv-filter android-badge" style="background:rgba(45,74,62,0.3);color:#5a9e7a;white-space:nowrap;border:none;cursor:pointer" data-f="medical">MEDICAL</button>
+<button onclick="filterInventory('shelter')" class="inv-filter android-badge" style="background:rgba(45,74,62,0.3);color:#5a9e7a;white-space:nowrap;border:none;cursor:pointer" data-f="shelter">SHELTER</button>
+<button onclick="filterInventory('tools')" class="inv-filter android-badge" style="background:rgba(45,74,62,0.3);color:#5a9e7a;white-space:nowrap;border:none;cursor:pointer" data-f="tools">TOOLS</button>
+<button onclick="filterInventory('other')" class="inv-filter android-badge" style="background:rgba(45,74,62,0.3);color:#5a9e7a;white-space:nowrap;border:none;cursor:pointer" data-f="other">OTHER</button>
+</div>
+<div class="inv-grid" id="inventoryGrid"></div>
+<button onclick="openAddItemModal()" class="android-btn android-btn-primary" style="margin-top:16px"><i class="fas fa-plus"></i>ADD ITEM</button>
+<button onclick="exportInventory()" class="android-btn" style="background:rgba(59,130,246,0.15);color:#3b82f6;border:1px solid rgba(59,130,246,0.3)"><i class="fas fa-file-export"></i>EXPORT DATA</button>
 </div>
 </div>
-</div>
-</section>
 
-<!-- Desktop Checklist -->
-<section id="checklist" class="py-16 bg-tactical-800 grid-bg">
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-<div class="flex items-center justify-between mb-8">
-<div class="flex items-center space-x-3"><i class="fas fa-list-check text-tactical-400 text-2xl"></i><h3 class="text-2xl font-mono font-bold text-white">TACTICAL SURVIVAL CHECKLIST</h3></div>
-<div class="text-right"><p class="text-2xl font-mono font-bold text-tactical-400" id="checklistPercent">0%</p><p class="text-xs text-tactical-500">COMPLETION RATE</p></div>
+<!-- CALCULATOR APP -->
+<div class="app-screen" id="app-calculator">
+<div class="app-header">
+<button class="app-back-btn" onclick="closeApp()"><i class="fas fa-arrow-left"></i></button>
+<div class="app-title"><i class="fas fa-calculator mr-2" style="color:#06b6d4"></i>CALCULATOR</div>
 </div>
-<div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-<div class="bg-tactical-900 border border-tactical-700 rounded-lg p-6">
-<h4 class="text-lg font-bold text-tactical-300 mb-4 font-mono"><i class="fas fa-droplet mr-2 text-blue-400"></i>WATER & FOOD SECURITY</h4>
-<div class="space-y-2" id="waterFoodChecks">
-<label class="check-item"><input type="checkbox" onchange="updateChecklist()"><span>1 gallon water per person per day (min 14 days)</span></label>
-<label class="check-item"><input type="checkbox" onchange="updateChecklist()"><span>Water purification tablets/filters (LifeStraw/Berkey)</span></label>
-<label class="check-item"><input type="checkbox" onchange="updateChecklist()"><span>Rainwater harvesting barrels (sealed, mosquito-proof)</span></label>
-<label class="check-item"><input type="checkbox" onchange="updateChecklist()"><span>30+ day non-perishable food supply (canned, dried, MREs)</span></label>
-<label class="check-item"><input type="checkbox" onchange="updateChecklist()"><span>Manual can opener & portable camp stove with fuel</span></label>
-<label class="check-item"><input type="checkbox" onchange="updateChecklist()"><span>Electrolyte packets & dehydration salts</span></label>
+<div class="app-content">
+<div class="grid grid-cols-3 gap-3 mb-4">
+<div><label class="text-xs font-mono text-tactical-400">ADULTS</label><input type="number" id="calcAdults" class="android-input mt-1" value="2" min="0" onchange="calcSupplies()"></div>
+<div><label class="text-xs font-mono text-tactical-400">CHILDREN</label><input type="number" id="calcChildren" class="android-input mt-1" value="1" min="0" onchange="calcSupplies()"></div>
+<div><label class="text-xs font-mono text-tactical-400">DAYS</label><input type="number" id="calcDays" class="android-input mt-1" value="30" min="1" onchange="calcSupplies()"></div>
 </div>
+<div class="android-card">
+<div class="flex items-center justify-between"><span class="text-sm font-mono text-tactical-300"><i class="fas fa-droplet mr-2 text-blue-400"></i>WATER</span><span class="text-xl font-black text-white font-mono" id="calcWater">0 gal</span></div>
+<div class="android-progress"><div class="android-progress-fill" style="width:100%;background:#3b82f6"></div></div>
 </div>
-<div class="bg-tactical-900 border border-tactical-700 rounded-lg p-6">
-<h4 class="text-lg font-bold text-tactical-300 mb-4 font-mono"><i class="fas fa-bolt mr-2 text-yellow-400"></i>POWER & COMMS</h4>
-<div class="space-y-2" id="powerCommsChecks">
-<label class="check-item"><input type="checkbox" onchange="updateChecklist()"><span>Portable generator (gas/propane) + stored fuel</span></label>
-<label class="check-item"><input type="checkbox" onchange="updateChecklist()"><span>Solar panels + solar charger/power station</span></label>
-<label class="check-item"><input type="checkbox" onchange="updateChecklist()"><span>Battery-powered/hand-crank NOAA weather radio</span></label>
-<label class="check-item"><input type="checkbox" onchange="updateChecklist()"><span>Power banks + extra batteries (AA, AAA, lithium)</span></label>
-<label class="check-item"><input type="checkbox" onchange="updateChecklist()"><span>Two-way radios (walkie-talkies) for local mesh</span></label>
-<label class="check-item"><input type="checkbox" onchange="updateChecklist()"><span>Faraday bag for critical electronics</span></label>
+<div class="android-card">
+<div class="flex items-center justify-between"><span class="text-sm font-mono text-tactical-300"><i class="fas fa-burger mr-2 text-orange-400"></i>FOOD</span><span class="text-xl font-black text-white font-mono" id="calcFood">0 cal</span></div>
+<div class="android-progress"><div class="android-progress-fill" style="width:100%;background:#f59e0b"></div></div>
 </div>
+<div class="android-card">
+<div class="flex items-center justify-between"><span class="text-sm font-mono text-tactical-300"><i class="fas fa-pills mr-2 text-red-400"></i>MED KITS</span><span class="text-xl font-black text-white font-mono" id="calcMed">0</span></div>
+<div class="android-progress"><div class="android-progress-fill" style="width:100%;background:#ef4444"></div></div>
 </div>
-<div class="bg-tactical-900 border border-tactical-700 rounded-lg p-6">
-<h4 class="text-lg font-bold text-tactical-300 mb-4 font-mono"><i class="fas fa-house-crack mr-2 text-orange-400"></i>HOME FORTIFICATION</h4>
-<div class="space-y-2" id="homeChecks">
-<label class="check-item"><input type="checkbox" onchange="updateChecklist()"><span>Sandbags (50+), plastic sheeting, tarps, duct tape</span></label>
-<label class="check-item"><input type="checkbox" onchange="updateChecklist()"><span>Sump pump + backup battery pump</span></label>
-<label class="check-item"><input type="checkbox" onchange="updateChecklist()"><span>Gutter guards cleared, roof flashing inspected</span></label>
-<label class="check-item"><input type="checkbox" onchange="updateChecklist()"><span>Waterproof document safe + cloud backups</span></label>
-<label class="check-item"><input type="checkbox" onchange="updateChecklist()"><span>Fire-resistant landscaping / defensible space</span></label>
-<label class="check-item"><input type="checkbox" onchange="updateChecklist()"><span>Boards/shutters for window reinforcement</span></label>
-</div>
-</div>
-<div class="bg-tactical-900 border border-tactical-700 rounded-lg p-6">
-<h4 class="text-lg font-bold text-tactical-300 mb-4 font-mono"><i class="fas fa-kit-medical mr-2 text-red-400"></i>MEDICAL & HYGIENE</h4>
-<div class="space-y-2" id="medicalChecks">
-<label class="check-item"><input type="checkbox" onchange="updateChecklist()"><span>Comprehensive first aid kit + trauma supplies</span></label>
-<label class="check-item"><input type="checkbox" onchange="updateChecklist()"><span>90-day prescription medication supply</span></label>
-<label class="check-item"><input type="checkbox" onchange="updateChecklist()"><span>N95 masks, water purification tabs, ORS packets</span></label>
-<label class="check-item"><input type="checkbox" onchange="updateChecklist()"><span>Mosquito nets, repellent, antimalarials (tropics)</span></label>
-<label class="check-item"><input type="checkbox" onchange="updateChecklist()"><span>Hygiene: wipes, sanitizer, soap, feminine products</span></label>
-<label class="check-item"><input type="checkbox" onchange="updateChecklist()"><span>Portable toilet / waste bags with treatment</span></label>
+<div class="android-card">
+<div class="flex items-center justify-between"><span class="text-sm font-mono text-tactical-300"><i class="fas fa-battery-full mr-2 text-yellow-400"></i>BATTERIES</span><span class="text-xl font-black text-white font-mono" id="calcBattery">0</span></div>
+<div class="android-progress"><div class="android-progress-fill" style="width:100%;background:#eab308"></div></div>
 </div>
 </div>
 </div>
-<div class="mt-6 bg-tactical-900 border border-tactical-700 rounded-lg p-6">
-<h4 class="text-lg font-bold text-tactical-300 mb-4 font-mono"><i class="fas fa-car mr-2 text-gray-400"></i>VEHICLE & EVACUATION</h4>
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2" id="vehicleChecks">
-<label class="check-item"><input type="checkbox" onchange="updateChecklist()"><span>Bug-out bag (72hr kit) per family member</span></label>
-<label class="check-item"><input type="checkbox" onchange="updateChecklist()"><span>Vehicle: full tank + 20gal spare fuel</span></label>
-<label class="check-item"><input type="checkbox" onchange="updateChecklist()"><span>Physical maps + marked evacuation routes</span></label>
-<label class="check-item"><input type="checkbox" onchange="updateChecklist()"><span>Emergency whistle, signal mirror, flare gun</span></label>
-<label class="check-item"><input type="checkbox" onchange="updateChecklist()"><span>Cash stash ($500+ small bills)</span></label>
-<label class="check-item"><input type="checkbox" onchange="updateChecklist()"><span>Firearms/self-defense (if legally permitted)</span></label>
-</div>
-</div>
-</div>
-</section>
 
-<!-- Desktop Profile -->
-<section id="profile" class="py-16 bg-tactical-900">
-<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-<div class="flex items-center space-x-3 mb-8"><i class="fas fa-user text-tactical-accent text-2xl"></i><h3 class="text-2xl font-mono font-bold text-white">OPERATOR PROFILE</h3></div>
-<div class="bg-tactical-800 border border-tactical-700 rounded-lg p-6 md:p-8">
-<div class="flex flex-col md:flex-row gap-8 items-start">
-<div class="flex flex-col items-center space-y-4">
-<div class="profile-avatar" id="profileAvatar" onclick="openAvatarModal()" style="width:120px;height:120px"><img id="avatarImg" src="" alt="" style="display:none"><i class="fas fa-user" id="avatarIcon"></i></div>
-<p class="text-xs text-tactical-400 font-mono text-center">Tap to upload photo</p>
-<button onclick="openAvatarModal()" class="px-4 py-2 rounded bg-tactical-700 text-tactical-300 text-xs font-mono hover:bg-tactical-600"><i class="fas fa-camera mr-1"></i>CHANGE PHOTO</button>
+<!-- SUPPLIES APP -->
+<div class="app-screen" id="app-supplies">
+<div class="app-header">
+<button class="app-back-btn" onclick="closeApp()"><i class="fas fa-arrow-left"></i></button>
+<div class="app-title"><i class="fas fa-boxes-stacked mr-2" style="color:#ec4899"></i>SUPPLIES</div>
 </div>
-<div class="flex-1 w-full">
-<div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-<div><label class="block text-xs font-mono text-tactical-400 mb-2">CALLSIGN / NAME</label><input type="text" id="profileName" placeholder="Enter callsign..." class="w-full bg-tactical-900 border border-tactical-600 rounded px-4 py-3 text-white font-mono text-sm focus:border-tactical-accent focus:outline-none" onchange="saveProfile()"></div>
-<div><label class="block text-xs font-mono text-tactical-400 mb-2">INCOME CLASS</label><select id="profileClass" class="w-full bg-tactical-900 border border-tactical-600 rounded px-4 py-3 text-white font-mono text-sm focus:border-tactical-accent focus:outline-none" onchange="saveProfile()"><option value="">Select Class...</option><option value="budget">Budget Survivor</option><option value="citizen">Tactical Citizen</option><option value="operator">Operator Class</option><option value="elite">Command Elite</option></select></div>
-<div><label class="block text-xs font-mono text-tactical-400 mb-2">HOUSEHOLD SIZE</label><input type="number" id="profileHousehold" min="1" max="20" value="1" class="w-full bg-tactical-900 border border-tactical-600 rounded px-4 py-3 text-white font-mono text-sm focus:border-tactical-accent focus:outline-none" onchange="saveProfile()"></div>
-<div><label class="block text-xs font-mono text-tactical-400 mb-2">LOCATION / REGION</label><input type="text" id="profileLocation" placeholder="e.g. Metro Manila, Cebu..." class="w-full bg-tactical-900 border border-tactical-600 rounded px-4 py-3 text-white font-mono text-sm focus:border-tactical-accent focus:outline-none" onchange="saveProfile()"></div>
-<div><label class="block text-xs font-mono text-tactical-400 mb-2">BLOOD TYPE</label><select id="profileBlood" class="w-full bg-tactical-900 border border-tactical-600 rounded px-4 py-3 text-white font-mono text-sm focus:border-tactical-accent focus:outline-none" onchange="saveProfile()"><option value="">Unknown</option><option value="A+">A+</option><option value="A-">A-</option><option value="B+">B+</option><option value="B-">B-</option><option value="AB+">AB+</option><option value="AB-">AB-</option><option value="O+">O+</option><option value="O-">O-</option></select></div>
-<div><label class="block text-xs font-mono text-tactical-400 mb-2">EMERGENCY CONTACT</label><input type="text" id="profileEmergency" placeholder="Name + Phone..." class="w-full bg-tactical-900 border border-tactical-600 rounded px-4 py-3 text-white font-mono text-sm focus:border-tactical-accent focus:outline-none" onchange="saveProfile()"></div>
+<div class="app-content" id="suppliesContent"></div>
 </div>
-<div class="mb-4"><label class="block text-xs font-mono text-tactical-400 mb-2">SPECIAL SKILLS / NOTES</label><textarea id="profileNotes" rows="3" placeholder="Medical training, construction skills, ham radio license..." class="w-full bg-tactical-900 border border-tactical-600 rounded px-4 py-3 text-white font-mono text-sm focus:border-tactical-accent focus:outline-none resize-none" onchange="saveProfile()"></textarea></div>
-<div class="flex items-center justify-between">
-<div class="text-xs text-tactical-500 font-mono"><i class="fas fa-database mr-1"></i>Stored locally on this device</div>
-<button onclick="clearProfile()" class="px-4 py-2 rounded bg-tactical-danger/20 text-tactical-danger text-xs font-mono hover:bg-tactical-danger/30 border border-tactical-danger/30"><i class="fas fa-trash mr-1"></i>CLEAR PROFILE</button>
-</div>
-</div>
-</div>
-</div>
-</div>
-</section>
 
-<!-- Desktop Inventory -->
-<section id="inventory" class="py-16 bg-tactical-850 grid-bg">
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-<div class="flex items-center justify-between mb-8">
-<div class="flex items-center space-x-3"><i class="fas fa-boxes-stacked text-tactical-accent text-2xl"></i><h3 class="text-2xl font-mono font-bold text-white">TACTICAL INVENTORY</h3></div>
-<div class="flex items-center space-x-3">
-<span class="text-sm font-mono text-tactical-400" id="inventoryCount">0 items</span>
-<button onclick="exportInventory()" class="px-3 py-2 rounded bg-tactical-700 text-tactical-300 text-xs font-mono hover:bg-tactical-600 border border-tactical-600"><i class="fas fa-file-export mr-1"></i>EXPORT</button>
-<button onclick="clearInventory()" class="px-3 py-2 rounded bg-tactical-danger/20 text-tactical-danger text-xs font-mono hover:bg-tactical-danger/30 border border-tactical-danger/30"><i class="fas fa-trash mr-1"></i>CLEAR ALL</button>
+<!-- INTEL APP -->
+<div class="app-screen" id="app-intel">
+<div class="app-header">
+<button class="app-back-btn" onclick="closeApp()"><i class="fas fa-arrow-left"></i></button>
+<div class="app-title"><i class="fas fa-satellite-dish mr-2" style="color:#6366f1"></i>INTEL</div>
 </div>
+<div class="app-content" id="intelContent"></div>
 </div>
-<div class="bg-tactical-900 border border-tactical-700 rounded-lg p-6">
-<div class="mb-6 flex flex-wrap gap-2">
-<button onclick="filterInventory('all')" class="inventory-filter px-3 py-1 rounded text-xs font-mono bg-tactical-accent text-white" data-filter="all">ALL</button>
-<button onclick="filterInventory('water')" class="inventory-filter px-3 py-1 rounded text-xs font-mono bg-tactical-800 text-tactical-400 hover:bg-tactical-700" data-filter="water">WATER</button>
-<button onclick="filterInventory('food')" class="inventory-filter px-3 py-1 rounded text-xs font-mono bg-tactical-800 text-tactical-400 hover:bg-tactical-700" data-filter="food">FOOD</button>
-<button onclick="filterInventory('power')" class="inventory-filter px-3 py-1 rounded text-xs font-mono bg-tactical-800 text-tactical-400 hover:bg-tactical-700" data-filter="power">POWER</button>
-<button onclick="filterInventory('medical')" class="inventory-filter px-3 py-1 rounded text-xs font-mono bg-tactical-800 text-tactical-400 hover:bg-tactical-700" data-filter="medical">MEDICAL</button>
-<button onclick="filterInventory('shelter')" class="inventory-filter px-3 py-1 rounded text-xs font-mono bg-tactical-800 text-tactical-400 hover:bg-tactical-700" data-filter="shelter">SHELTER</button>
-<button onclick="filterInventory('tools')" class="inventory-filter px-3 py-1 rounded text-xs font-mono bg-tactical-800 text-tactical-400 hover:bg-tactical-700" data-filter="tools">TOOLS</button>
-<button onclick="filterInventory('other')" class="inventory-filter px-3 py-1 rounded text-xs font-mono bg-tactical-800 text-tactical-400 hover:bg-tactical-700" data-filter="other">OTHER</button>
-</div>
-<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4" id="inventoryGrid"></div>
-<div class="mt-6 flex justify-center">
-<button onclick="openAddSlotModal()" class="add-slot-btn w-full md:w-auto md:min-w-[160px]" style="min-height:120px"><i class="fas fa-plus text-xl mb-2 text-tactical-500"></i><span class="text-tactical-500 text-sm">ADD NEW ITEM</span></button>
-</div>
-</div>
-</div>
-</section>
 
-<!-- Desktop Calculator -->
-<section id="calculator" class="py-16 bg-tactical-900">
-<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-<div class="flex items-center space-x-3 mb-8"><i class="fas fa-calculator text-tactical-accent text-2xl"></i><h3 class="text-2xl font-mono font-bold text-white">SUPPLY REQUIREMENTS CALCULATOR</h3></div>
-<div class="bg-tactical-800 border border-tactical-700 rounded-lg p-6 md:p-8">
-<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-<div><label class="block text-sm font-mono text-tactical-400 mb-2">ADULTS</label><input type="number" id="adults" value="2" min="0" class="w-full bg-tactical-900 border border-tactical-600 rounded px-4 py-3 text-white font-mono focus:border-tactical-accent focus:outline-none" onchange="calculateSupplies()"></div>
-<div><label class="block text-sm font-mono text-tactical-400 mb-2">CHILDREN</label><input type="number" id="children" value="1" min="0" class="w-full bg-tactical-900 border border-tactical-600 rounded px-4 py-3 text-white font-mono focus:border-tactical-accent focus:outline-none" onchange="calculateSupplies()"></div>
-<div><label class="block text-sm font-mono text-tactical-400 mb-2">DURATION (DAYS)</label><input type="number" id="days" value="30" min="1" max="365" class="w-full bg-tactical-900 border border-tactical-600 rounded px-4 py-3 text-white font-mono focus:border-tactical-accent focus:outline-none" onchange="calculateSupplies()"></div>
+<!-- ALERTS APP -->
+<div class="app-screen" id="app-alerts">
+<div class="app-header">
+<button class="app-back-btn" onclick="closeApp()"><i class="fas fa-arrow-left"></i></button>
+<div class="app-title"><i class="fas fa-bell mr-2" style="color:#dc2626"></i>ALERTS</div>
 </div>
-<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-<div class="bg-tactical-900 rounded-lg p-5 border border-tactical-700"><div class="flex items-center justify-between mb-3"><span class="text-tactical-300 font-mono"><i class="fas fa-droplet mr-2 text-blue-400"></i>WATER</span><span class="text-2xl font-black text-white font-mono" id="waterTotal">0 gal</span></div><p class="text-xs text-tactical-500">1 gallon per person per day</p></div>
-<div class="bg-tactical-900 rounded-lg p-5 border border-tactical-700"><div class="flex items-center justify-between mb-3"><span class="text-tactical-300 font-mono"><i class="fas fa-burger mr-2 text-orange-400"></i>FOOD</span><span class="text-2xl font-black text-white font-mono" id="foodTotal">0 cal</span></div><p class="text-xs text-tactical-500">2,000 cal/adult, 1,400 cal/child</p></div>
-<div class="bg-tactical-900 rounded-lg p-5 border border-tactical-700"><div class="flex items-center justify-between mb-3"><span class="text-tactical-300 font-mono"><i class="fas fa-pills mr-2 text-red-400"></i>MEDICAL KITS</span><span class="text-2xl font-black text-white font-mono" id="medTotal">0</span></div><p class="text-xs text-tactical-500">1 kit per 4 people</p></div>
-<div class="bg-tactical-900 rounded-lg p-5 border border-tactical-700"><div class="flex items-center justify-between mb-3"><span class="text-tactical-300 font-mono"><i class="fas fa-battery-full mr-2 text-yellow-400"></i>BATTERY SETS</span><span class="text-2xl font-black text-white font-mono" id="batteryTotal">0</span></div><p class="text-xs text-tactical-500">1 set per person per 2 weeks</p></div>
+<div class="app-content" id="alertsContent"></div>
 </div>
-<div class="mt-6 bg-tactical-accent/10 border border-tactical-accent/30 rounded-lg p-4"><p class="text-sm text-tactical-accent font-mono"><i class="fas fa-triangle-exclamation mr-2"></i>Add 25% buffer. Rotate food stock every 6 months.</p></div>
-</div>
-</div>
-</section>
 
-<!-- Desktop Supplies -->
-<section id="supplies" class="py-16 bg-tactical-800 grid-bg">
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-<div class="flex items-center space-x-3 mb-8"><i class="fas fa-boxes-stacked text-tactical-400 text-2xl"></i><h3 class="text-2xl font-mono font-bold text-white">ESSENTIAL SUPPLY MATRIX</h3></div>
-<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-<div class="bg-tactical-900 border border-tactical-700 rounded-lg p-5 hover:border-tactical-accent/50 transition-all"><div class="text-tactical-accent text-3xl mb-3"><i class="fas fa-bottle-water"></i></div><h4 class="font-bold text-white mb-2">Water Storage</h4><p class="text-xs text-tactical-400 mb-3">7-gal Aqua-Tainers, rain barrels</p><span class="inline-block bg-tactical-700 text-tactical-300 text-xs px-2 py-1 rounded font-mono">CRITICAL</span></div>
-<div class="bg-tactical-900 border border-tactical-700 rounded-lg p-5 hover:border-tactical-warning/50 transition-all"><div class="text-tactical-warning text-3xl mb-3"><i class="fas fa-utensils"></i></div><h4 class="font-bold text-white mb-2">Long-Term Food</h4><p class="text-xs text-tactical-400 mb-3">Rice, beans, oats, honey, MREs</p><span class="inline-block bg-tactical-700 text-tactical-300 text-xs px-2 py-1 rounded font-mono">CRITICAL</span></div>
-<div class="bg-tactical-900 border border-tactical-700 rounded-lg p-5 hover:border-yellow-400/50 transition-all"><div class="text-yellow-400 text-3xl mb-3"><i class="fas fa-lightbulb"></i></div><h4 class="font-bold text-white mb-2">Lighting</h4><p class="text-xs text-tactical-400 mb-3">LED lanterns, headlamps, candles</p><span class="inline-block bg-tactical-700 text-tactical-300 text-xs px-2 py-1 rounded font-mono">HIGH</span></div>
-<div class="bg-tactical-900 border border-tactical-700 rounded-lg p-5 hover:border-blue-400/50 transition-all"><div class="text-blue-400 text-3xl mb-3"><i class="fas fa-temperature-low"></i></div><h4 class="font-bold text-white mb-2">Climate Control</h4><p class="text-xs text-tactical-400 mb-3">Battery fans, cooling towels, tarps</p><span class="inline-block bg-tactical-700 text-tactical-300 text-xs px-2 py-1 rounded font-mono">HIGH</span></div>
-<div class="bg-tactical-900 border border-tactical-700 rounded-lg p-5 hover:border-red-400/50 transition-all"><div class="text-red-400 text-3xl mb-3"><i class="fas fa-fire-extinguisher"></i></div><h4 class="font-bold text-white mb-2">Fire Safety</h4><p class="text-xs text-tactical-400 mb-3">ABC extinguishers, fire blankets</p><span class="inline-block bg-tactical-700 text-tactical-300 text-xs px-2 py-1 rounded font-mono">HIGH</span></div>
-<div class="bg-tactical-900 border border-tactical-700 rounded-lg p-5 hover:border-purple-400/50 transition-all"><div class="text-purple-400 text-3xl mb-3"><i class="fas fa-shield-virus"></i></div><h4 class="font-bold text-white mb-2">PPE & Sanitation</h4><p class="text-xs text-tactical-400 mb-3">N95s, gloves, bleach, trash bags</p><span class="inline-block bg-tactical-700 text-tactical-300 text-xs px-2 py-1 rounded font-mono">HIGH</span></div>
-<div class="bg-tactical-900 border border-tactical-700 rounded-lg p-5 hover:border-green-400/50 transition-all"><div class="text-green-400 text-3xl mb-3"><i class="fas fa-seedling"></i></div><h4 class="font-bold text-white mb-2">Survival Seeds</h4><p class="text-xs text-tactical-400 mb-3">Heirloom seeds, sprouting kits</p><span class="inline-block bg-tactical-700 text-tactical-300 text-xs px-2 py-1 rounded font-mono">MEDIUM</span></div>
-<div class="bg-tactical-900 border border-tactical-700 rounded-lg p-5 hover:border-gray-400/50 transition-all"><div class="text-gray-400 text-3xl mb-3"><i class="fas fa-toolbox"></i></div><h4 class="font-bold text-white mb-2">Tools</h4><p class="text-xs text-tactical-400 mb-3">Multi-tool, axe, shovel, rope</p><span class="inline-block bg-tactical-700 text-tactical-300 text-xs px-2 py-1 rounded font-mono">MEDIUM</span></div>
+<!-- SETTINGS APP -->
+<div class="app-screen" id="app-settings">
+<div class="app-header">
+<button class="app-back-btn" onclick="closeApp()"><i class="fas fa-arrow-left"></i></button>
+<div class="app-title"><i class="fas fa-gear mr-2" style="color:#6b7280"></i>SETTINGS</div>
+</div>
+<div class="app-content">
+<div class="android-card">
+<div class="android-card-title" style="margin-bottom:12px">DATA MANAGEMENT</div>
+<button onclick="downloadOffline()" class="android-btn android-btn-primary"><i class="fas fa-download"></i>DOWNLOAD OFFLINE VERSION</button>
+<p class="text-xs text-tactical-400 mt-2">Save this page as a single HTML file for offline use</p>
+</div>
+<div class="android-card">
+<div class="android-card-title" style="margin-bottom:12px">DANGER ZONE</div>
+<button onclick="clearAllData()" class="android-btn android-btn-danger"><i class="fas fa-bomb"></i>CLEAR ALL LOCAL DATA</button>
+<p class="text-xs text-tactical-400 mt-2">Deletes profile, inventory, checklist - everything</p>
+</div>
+<div class="android-card">
+<div class="android-card-title" style="margin-bottom:12px">ABOUT</div>
+<p class="text-sm text-tactical-400">Operation Thermal Shield v2.0</p>
+<p class="text-xs text-tactical-500 mt-1">Super El Niño 2026 Preparedness</p>
+<p class="text-xs text-tactical-500">All data stored locally on device</p>
 </div>
 </div>
-</section>
+</div>
 
-<!-- Desktop Intel -->
-<section id="intel" class="py-16 bg-tactical-900">
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-<div class="flex items-center space-x-3 mb-8"><i class="fas fa-satellite-dish text-tactical-accent text-2xl animate-pulse"></i><h3 class="text-2xl font-mono font-bold text-white">LIVE INTEL FEED</h3><span class="text-xs text-tactical-500 font-mono ml-auto">UPDATE: <span id="lastUpdate">JUST NOW</span></span></div>
-<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-<div class="lg:col-span-2 bg-tactical-800 border border-tactical-700 rounded-lg overflow-hidden">
-<div class="bg-tactical-900 px-4 py-3 border-b border-tactical-700 flex items-center justify-between"><span class="font-mono text-sm text-tactical-400">GLOBAL MONITORING STREAM</span><div class="flex space-x-1"><span class="w-2 h-2 bg-tactical-danger rounded-full animate-pulse"></span><span class="w-2 h-2 bg-tactical-warning rounded-full animate-pulse"></span><span class="w-2 h-2 bg-tactical-500 rounded-full animate-pulse"></span></div></div>
-<div class="p-4 space-y-3 max-h-96 overflow-y-auto" id="intelFeed">
-<div class="flex items-start space-x-3 p-3 bg-tactical-900/50 rounded border-l-2 border-tactical-danger"><span class="text-xs font-mono text-tactical-danger whitespace-nowrap">06:42 UTC</span><div><p class="text-sm text-white font-semibold">WMO CONFIRMS: 80% El Nino Probability</p><p class="text-xs text-tactical-400">Sea surface temps approaching threshold. Subsurface heat +6C above average.</p></div></div>
-<div class="flex items-start space-x-3 p-3 bg-tactical-900/50 rounded border-l-2 border-tactical-warning"><span class="text-xs font-mono text-tactical-warning whitespace-nowrap">05:15 UTC</span><div><p class="text-sm text-white font-semibold">IFRC: Anticipatory Action Protocols Activated</p><p class="text-xs text-tactical-400">Red Cross scaling preparedness in Central America and Caribbean.</p></div></div>
-<div class="flex items-start space-x-3 p-3 bg-tactical-900/50 rounded border-l-2 border-tactical-accent"><span class="text-xs font-mono text-tactical-accent whitespace-nowrap">03:30 UTC</span><div><p class="text-sm text-white font-semibold">Philippines Updates National Action Plan</p><p class="text-xs text-tactical-400">Agriculture, energy, health sectors on alert.</p></div></div>
-<div class="flex items-start space-x-3 p-3 bg-tactical-900/50 rounded border-l-2 border-tactical-info"><span class="text-xs font-mono text-tactical-info whitespace-nowrap">02:00 UTC</span><div><p class="text-sm text-white font-semibold">ECMWF: Wetter Conditions Expected</p><p class="text-xs text-tactical-400">Southern US, Peru, Ecuador forecast above-average rainfall.</p></div></div>
-<div class="flex items-start space-x-3 p-3 bg-tactical-900/50 rounded border-l-2 border-purple-400"><span class="text-xs font-mono text-purple-400 whitespace-nowrap">00:15 UTC</span><div><p class="text-sm text-white font-semibold">WEF: Systemic Shock Warning</p><p class="text-xs text-tactical-400">Rice supply chains at risk. Fuel/fertilizer shortages compound climate risk.</p></div></div>
-</div>
-</div>
-<div class="space-y-4">
-<div class="bg-tactical-800 border border-tactical-700 rounded-lg p-4"><h5 class="font-mono text-sm text-tactical-400 mb-3">PACIFIC ANOMALY (C)</h5><div class="flex items-end space-x-2"><span class="text-3xl font-black text-tactical-danger font-mono">+6.2</span><span class="text-sm text-tactical-500 mb-1">vs avg</span></div><div class="mt-2 h-1 bg-tactical-900 rounded-full"><div class="h-full bg-tactical-danger w-[85%]"></div></div></div>
-<div class="bg-tactical-800 border border-tactical-700 rounded-lg p-4"><h5 class="font-mono text-sm text-tactical-400 mb-3">ONSET PROBABILITY</h5><div class="flex items-end space-x-2"><span class="text-3xl font-black text-tactical-warning font-mono">80%</span><span class="text-sm text-tactical-500 mb-1">JUN-AUG</span></div><div class="mt-2 h-1 bg-tactical-900 rounded-full"><div class="h-full bg-tactical-warning w-[80%]"></div></div></div>
-<div class="bg-tactical-800 border border-tactical-700 rounded-lg p-4"><h5 class="font-mono text-sm text-tactical-400 mb-3">PEAK STRENGTH</h5><div class="flex items-end space-x-2"><span class="text-3xl font-black text-tactical-accent font-mono">STRONG</span></div><p class="text-xs text-tactical-500 mt-1">Possibly very strong (>2C NINO3.4)</p></div>
-<div class="bg-tactical-800 border border-tactical-700 rounded-lg p-4"><h5 class="font-mono text-sm text-tactical-400 mb-3">AFFECTED REGIONS</h5><div class="flex flex-wrap gap-2"><span class="text-xs bg-tactical-danger/20 text-tactical-danger px-2 py-1 rounded font-mono">PHILIPPINES</span><span class="text-xs bg-tactical-danger/20 text-tactical-danger px-2 py-1 rounded font-mono">CENTRAL AMERICA</span><span class="text-xs bg-tactical-warning/20 text-tactical-warning px-2 py-1 rounded font-mono">AUSTRALIA</span><span class="text-xs bg-tactical-warning/20 text-tactical-warning px-2 py-1 rounded font-mono">INDONESIA</span><span class="text-xs bg-tactical-info/20 text-tactical-info px-2 py-1 rounded font-mono">PERU</span><span class="text-xs bg-tactical-info/20 text-tactical-info px-2 py-1 rounded font-mono">SOUTHERN US</span></div></div>
-</div>
-</div>
-</div>
-</section>
+<!-- ==================== MODALS ==================== -->
 
-<!-- Desktop Alerts -->
-<section id="alerts" class="py-16 bg-tactical-850 grid-bg">
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-<div class="flex items-center space-x-3 mb-2"><i class="fas fa-bell text-tactical-danger text-2xl animate-pulse"></i><h3 class="text-2xl font-mono font-bold text-white">LIVE DISASTER ALERTS</h3></div>
-<p class="text-tactical-400 text-sm mb-8">Real-time seismic monitoring via USGS API. Simulated typhoon, volcanic, and tsunami feeds.</p>
-<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-<div class="bg-tactical-900 border border-tactical-danger/30 rounded-lg overflow-hidden">
-<div class="bg-tactical-danger/10 px-4 py-3 border-b border-tactical-danger/20 flex items-center justify-between"><div class="flex items-center space-x-2"><i class="fas fa-house-crack text-tactical-danger"></i><span class="font-mono text-sm text-tactical-danger font-bold">EARTHQUAKES (USGS)</span></div><span class="text-xs text-tactical-400 font-mono" id="eqStatus">CONNECTING...</span></div>
-<div class="p-4">
-<div class="flex gap-2 mb-4"><button onclick="setEqFilter('all')" class="eq-filter px-2 py-1 rounded text-xs font-mono bg-tactical-danger text-white" data-eq="all">ALL</button><button onclick="setEqFilter('4.5')" class="eq-filter px-2 py-1 rounded text-xs font-mono bg-tactical-800 text-tactical-400 hover:bg-tactical-700" data-eq="4.5">M4.5+</button><button onclick="setEqFilter('6.0')" class="eq-filter px-2 py-1 rounded text-xs font-mono bg-tactical-800 text-tactical-400 hover:bg-tactical-700" data-eq="6.0">M6.0+</button><button onclick="setEqFilter('7.0')" class="eq-filter px-2 py-1 rounded text-xs font-mono bg-tactical-800 text-tactical-400 hover:bg-tactical-700" data-eq="7.0">M7.0+</button></div>
-<div class="space-y-2 max-h-80 overflow-y-auto" id="earthquakeFeed"><div class="p-3 bg-tactical-800/50 rounded text-center"><p class="text-sm text-tactical-400 font-mono">Loading seismic data...</p></div></div>
-<div class="mt-3 text-xs text-tactical-500 font-mono text-center"><i class="fas fa-database mr-1"></i>USGS Earthquake Hazards Program</div>
+<!-- Avatar Modal -->
+<div class="android-modal" id="avatarModal">
+<div class="android-modal-sheet">
+<div class="android-modal-handle"></div>
+<div class="android-modal-title">PROFILE PHOTO</div>
+<p class="text-xs text-tactical-400 mb-4">Choose a photo. Stored locally, never uploaded.</p>
+<div class="space-y-3">
+<div class="file-input-wrapper" style="position:relative;overflow:hidden">
+<button class="android-btn android-btn-primary" style="margin-top:0"><i class="fas fa-camera"></i>TAKE PHOTO</button>
+<input type="file" accept="image/*" capture="camera" onchange="handleAvatar(event)" style="position:absolute;inset:0;opacity:0;cursor:pointer">
 </div>
+<div class="file-input-wrapper" style="position:relative;overflow:hidden">
+<button class="android-btn" style="margin-top:0;background:rgba(45,74,62,0.3);color:#5a9e7a"><i class="fas fa-images"></i>CHOOSE FROM GALLERY</button>
+<input type="file" accept="image/*" onchange="handleAvatar(event)" style="position:absolute;inset:0;opacity:0;cursor:pointer">
 </div>
-<div class="bg-tactical-900 border border-tactical-info/30 rounded-lg overflow-hidden">
-<div class="bg-tactical-info/10 px-4 py-3 border-b border-tactical-info/20 flex items-center justify-between"><div class="flex items-center space-x-2"><i class="fas fa-hurricane text-tactical-info"></i><span class="font-mono text-sm text-tactical-info font-bold">TYPHOONS / CYCLONES</span></div><span class="text-xs text-tactical-400 font-mono" id="typhoonStatus">LIVE</span></div>
-<div class="p-4">
-<div class="flex gap-2 mb-4"><button onclick="setTyphoonFilter('all')" class="ty-filter px-2 py-1 rounded text-xs font-mono bg-tactical-info text-white" data-ty="all">ALL</button><button onclick="setTyphoonFilter('active')" class="ty-filter px-2 py-1 rounded text-xs font-mono bg-tactical-800 text-tactical-400 hover:bg-tactical-700" data-ty="active">ACTIVE</button><button onclick="setTyphoonFilter('philippines')" class="ty-filter px-2 py-1 rounded text-xs font-mono bg-tactical-800 text-tactical-400 hover:bg-tactical-700" data-ty="philippines">PHILIPPINES</button></div>
-<div class="space-y-2 max-h-80 overflow-y-auto" id="typhoonFeed"></div>
-<div class="mt-3 text-xs text-tactical-500 font-mono text-center"><i class="fas fa-satellite mr-1"></i>JTWC / PAGASA / NHC Feeds</div>
-</div>
-</div>
-<div class="bg-tactical-900 border border-tactical-warning/30 rounded-lg overflow-hidden">
-<div class="bg-tactical-warning/10 px-4 py-3 border-b border-tactical-warning/20 flex items-center justify-between"><div class="flex items-center space-x-2"><i class="fas fa-volcano text-tactical-warning"></i><span class="font-mono text-sm text-tactical-warning font-bold">VOLCANO & TSUNAMI</span></div><span class="text-xs text-tactical-400 font-mono" id="volcanoStatus">LIVE</span></div>
-<div class="p-4">
-<div class="flex gap-2 mb-4"><button onclick="setVolcanoFilter('all')" class="vo-filter px-2 py-1 rounded text-xs font-mono bg-tactical-warning text-white" data-vo="all">ALL</button><button onclick="setVolcanoFilter('volcano')" class="vo-filter px-2 py-1 rounded text-xs font-mono bg-tactical-800 text-tactical-400 hover:bg-tactical-700" data-vo="volcano">VOLCANO</button><button onclick="setVolcanoFilter('tsunami')" class="vo-filter px-2 py-1 rounded text-xs font-mono bg-tactical-800 text-tactical-400 hover:bg-tactical-700" data-vo="tsunami">TSUNAMI</button></div>
-<div class="space-y-2 max-h-80 overflow-y-auto" id="volcanoFeed"></div>
-<div class="mt-3 text-xs text-tactical-500 font-mono text-center"><i class="fas fa-globe mr-1"></i>USGS / Smithsonian GVP / PTWC</div>
+<button onclick="closeModal('avatarModal')" class="android-btn" style="margin-top:0;background:rgba(45,74,62,0.2);color:#5a9e7a">CANCEL</button>
 </div>
 </div>
 </div>
-<div class="mt-8 bg-tactical-900 border border-tactical-700 rounded-lg p-6">
-<h4 class="font-mono font-bold text-white text-lg mb-4"><i class="fas fa-map-location-dot mr-2 text-tactical-accent"></i>GLOBAL THREAT MAP</h4>
-<div class="bg-tactical-800 rounded-lg p-4">
-<div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
-<div class="bg-tactical-900 rounded p-3 border border-tactical-danger/30"><div class="text-2xl font-black text-tactical-danger font-mono" id="eqCountToday">--</div><div class="text-xs text-tactical-400 font-mono">EARTHQUAKES TODAY</div></div>
-<div class="bg-tactical-900 rounded p-3 border border-tactical-info/30"><div class="text-2xl font-black text-tactical-info font-mono" id="typhoonCount">--</div><div class="text-xs text-tactical-400 font-mono">ACTIVE STORMS</div></div>
-<div class="bg-tactical-900 rounded p-3 border border-tactical-warning/30"><div class="text-2xl font-black text-tactical-warning font-mono" id="volcanoCount">--</div><div class="text-xs text-tactical-400 font-mono">VOLCANO ALERTS</div></div>
-<div class="bg-tactical-900 rounded p-3 border border-tactical-accent/30"><div class="text-2xl font-black text-tactical-accent font-mono" id="tsunamiCount">--</div><div class="text-xs text-tactical-400 font-mono">TSUNAMI WATCHES</div></div>
-</div>
-<p class="text-sm text-tactical-400 font-mono"><i class="fas fa-circle-info mr-2 text-tactical-500"></i>Data refreshed every 60 seconds. USGS earthquake API provides real global seismic data.</p>
-</div>
-</div>
-</div>
-</section>
 
-<!-- Desktop Footer -->
-<footer class="bg-tactical-900 border-t border-tactical-700 py-12">
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-<div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
-<div><h5 class="font-mono font-bold text-white mb-4">EL NINO COMMAND</h5><p class="text-sm text-tactical-400">Tactical preparedness intelligence for the 2026 Super El Nino event.</p></div>
-<div><h5 class="font-mono font-bold text-white mb-4">EMERGENCY CONTACTS</h5><ul class="space-y-2 text-sm text-tactical-400"><li><i class="fas fa-phone mr-2 text-tactical-500"></i>Local Emergency: 911</li><li><i class="fas fa-globe mr-2 text-tactical-500"></i>Red Cross: redcross.org</li><li><i class="fas fa-cloud mr-2 text-tactical-500"></i>WMO: wmo.int</li></ul></div>
-<div><h5 class="font-mono font-bold text-white mb-4">DISCLAIMER</h5><p class="text-xs text-tactical-500 leading-relaxed">This site is for preparedness planning only. Always follow official guidance from local authorities.</p></div>
+<!-- Add Item Modal -->
+<div class="android-modal" id="itemModal">
+<div class="android-modal-sheet">
+<div class="android-modal-handle"></div>
+<div class="android-modal-title" id="itemModalTitle">ADD ITEM</div>
+<div class="space-y-3">
+<div><label class="text-xs font-mono text-tactical-400">ITEM NAME *</label><input type="text" id="itemName" class="android-input mt-1" placeholder="e.g. LifeStraw"></div>
+<div class="grid grid-cols-2 gap-3">
+<div><label class="text-xs font-mono text-tactical-400">CATEGORY</label><select id="itemCategory" class="android-select mt-1"><option value="water">Water</option><option value="food">Food</option><option value="power">Power</option><option value="medical">Medical</option><option value="shelter">Shelter</option><option value="tools">Tools</option><option value="other">Other</option></select></div>
+<div><label class="text-xs font-mono text-tactical-400">QUANTITY</label><input type="number" id="itemQty" class="android-input mt-1" value="1" min="1"></div>
 </div>
-<div class="border-t border-tactical-800 pt-8 text-center"><p class="text-xs text-tactical-600 font-mono">OPERATION THERMAL SHIELD // 2026</p></div>
+<div><label class="text-xs font-mono text-tactical-400">PHOTO (Optional)</label>
+<div class="file-input-wrapper" style="position:relative;overflow:hidden">
+<button class="android-btn" style="margin-top:4px;background:rgba(45,74,62,0.2);color:#5a9e7a;font-size:12px;padding:10px"><i class="fas fa-camera mr-1"></i>ADD PHOTO</button>
+<input type="file" id="itemImageInput" accept="image/*" onchange="handleItemImage(event)" style="position:absolute;inset:0;opacity:0;cursor:pointer">
 </div>
-</footer>
+<div id="itemImagePreview" style="display:none;margin-top:8px"><img src="" style="width:100%;height:120px;object-fit:cover;border-radius:10px;border:1px solid rgba(45,74,62,0.4)"><button onclick="clearItemImage()" style="margin-top:4px;color:#ef4444;font-size:11px;background:none;border:none;font-family:'JetBrains Mono',monospace"><i class="fas fa-times mr-1"></i>Remove</button></div>
+</div>
+<div><label class="text-xs font-mono text-tactical-400">NOTES</label><textarea id="itemNotes" class="android-textarea mt-1" placeholder="Expiry, location, condition..."></textarea></div>
+<button onclick="saveItem()" class="android-btn android-btn-primary"><i class="fas fa-save"></i>SAVE ITEM</button>
+<button onclick="closeModal('itemModal')" class="android-btn" style="background:rgba(45,74,62,0.2);color:#5a9e7a">CANCEL</button>
+</div>
+</div>
+</div>
 
-</div><!-- end desktop-only -->
+<!-- Toast -->
+<div class="android-toast" id="toast"></div>
+
+<script>
+// ==================== APP DEFINITIONS ====================
+const apps = [
+    {id:'dashboard',name:'Dashboard',icon:'fa-gauge-high',color:'app-dashboard',badge:0},
+    {id:'threats',name:'Threats',icon:'fa-triangle-exclamation',color:'app-threats',badge:0},
+    {id:'classes',name:'Classes',icon:'fa-layer-group',color:'app-classes',badge:0},
+    {id:'checklist',name:'Checklist',icon:'fa-list-check',color:'app-checklist',badge:0},
+    {id:'profile',name:'Profile',icon:'fa-user',color:'app-profile',badge:0},
+    {id:'inventory',name:'Inventory',icon:'fa-boxes-stacked',color:'app-inventory',badge:0},
+    {id:'calculator',name:'Calculator',icon:'fa-calculator',color:'app-calculator',badge:0},
+    {id:'supplies',name:'Supplies',icon:'fa-box-open',color:'app-supplies',badge:0},
+    {id:'intel',name:'Intel',icon:'fa-satellite-dish',color:'app-intel',badge:0},
+    {id:'alerts',name:'Alerts',icon:'fa-bell',color:'app-alerts',badge:2},
+    {id:'offline',name:'Offline',icon:'fa-download',color:'app-offline',badge:0},
+    {id:'settings',name:'Settings',icon:'fa-gear',color:'app-settings',badge:0}
+];
+
+// ==================== RENDER HOME SCREEN ====================
+function renderHome() {
+    const grid = document.getElementById('appGrid');
+    grid.innerHTML = apps.map(app => `
+        <div class="android-app" onclick="openApp('${app.id}')">
+            <div class="android-app-icon ${app.color}">
+                <i class="fas ${app.icon}" style="color:#fff"></i>
+                ${app.badge > 0 ? `<span class="badge">${app.badge}</span>` : ''}
+            </div>
+            <div class="android-app-label">${app.name}</div>
+        </div>
+    `).join('');
+}
+
+// ==================== APP NAVIGATION ====================
+let currentApp = null;
+
+function openApp(appId) {
+    const screen = document.getElementById('app-' + appId);
+    if (!screen) return;
+
+    // Close any open app first
+    if (currentApp) {
+        closeApp();
+        setTimeout(() => {
+            screen.classList.add('active');
+            currentApp = appId;
+            loadAppContent(appId);
+        }, 50);
+        return;
+    }
+
+    screen.classList.add('active');
+    currentApp = appId;
+    loadAppContent(appId);
+}
+
+function closeApp() {
+    if (!currentApp) return;
+    const screen = document.getElementById('app-' + currentApp);
+    screen.classList.add('closing');
+    setTimeout(() => {
+        screen.classList.remove('active', 'closing');
+        currentApp = null;
+    }, 250);
+}
+
+function loadAppContent(appId) {
+    switch(appId) {
+        case 'threats': renderThreats(); break;
+        case 'classes': renderClasses(); break;
+        case 'checklist': renderChecklist(); break;
+        case 'supplies': renderSupplies(); break;
+        case 'intel': renderIntel(); break;
+        case 'alerts': renderAlerts(); break;
+        case 'inventory': renderInventory(); break;
+    }
+}
+
+// ==================== THREATS ====================
+const threats = [
+    {icon:'fa-sun',color:'#f59e0b',title:'SEVERE DROUGHT',level:'HIGH RISK',items:['Crop failure & food insecurity','Water rationing & reservoir depletion','Wildfire risk amplification']},
+    {icon:'fa-water',color:'#3b82f6',title:'CATASTROPHIC FLOODING',level:'HIGH RISK',items:['River overflow & flash floods','Mudslides & structural collapse','Waterborne disease outbreaks']},
+    {icon:'fa-temperature-arrow-up',color:'#ef4444',title:'EXTREME HEAT',level:'EXTREME',items:['Heatstroke & mortality spikes','Grid failure from AC overload','Livestock & crop heat stress']},
+    {icon:'fa-truck-medical',color:'#ff6b35',title:'SUPPLY CHAIN COLLAPSE',level:'SYSTEMIC',items:['Fertilizer scarcity','Fuel price spikes & transport halt','Export controls & rationing']},
+    {icon:'fa-hurricane',color:'#5a9e7a',title:'PACIFIC TYPHOONS',level:'MODERATE',items:['Intensified Pacific hurricanes','Storm surge & coastal flooding','Single landfall = devastation']},
+    {icon:'fa-virus',color:'#a855f7',title:'HEALTH CRISES',level:'ELEVATED',items:['Mosquito-borne disease spread','Respiratory issues from haze/smoke','Contaminated water diseases']}
+];
+
+function renderThreats() {
+    document.getElementById('threatsContent').innerHTML = threats.map(t => `
+        <div class="android-card" style="border-left:3px solid ${t.color}">
+            <div class="android-card-header">
+                <div class="android-card-icon" style="background:${t.color}20;color:${t.color}"><i class="fas ${t.icon}"></i></div>
+                <div>
+                    <div class="android-card-title">${t.title}</div>
+                    <span class="android-badge" style="background:${t.color}20;color:${t.color};margin-top:4px">${t.level}</span>
+                </div>
+            </div>
+            <ul style="margin:0;padding:0;list-style:none">
+                ${t.items.map(i => `<li style="font-size:12px;color:#5a9e7a;padding:4px 0;border-bottom:1px solid rgba(45,74,62,0.1)"><i class="fas fa-caret-right mr-2" style="color:${t.color}"></i>${i}</li>`).join('')}
+            </ul>
+        </div>
+    `).join('');
+}
+
+// ==================== CLASSES ====================
+const classes = {
+    budget: {name:'BUDGET SURVIVOR',income:'<$30k / P1.7M',cost:'$50-150 / P2,900-8,700',color:'#22c55e',
+        water:['2L soda bottles','Rain barrels from drums','Boiling + cloth filter','Community well mapping'],
+        food:['Rice & beans bulk','Dried fish / ikan bilis','Root crops: kamote, cassava','Foraging guides'],
+        power:['Hand-crank radio','Candles + matches','Car battery inverter','Solar bottle lights'],
+        shelter:['DIY sandbags','Plastic tarpaulins','Mosquito nets (DOH)','Raised platforms'],
+        medical:['Generic pharmacy meds','Herbal: lagundi, sambong','Barangay health center','Free vaccinations'],
+        evac:['Repurposed backpack','Foot routes memorized','Barangay assembly point','Relative network']},
+    citizen: {name:'TACTICAL CITIZEN',income:'$30-75k / P1.7-4.3M',cost:'$300-800 / P17,400-46,400',color:'#3b82f6',
+        water:['Aqua-Tainer 7-gal x4','LifeStraw Family filter','Rainwater catchment','Bleach purification'],
+        food:['30-day canned/dried stock','Propane stove + 4 tanks','Mylar + O2 absorbers','Sprouting jars'],
+        power:['2x 20,000mAh banks','20W solar panel','LED lantern set','Car inverter'],
+        shelter:['Commercial sandbags (50)','Portable sump pump','Pre-cut plywood','2x ABC extinguishers'],
+        medical:['Adventure Medical Kit 2.0','90-day prescriptions','Water purification tabs','N95 masks (20)'],
+        evac:['72hr bug-out bags','Roof rack cargo box','Physical maps + offline GPS','$300 cash stash']},
+    operator: {name:'OPERATOR CLASS',income:'$75-150k / P4.3-8.7M',cost:'$1,500-5,000 / P87,000-290,000',color:'#f59e0b',
+        water:['Berkey Big Berkey','500-gal cistern','UV SteriPen Ultra','Well pump + hand backup'],
+        food:['90-day freeze-dried','Home canning setup','Solar dehydrator','Hunting/fishing gear'],
+        power:['Jackery 1000 + solar','Honda EU2200i','Deep cycle battery bank','Whole-house surge'],
+        shelter:['Quick Dam barriers','Backup sump system','Storm shutters','Safe room'],
+        medical:['Tactical trauma kit','Antibiotics stock','Dental emergency kit','Pulse oximeter + BP cuff'],
+        evac:['4WD vehicle kit','Ham radio + Baofeng','Cache locations mapped','Secondary property']},
+    elite: {name:'COMMAND ELITE',income:'>$150k / P8.7M+',cost:'$10,000+ / P580,000+',color:'#ef4444',
+        water:['Whole-house harvesting','RO + UV + charcoal','Borehole solar pump','Pool conversion kit'],
+        food:['1-year+ professional storage','Aquaponics/hydroponics','Livestock: chickens, goats','Solar freezer'],
+        power:['Tesla Powerwall + 10kW','20kW diesel + 500gal','Auto transfer switch','Faraday cage'],
+        shelter:['Architectural flood-proofing','FEMA storm shelter','Fire suppression system','Perimeter security'],
+        medical:['24/7 telemedicine','Professional dental kit','AED defibrillator','EMT certification'],
+        evac:['Multiple properties','Prepared vehicle fleet','Air evacuation retainer','Offshore assets']}
+};
+
+let activeClass = 'budget';
+
+function renderClasses() {
+    const c = classes[activeClass];
+    const cats = ['water','food','power','shelter','medical','evac'];
+    const catIcons = {water:'fa-droplet',food:'fa-burger',power:'fa-bolt',shelter:'fa-house-crack',medical:'fa-kit-medical',evac:'fa-car'};
+
+    document.getElementById('classesContent').innerHTML = `
+        <div style="display:flex;gap:8px;overflow-x:auto;padding-bottom:12px;margin-bottom:8px;scrollbar-width:none">
+            ${Object.keys(classes).map(k => `
+                <button onclick="setClass('${k}')" class="android-badge" style="background:${k===activeClass?classes[k].color:'rgba(45,74,62,0.3)'};color:${k===activeClass?'#fff':'#5a9e7a'};white-space:nowrap;border:none;cursor:pointer;font-size:11px;padding:6px 12px">
+                    ${classes[k].name.split(' ')[0]}
+                </button>
+            `).join('')}
+        </div>
+        <div class="android-card" style="border-color:${c.color}40">
+            <div class="android-card-header">
+                <div class="android-card-icon" style="background:${c.color}20;color:${c.color}"><i class="fas fa-shield-halved"></i></div>
+                <div>
+                    <div class="android-card-title" style="color:${c.color}">${c.name}</div>
+                    <div class="android-card-sub">${c.income}</div>
+                </div>
+            </div>
+            <div class="android-badge" style="background:${c.color}20;color:${c.color};margin-bottom:12px">SETUP: ${c.cost}</div>
+            <div style="display:grid;gap:8px">
+                ${cats.map(cat => `
+                    <div style="background:rgba(45,74,62,0.15);border-radius:10px;padding:10px">
+                        <div style="font-size:11px;font-family:'JetBrains Mono',monospace;color:${c.color};margin-bottom:4px"><i class="fas ${catIcons[cat]} mr-1"></i>${cat.toUpperCase()}</div>
+                        ${c[cat].map(item => `<div style="font-size:12px;color:#e2e8f0;padding:2px 0"><span style="color:${c.color}">></span> ${item}</div>`).join('')}
+                    </div>
+                `).join('')}
+            </div>
+        </div>
+    `;
+}
+
+function setClass(cls) {
+    activeClass = cls;
+    renderClasses();
+}
+
+// ==================== CHECKLIST ====================
+const checklistItems = [
+    {cat:'WATER & FOOD',icon:'fa-droplet',color:'#3b82f6',items:['1 gallon water/person/day (14+ days)','Water purification tablets/filters','Rainwater harvesting barrels','30+ day non-perishable food supply','Manual can opener + camp stove','Electrolyte packets & ORS']},
+    {cat:'POWER & COMMS',icon:'fa-bolt',color:'#eab308',items:['Portable generator + fuel','Solar panels + power station','Hand-crank NOAA weather radio','Power banks + extra batteries','Two-way radios (walkie-talkies)','Faraday bag for electronics']},
+    {cat:'HOME FORTIFICATION',icon:'fa-house-crack',color:'#f97316',items:['Sandbags (50+), tarps, duct tape','Sump pump + battery backup','Gutter guards, roof inspected','Waterproof document safe','Fire-resistant landscaping','Window boards/shutters']},
+    {cat:'MEDICAL & HYGIENE',icon:'fa-kit-medical',color:'#ef4444',items:['Comprehensive first aid kit','90-day prescription supply','N95 masks, water purif. tabs','Mosquito nets, repellent','Hygiene: wipes, sanitizer, soap','Portable toilet / waste bags']},
+    {cat:'VEHICLE & EVAC',icon:'fa-car',color:'#9ca3af',items:['72hr bug-out bag per person','Full tank + 20gal spare fuel','Physical maps + evac routes','Emergency whistle, signal mirror','$500+ cash stash small bills','Firearms/self-defense (if legal)']}
+];
+
+let checklistState = {};
+
+function renderChecklist() {
+    const saved = localStorage.getItem('el_nino_checklist');
+    if (saved) checklistState = JSON.parse(saved);
+
+    document.getElementById('checklistContent').innerHTML = checklistItems.map((section, si) => `
+        <div class="android-card" style="margin-bottom:12px">
+            <div class="android-card-header">
+                <div class="android-card-icon" style="background:${section.color}20;color:${section.color}"><i class="fas ${section.icon}"></i></div>
+                <div class="android-card-title">${section.cat}</div>
+            </div>
+            ${section.items.map((item, ii) => {
+                const key = `${si}_${ii}`;
+                const checked = checklistState[key] || false;
+                return `
+                    <label class="android-check ${checked?'checked':''}" onclick="toggleCheck('${key}',this)">
+                        <input type="checkbox" ${checked?'checked':''} style="display:none">
+                        <span class="android-check-text ${checked?'checked':''}">${item}</span>
+                    </label>
+                `;
+            }).join('')}
+        </div>
+    `).join('');
+    updateChecklistStats();
+}
+
+function toggleCheck(key, el) {
+    const checkbox = el.querySelector('input');
+    checkbox.checked = !checkbox.checked;
+    checklistState[key] = checkbox.checked;
+    el.classList.toggle('checked', checkbox.checked);
+    el.querySelector('.android-check-text').classList.toggle('checked', checkbox.checked);
+    localStorage.setItem('el_nino_checklist', JSON.stringify(checklistState));
+    updateChecklistStats();
+}
+
+function updateChecklistStats() {
+    const total = Object.keys(checklistState).length;
+    const checked = Object.values(checklistState).filter(v => v).length;
+    const pct = total > 0 ? Math.round((checked / 25) * 100) : 0;
+    document.getElementById('checklistBadge').textContent = pct + '%';
+    document.getElementById('widgetReadiness').textContent = pct + '%';
+    document.getElementById('appReadinessSub').textContent = pct + '% complete';
+    document.getElementById('appReadinessBar').style.width = pct + '%';
+}
+
+// ==================== SUPPLIES ====================
+const supplyItems = [
+    {icon:'fa-bottle-water',color:'#ff6b35',title:'Water Storage',desc:'7-gal Aqua-Tainers, rain barrels',level:'CRITICAL'},
+    {icon:'fa-utensils',color:'#f59e0b',title:'Long-Term Food',desc:'Rice, beans, oats, honey, MREs',level:'CRITICAL'},
+    {icon:'fa-lightbulb',color:'#eab308',title:'Lighting',desc:'LED lanterns, headlamps, candles',level:'HIGH'},
+    {icon:'fa-temperature-low',color:'#3b82f6',title:'Climate Control',desc:'Battery fans, cooling towels, tarps',level:'HIGH'},
+    {icon:'fa-fire-extinguisher',color:'#ef4444',title:'Fire Safety',desc:'ABC extinguishers, blankets, detectors',level:'HIGH'},
+    {icon:'fa-shield-virus',color:'#a855f7',title:'PPE & Sanitation',desc:'N95s, gloves, bleach, toilet',level:'HIGH'},
+    {icon:'fa-seedling',color:'#22c55e',title:'Survival Seeds',desc:'Heirloom seeds, sprouting kits',level:'MEDIUM'},
+    {icon:'fa-toolbox',color:'#9ca3af',title:'Tools',desc:'Multi-tool, axe, shovel, rope',level:'MEDIUM'}
+];
+
+function renderSupplies() {
+    document.getElementById('suppliesContent').innerHTML = supplyItems.map(s => `
+        <div class="android-list-item">
+            <div class="android-list-icon" style="background:${s.color}20;color:${s.color}"><i class="fas ${s.icon}"></i></div>
+            <div class="android-list-content">
+                <div class="android-list-title">${s.title}</div>
+                <div class="android-list-desc">${s.desc}</div>
+            </div>
+            <span class="android-badge" style="background:${s.color}20;color:${s.color};flex-shrink:0">${s.level}</span>
+        </div>
+    `).join('');
+}
+
+// ==================== INTEL ====================
+const intelItems = [
+    {time:'06:42 UTC',color:'#ef4444',title:'WMO: 80% El Niño Probability',text:'Sea surface temps approaching threshold. Subsurface heat +6°C above average.'},
+    {time:'05:15 UTC',color:'#f59e0b',title:'IFRC: Action Protocols Activated',text:'Red Cross scaling preparedness in Central America and Caribbean.'},
+    {time:'03:30 UTC',color:'#ff6b35',title:'Philippines Updates Action Plan',text:'Agriculture, energy, health sectors on alert. Cash transfers authorized.'},
+    {time:'02:00 UTC',color:'#3b82f6',title:'ECMWF: Wetter Conditions Expected',text:'Southern US, Peru, Ecuador forecast above-average rainfall.'},
+    {time:'00:15 UTC',color:'#a855f7',title:'WEF: Systemic Shock Warning',text:'Rice supply chains at risk. Fuel/fertilizer shortages compound climate risk.'}
+];
+
+function renderIntel() {
+    document.getElementById('intelContent').innerHTML = intelItems.map(i => `
+        <div class="android-card" style="border-left:3px solid ${i.color};padding:12px 16px">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px">
+                <div>
+                    <div style="font-size:10px;color:#5a9e7a;font-family:'JetBrains Mono',monospace">${i.time}</div>
+                    <div style="font-size:14px;font-weight:700;color:#fff;margin-top:2px">${i.title}</div>
+                    <div style="font-size:12px;color:#5a9e7a;margin-top:4px">${i.text}</div>
+                </div>
+            </div>
+        </div>
+    `).join('');
+}
+
+// ==================== ALERTS (DISASTER) ====================
+let eqData = [];
+let typhoonData = [
+    {name:'Typhoon Chaba',cat:'Cat 3',wind:'185 km/h',loc:'Philippine Sea',status:'active',region:'philippines',color:'#f59e0b'},
+    {name:'Tropical Storm Aere',cat:'TS',wind:'85 km/h',loc:'South China Sea',status:'active',region:'china',color:'#3b82f6'},
+    {name:'Typhoon Songda',cat:'Cat 4',wind:'210 km/h',loc:'Western Pacific',status:'active',region:'pacific',color:'#ef4444'},
+    {name:'TD 07W',cat:'TD',wind:'55 km/h',loc:'East of Visayas',status:'active',region:'philippines',color:'#5a9e7a'},
+    {name:'Typhoon Meari',cat:'Cat 2',wind:'165 km/h',loc:'Sea of Japan',status:'dissipating',region:'japan',color:'#f59e0b'}
+];
+let volcanoData = [
+    {name:'Mayon Volcano',alert:'Alert Level 2',loc:'Philippines',type:'volcano',color:'#f59e0b'},
+    {name:'Taal Volcano',alert:'Alert Level 1',loc:'Philippines',type:'volcano',color:'#ff6b35'},
+    {name:'Mt. Pinatubo',alert:'Normal',loc:'Philippines',type:'volcano',color:'#5a9e7a'},
+    {name:'Pacific Tsunami',alert:'Advisory',loc:'Pacific Basin',type:'tsunami',color:'#3b82f6'},
+    {name:'Kilauea',alert:'Watch',loc:'Hawaii',type:'volcano',color:'#ef4444'}
+];
+
+async function fetchEarthquakes() {
+    try {
+        const res = await fetch('https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/4.5_hour.geojson');
+        const data = await res.json();
+        eqData = (data.features || []).slice(0, 8);
+    } catch(e) { console.log('EQ fetch failed'); }
+}
+
+function renderAlerts() {
+    const content = document.getElementById('alertsContent');
+
+    content.innerHTML = `
+        <div class="android-card" style="border-color:rgba(239,68,68,0.3)">
+            <div class="android-card-title" style="color:#ef4444;margin-bottom:8px"><i class="fas fa-house-crack mr-2"></i>EARTHQUAKES (USGS)</div>
+            ${eqData.length === 0 ? '<div style="font-size:12px;color:#5a9e7a">Loading seismic data...</div>' : eqData.map(eq => {
+                const m = eq.properties.mag;
+                let c = '#5a9e7a'; if(m>=7)c='#ef4444'; else if(m>=6)c='#f59e0b'; else if(m>=5)c='#ff6b35';
+                return `<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid rgba(45,74,62,0.2)">
+                    <div style="font-size:18px;font-weight:800;color:${c};font-family:'JetBrains Mono',monospace;min-width:45px">${m.toFixed(1)}</div>
+                    <div style="flex:1;min-width:0">
+                        <div style="font-size:12px;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${eq.properties.place}</div>
+                        <div style="font-size:10px;color:#5a9e7a">${new Date(eq.properties.time).toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit',hour12:false})} UTC | ${eq.properties.depth.toFixed(1)}km</div>
+                    </div>
+                    ${eq.properties.tsunami ? '<span class="android-badge" style="background:#ef444420;color:#ef4444;flex-shrink:0">TSUNAMI</span>' : ''}
+                </div>`;
+            }).join('')}
+        </div>
+
+        <div class="android-card" style="border-color:rgba(59,130,246,0.3)">
+            <div class="android-card-title" style="color:#3b82f6;margin-bottom:8px"><i class="fas fa-hurricane mr-2"></i>TYPHOONS / CYCLONES</div>
+            ${typhoonData.filter(t => t.status === 'active').map(t => `
+                <div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid rgba(45,74,62,0.2)">
+                    <div class="android-list-icon" style="background:${t.color}20;color:${t.color};width:32px;height:32px;font-size:14px"><i class="fas fa-hurricane"></i></div>
+                    <div style="flex:1;min-width:0">
+                        <div style="font-size:12px;color:#fff;font-weight:600">${t.name}</div>
+                        <div style="font-size:10px;color:#5a9e7a">${t.cat} | ${t.wind} | ${t.loc}</div>
+                    </div>
+                    ${t.region === 'philippines' ? '<span class="android-badge" style="background:#ef444420;color:#ef4444;flex-shrink:0">PH</span>' : ''}
+                </div>
+            `).join('')}
+        </div>
+
+        <div class="android-card" style="border-color:rgba(245,158,11,0.3)">
+            <div class="android-card-title" style="color:#f59e0b;margin-bottom:8px"><i class="fas fa-volcano mr-2"></i>VOLCANO & TSUNAMI</div>
+            ${volcanoData.map(v => `
+                <div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid rgba(45,74,62,0.2)">
+                    <div class="android-list-icon" style="background:${v.color}20;color:${v.color};width:32px;height:32px;font-size:14px"><i class="fas ${v.type==='volcano'?'fa-volcano':'fa-water'}"></i></div>
+                    <div style="flex:1;min-width:0">
+                        <div style="font-size:12px;color:#fff;font-weight:600">${v.name}</div>
+                        <div style="font-size:10px;color:#5a9e7a">${v.loc} | ${v.alert}</div>
+                    </div>
+                </div>
+            `).join('')}
+        </div>
+
+        <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px">
+            <div class="android-card" style="text-align:center;padding:12px">
+                <div style="font-size:24px;font-weight:800;color:#ef4444;font-family:'JetBrains Mono',monospace">${eqData.length}</div>
+                <div style="font-size:10px;color:#5a9e7a">QUAKES (M4.5+)</div>
+            </div>
+            <div class="android-card" style="text-align:center;padding:12px">
+                <div style="font-size:24px;font-weight:800;color:#3b82f6;font-family:'JetBrains Mono',monospace">${typhoonData.filter(t=>t.status==='active').length}</div>
+                <div style="font-size:10px;color:#5a9e7a">ACTIVE STORMS</div>
+            </div>
+            <div class="android-card" style="text-align:center;padding:12px">
+                <div style="font-size:24px;font-weight:800;color:#f59e0b;font-family:'JetBrains Mono',monospace">${volcanoData.filter(v=>v.alert!=='Normal').length}</div>
+                <div style="font-size:10px;color:#5a9e7a">VOLCANO ALERTS</div>
+            </div>
+            <div class="android-card" style="text-align:center;padding:12px">
+                <div style="font-size:24px;font-weight:800;color:#ff6b35;font-family:'JetBrains Mono',monospace">1</div>
+                <div style="font-size:10px;color:#5a9e7a">TSUNAMI WATCH</div>
+            </div>
+        </div>
+    `;
+}
+
+// ==================== INVENTORY ====================
+let inventory = [];
+let invFilter = 'all';
+let tempItemImage = null;
+let editingItemId = null;
+
+function loadInventory() {
+    inventory = JSON.parse(localStorage.getItem('el_nino_inventory') || '[]');
+    renderInventory();
+}
+
+function renderInventory() {
+    const grid = document.getElementById('inventoryGrid');
+    const filtered = invFilter === 'all' ? inventory : inventory.filter(i => i.category === invFilter);
+
+    grid.innerHTML = filtered.map(item => `
+        <div class="inv-slot filled" onclick="editItem('${item.id}')">
+            ${item.image ? `<img src="${item.image}" class="inv-slot-img">` : `<i class="fas fa-box inv-slot-icon"></i>`}
+            <div class="inv-slot-name">${item.name}</div>
+            <div class="inv-slot-qty">x${item.qty}</div>
+            <button class="inv-slot-del" onclick="event.stopPropagation();deleteItem('${item.id}')">×</button>
+        </div>
+    `).join('');
+
+    document.getElementById('inventoryBadge').textContent = inventory.length;
+}
+
+function filterInventory(cat) {
+    invFilter = cat;
+    document.querySelectorAll('.inv-filter').forEach(b => {
+        b.style.background = b.dataset.f === cat ? '#3d6b54' : 'rgba(45,74,62,0.3)';
+        b.style.color = b.dataset.f === cat ? '#fff' : '#5a9e7a';
+    });
+    renderInventory();
+}
+
+function openAddItemModal() {
+    editingItemId = null;
+    tempItemImage = null;
+    document.getElementById('itemModalTitle').textContent = 'ADD ITEM';
+    document.getElementById('itemName').value = '';
+    document.getElementById('itemCategory').value = 'water';
+    document.getElementById('itemQty').value = '1';
+    document.getElementById('itemNotes').value = '';
+    document.getElementById('itemImagePreview').style.display = 'none';
+    document.getElementById('itemImageInput').value = '';
+    openModal('itemModal');
+}
+
+function editItem(id) {
+    const item = inventory.find(i => i.id === id);
+    if (!item) return;
+    editingItemId = id;
+    tempItemImage = item.image || null;
+    document.getElementById('itemModalTitle').textContent = 'EDIT ITEM';
+    document.getElementById('itemName').value = item.name;
+    document.getElementById('itemCategory').value = item.category;
+    document.getElementById('itemQty').value = item.qty;
+    document.getElementById('itemNotes').value = item.notes || '';
+    if (item.image) {
+        document.getElementById('itemImagePreview').querySelector('img').src = item.image;
+        document.getElementById('itemImagePreview').style.display = 'block';
+    } else {
+        document.getElementById('itemImagePreview').style.display = 'none';
+    }
+    openModal('itemModal');
+}
+
+function saveItem() {
+    const name = document.getElementById('itemName').value.trim();
+    if (!name) { showToast('Name required', true); return; }
+
+    const item = {
+        id: editingItemId || 'item_' + Date.now(),
+        name,
+        category: document.getElementById('itemCategory').value,
+        qty: parseInt(document.getElementById('itemQty').value) || 1,
+        notes: document.getElementById('itemNotes').value.trim(),
+        image: tempItemImage || ''
+    };
+
+    if (editingItemId) {
+        const idx = inventory.findIndex(i => i.id === editingItemId);
+        if (idx !== -1) inventory[idx] = item;
+    } else {
+        inventory.push(item);
+    }
+
+    localStorage.setItem('el_nino_inventory', JSON.stringify(inventory));
+    renderInventory();
+    closeModal('itemModal');
+    showToast(editingItemId ? 'Item updated' : 'Item added');
+}
+
+function deleteItem(id) {
+    if (!confirm('Delete this item?')) return;
+    inventory = inventory.filter(i => i.id !== id);
+    localStorage.setItem('el_nino_inventory', JSON.stringify(inventory));
+    renderInventory();
+    showToast('Item deleted');
+}
+
+function handleItemImage(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    if (file.size > 1024 * 1024) { showToast('Max 1MB', true); return; }
+    const reader = new FileReader();
+    reader.onload = ev => {
+        tempItemImage = ev.target.result;
+        document.getElementById('itemImagePreview').querySelector('img').src = tempItemImage;
+        document.getElementById('itemImagePreview').style.display = 'block';
+    };
+    reader.readAsDataURL(file);
+}
+
+function clearItemImage() {
+    tempItemImage = null;
+    document.getElementById('itemImagePreview').style.display = 'none';
+    document.getElementById('itemImageInput').value = '';
+}
+
+function exportInventory() {
+    if (inventory.length === 0) { showToast('Inventory empty', true); return; }
+    const data = {profile: JSON.parse(localStorage.getItem('el_nino_profile')||'{}'), inventory, exported: new Date().toISOString()};
+    const blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = 'el_nino_data_' + new Date().toISOString().split('T')[0] + '.json';
+    a.click(); URL.revokeObjectURL(url);
+    showToast('Data exported');
+}
+
+// ==================== PROFILE ====================
+function loadProfile() {
+    const p = JSON.parse(localStorage.getItem('el_nino_profile') || '{}');
+    if (p.name) document.getElementById('profileName').value = p.name;
+    if (p.class) document.getElementById('profileClass').value = p.class;
+    if (p.household) document.getElementById('profileHousehold').value = p.household;
+    if (p.location) document.getElementById('profileLocation').value = p.location;
+    if (p.blood) document.getElementById('profileBlood').value = p.blood;
+    if (p.emergency) document.getElementById('profileEmergency').value = p.emergency;
+    if (p.notes) document.getElementById('profileNotes').value = p.notes;
+    const avatar = localStorage.getItem('el_nino_avatar');
+    if (avatar) {
+        document.getElementById('avatarImg').src = avatar;
+        document.getElementById('avatarImg').style.display = 'block';
+        document.getElementById('avatarIcon').style.display = 'none';
+    }
+}
+
+function saveProfile() {
+    const p = {
+        name: document.getElementById('profileName').value,
+        class: document.getElementById('profileClass').value,
+        household: document.getElementById('profileHousehold').value,
+        location: document.getElementById('profileLocation').value,
+        blood: document.getElementById('profileBlood').value,
+        emergency: document.getElementById('profileEmergency').value,
+        notes: document.getElementById('profileNotes').value
+    };
+    localStorage.setItem('el_nino_profile', JSON.stringify(p));
+    showToast('Profile saved');
+}
+
+function clearProfile() {
+    if (!confirm('Clear profile?')) return;
+    localStorage.removeItem('el_nino_profile');
+    localStorage.removeItem('el_nino_avatar');
+    document.getElementById('profileName').value = '';
+    document.getElementById('profileClass').value = '';
+    document.getElementById('profileHousehold').value = '1';
+    document.getElementById('profileLocation').value = '';
+    document.getElementById('profileBlood').value = '';
+    document.getElementById('profileEmergency').value = '';
+    document.getElementById('profileNotes').value = '';
+    document.getElementById('avatarImg').src = '';
+    document.getElementById('avatarImg').style.display = 'none';
+    document.getElementById('avatarIcon').style.display = 'block';
+    showToast('Profile cleared');
+}
+
+function handleAvatar(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    if (file.size > 2 * 1024 * 1024) { showToast('Max 2MB', true); return; }
+    const reader = new FileReader();
+    reader.onload = ev => {
+        localStorage.setItem('el_nino_avatar', ev.target.result);
+        document.getElementById('avatarImg').src = ev.target.result;
+        document.getElementById('avatarImg').style.display = 'block';
+        document.getElementById('avatarIcon').style.display = 'none';
+        saveProfile();
+        closeModal('avatarModal');
+        showToast('Photo saved');
+    };
+    reader.readAsDataURL(file);
+}
+
+// ==================== CALCULATOR ====================
+function calcSupplies() {
+    const adults = parseInt(document.getElementById('calcAdults').value) || 0;
+    const children = parseInt(document.getElementById('calcChildren').value) || 0;
+    const days = parseInt(document.getElementById('calcDays').value) || 1;
+    const total = adults + children;
+    document.getElementById('calcWater').textContent = (total * days) + ' gal';
+    document.getElementById('calcFood').textContent = (((adults * 2000) + (children * 1400)) * days).toLocaleString() + ' cal';
+    document.getElementById('calcMed').textContent = Math.ceil(total / 4);
+    document.getElementById('calcBattery').textContent = Math.ceil(total * (days / 14));
+}
+
+// ==================== MODAL HELPERS ====================
+function openModal(id) { document.getElementById(id).classList.add('active'); }
+function closeModal(id) { document.getElementById(id).classList.remove('active'); }
+function openAvatarModal() { openModal('avatarModal'); }
+
+// ==================== TOAST ====================
+function showToast(msg, err) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.className = 'android-toast' + (err ? ' error' : '');
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// ==================== OFFLINE DOWNLOAD ====================
+function downloadOffline() {
+    const html = document.documentElement.outerHTML;
+    const blob = new Blob([html], {type:'text/html'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = 'el_nino_command_offline.html';
+    a.click(); URL.revokeObjectURL(url);
+    showToast('Offline file downloaded!');
+}
+
+function clearAllData() {
+    if (!confirm('DELETE EVERYTHING? Profile, inventory, checklist - all gone.')) return;
+    localStorage.clear();
+    inventory = [];
+    checklistState = {};
+    showToast('All data wiped');
+    setTimeout(() => location.reload(), 500);
+}
+
+// ==================== CLOCK ====================
+function updateClock() {
+    const now = new Date();
+    const h = String(now.getHours()).padStart(2,'0');
+    const m = String(now.getMinutes()).padStart(2,'0');
+    document.getElementById('androidClock').textContent = h + ':' + m;
+    document.getElementById('androidStatusTime').textContent = h + ':' + m;
+    const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+    const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+    document.getElementById('androidDate').textContent = days[now.getDay()] + ', ' + months[now.getMonth()] + ' ' + now.getDate();
+}
+
+// ==================== INIT ====================
+document.addEventListener('DOMContentLoaded', () => {
+    renderHome();
+    loadProfile();
+    loadInventory();
+    updateClock();
+    setInterval(updateClock, 1000);
+    fetchEarthquakes();
+    setInterval(fetchEarthquakes, 60000);
+
+    // Swipe to close apps
+    let touchStartY = 0;
+    document.querySelectorAll('.app-screen').forEach(screen => {
+        screen.addEventListener('touchstart', e => { touchStartY = e.touches[0].clientY; });
+        screen.addEventListener('touchend', e => {
+            const diff = e.changedTouches[0].clientY - touchStartY;
+            if (diff > 100) closeApp();
+        });
+    });
+
+    // Close modals on backdrop tap
+    document.querySelectorAll('.android-modal').forEach(m => {
+        m.addEventListener('click', e => { if (e.target === m) closeModal(m.id); });
+    });
+});
+</script>
+</body>
+</html>
