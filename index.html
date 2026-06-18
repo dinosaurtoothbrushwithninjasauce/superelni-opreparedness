@@ -3,284 +3,1747 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SHIELD | Super El Niño Preparedness</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <meta name="description" content="Super El Niño Preparedness Hub - Complete disaster preparedness guides, real-time alerts, and emergency resources">
+    <meta name="theme-color" content="#1a365d">
+    <title>Super El Niño Preparedness Hub</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
-        .header-font { font-family: 'Press Start 2P', system-ui; }
-        .hero-bg {
-            background: linear-gradient(rgba(10,20,40,0.85), rgba(10,20,40,0.95)), url('https://picsum.photos/id/1015/2000/1200') center/cover;
+        :root {
+            --primary: #1a365d; --primary-light: #2c5282; --secondary: #c53030;
+            --accent: #d69e2e; --success: #276749; --info: #2b6cb0;
+            --warning: #c05621; --danger: #c53030; --bg: #f7fafc;
+            --card-bg: #ffffff; --text: #1a202c; --text-light: #4a5568;
+            --border: #e2e8f0;
+            --shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+            --shadow-lg: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04);
+            --radius: 12px; --radius-sm: 8px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        .card-hover:hover { transform: translateY(-8px); box-shadow: 0 25px 50px -12px rgb(245 158 11 / 0.4); }
+        [data-theme="dark"] {
+            --bg: #0d1117; --card-bg: #161b22; --text: #e2e8f0;
+            --text-light: #a0aec0; --border: #30363d;
+            --primary: #63b3ed; --primary-light: #4299e1;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: var(--bg); color: var(--text); line-height: 1.6; transition: var(--transition);
+        }
+        .top-bar {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white; padding: 8px 16px; font-size: 0.85rem;
+            display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;
+        }
+        .top-bar span { display: flex; align-items: center; gap: 6px; }
+        .top-bar .hotline { font-weight: 700; color: #fbd38d; }
+        nav {
+            background: var(--card-bg); box-shadow: var(--shadow);
+            position: sticky; top: 0; z-index: 1000; transition: var(--transition);
+        }
+        .nav-container {
+            max-width: 1200px; margin: 0 auto; padding: 0 20px;
+            display: flex; justify-content: space-between; align-items: center; height: 64px;
+        }
+        .logo {
+            font-size: 1.25rem; font-weight: 800; color: var(--primary);
+            display: flex; align-items: center; gap: 8px; text-decoration: none;
+        }
+        .logo svg { width: 32px; height: 32px; }
+        .nav-links {
+            display: flex; gap: 8px; align-items: center; list-style: none;
+        }
+        .nav-links a {
+            text-decoration: none; color: var(--text-light); font-weight: 600; font-size: 0.9rem;
+            padding: 8px 14px; border-radius: var(--radius-sm); transition: var(--transition);
+            display: flex; align-items: center; gap: 6px;
+        }
+        .nav-links a:hover, .nav-links a.active { background: var(--primary); color: white; }
+        .nav-actions { display: flex; gap: 8px; align-items: center; }
+        .btn {
+            display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+            padding: 10px 20px; border-radius: var(--radius-sm); font-weight: 600; font-size: 0.9rem;
+            cursor: pointer; border: none; transition: var(--transition); text-decoration: none;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--secondary) 0%, #9b2c2c 100%);
+            color: white; box-shadow: 0 4px 14px rgba(197, 48, 48, 0.4);
+        }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(197, 48, 48, 0.5); }
+        .btn-secondary { background: var(--card-bg); color: var(--text); border: 2px solid var(--border); }
+        .btn-secondary:hover { background: var(--bg); }
+        .btn-sm { padding: 6px 14px; font-size: 0.8rem; }
+        .theme-toggle {
+            width: 40px; height: 40px; border-radius: 50%; background: var(--bg);
+            border: 2px solid var(--border); cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.1rem; transition: var(--transition);
+        }
+        .theme-toggle:hover { background: var(--border); }
+        .mobile-menu-btn {
+            display: none; background: none; border: none;
+            font-size: 1.5rem; cursor: pointer; color: var(--text);
+        }
+        .hero {
+            background: linear-gradient(135deg, var(--primary) 0%, #0d1b2a 100%);
+            color: white; padding: 80px 20px; text-align: center;
+            position: relative; overflow: hidden;
+        }
+        .hero::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            opacity: 0.5;
+        }
+        .hero-content { position: relative; z-index: 1; max-width: 800px; margin: 0 auto; }
+        .hero h1 { font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 800; margin-bottom: 16px; line-height: 1.1; }
+        .hero h1 span { color: var(--accent); }
+        .hero p { font-size: 1.15rem; opacity: 0.9; margin-bottom: 32px; max-width: 600px; margin-left: auto; margin-right: auto; }
+        .hero-badges { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-bottom: 32px; }
+        .badge {
+            background: rgba(255,255,255,0.15); backdrop-filter: blur(10px);
+            padding: 8px 16px; border-radius: 100px; font-size: 0.85rem; font-weight: 600;
+            display: flex; align-items: center; gap: 6px; border: 1px solid rgba(255,255,255,0.2);
+        }
+        .hero-actions { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+        .hero-actions .btn { padding: 14px 32px; font-size: 1rem; }
+        .hero-actions .btn-secondary { background: rgba(255,255,255,0.1); color: white; border: 2px solid rgba(255,255,255,0.3); }
+        .hero-actions .btn-secondary:hover { background: rgba(255,255,255,0.2); }
+        .enso-bar { background: var(--card-bg); border-bottom: 1px solid var(--border); padding: 16px 20px; }
+        .enso-container { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; gap: 24px; flex-wrap: wrap; }
+        .enso-label { font-weight: 700; color: var(--text-light); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px; }
+        .enso-status { display: flex; align-items: center; gap: 12px; flex: 1; min-width: 280px; }
+        .enso-indicator { width: 16px; height: 16px; border-radius: 50%; background: var(--danger); box-shadow: 0 0 0 4px rgba(197, 48, 48, 0.2); animation: pulse 2s infinite; }
+        @keyframes pulse { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.2); opacity: 0.7; } }
+        .enso-text { font-weight: 700; color: var(--danger); }
+        .enso-levels { display: flex; gap: 4px; flex: 1; }
+        .level { flex: 1; height: 8px; border-radius: 4px; background: var(--border); position: relative; transition: var(--transition); }
+        .level.active { background: var(--danger); }
+        .level-labels { display: flex; justify-content: space-between; width: 100%; font-size: 0.7rem; color: var(--text-light); margin-top: 4px; }
+        .enso-date { font-size: 0.85rem; color: var(--text-light); }
+        .section { max-width: 1200px; margin: 0 auto; padding: 60px 20px; }
+        .section-header { text-align: center; margin-bottom: 48px; }
+        .section-header h2 { font-size: clamp(1.5rem, 3vw, 2.25rem); font-weight: 800; color: var(--primary); margin-bottom: 12px; }
+        .section-header p { color: var(--text-light); font-size: 1.1rem; max-width: 600px; margin: 0 auto; }
+        .disaster-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 24px; }
+        .disaster-card {
+            background: var(--card-bg); border-radius: var(--radius); box-shadow: var(--shadow);
+            overflow: hidden; transition: var(--transition); border: 1px solid var(--border); cursor: pointer;
+        }
+        .disaster-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+        .disaster-card-header { padding: 24px; display: flex; align-items: flex-start; gap: 16px; }
+        .disaster-icon { width: 56px; height: 56px; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; font-size: 1.75rem; flex-shrink: 0; }
+        .disaster-icon.drought { background: #fef3c7; } .disaster-icon.flood { background: #dbeafe; }
+        .disaster-icon.landslide { background: #fde8e8; } .disaster-icon.heat { background: #fed7aa; }
+        .disaster-icon.fire { background: #fee2e2; } .disaster-icon.agri { background: #d1fae5; }
+        .disaster-icon.disease { background: #e0e7ff; } .disaster-icon.power { background: #f3e8ff; }
+        .disaster-icon.econ { background: #ecfdf5; }
+        .disaster-card h3 { font-size: 1.15rem; font-weight: 700; margin-bottom: 4px; }
+        .disaster-card .risk-level { display: inline-block; padding: 2px 10px; border-radius: 100px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; }
+        .risk-high { background: #fed7d7; color: #c53030; } .risk-medium { background: #feebc8; color: #c05621; }
+        .risk-extreme { background: #fed7d7; color: #742a2a; border: 1px solid #fc8181; }
+        .disaster-card-body { padding: 0 24px 24px; }
+        .disaster-card-body p { color: var(--text-light); font-size: 0.9rem; margin-bottom: 16px; }
+        .quick-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+        .quick-actions .btn { padding: 6px 14px; font-size: 0.8rem; }
+        .disaster-card-footer { padding: 16px 24px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+        .checklist-progress { font-size: 0.85rem; color: var(--text-light); }
+        .checklist-progress span { font-weight: 700; color: var(--success); }
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); z-index: 2000;
+            display: none; align-items: center; justify-content: center; padding: 20px;
+            opacity: 0; transition: opacity 0.3s ease;
+        }
+        .modal-overlay.active { display: flex; opacity: 1; }
+        .modal {
+            background: var(--card-bg); border-radius: var(--radius); max-width: 800px;
+            width: 100%; max-height: 90vh; overflow-y: auto; box-shadow: var(--shadow-lg);
+            transform: scale(0.95); transition: transform 0.3s ease;
+        }
+        .modal-overlay.active .modal { transform: scale(1); }
+        .modal-header {
+            padding: 24px; border-bottom: 1px solid var(--border);
+            display: flex; justify-content: space-between; align-items: center;
+            position: sticky; top: 0; background: var(--card-bg); z-index: 10;
+        }
+        .modal-header h3 { font-size: 1.35rem; font-weight: 700; display: flex; align-items: center; gap: 12px; }
+        .modal-close { width: 36px; height: 36px; border-radius: 50%; border: none; background: var(--bg); cursor: pointer; font-size: 1.25rem; display: flex; align-items: center; justify-content: center; transition: var(--transition); }
+        .modal-close:hover { background: var(--border); }
+        .modal-body { padding: 24px; }
+        .phase-tabs { display: flex; gap: 4px; margin-bottom: 24px; background: var(--bg); padding: 4px; border-radius: var(--radius-sm); }
+        .phase-tab { flex: 1; padding: 10px; border: none; background: transparent; border-radius: var(--radius-sm); font-weight: 600; font-size: 0.9rem; cursor: pointer; transition: var(--transition); color: var(--text-light); }
+        .phase-tab.active { background: var(--card-bg); color: var(--primary); box-shadow: var(--shadow); }
+        .phase-content { display: none; } .phase-content.active { display: block; }
+        .checklist-item { display: flex; align-items: flex-start; gap: 12px; padding: 12px; border-radius: var(--radius-sm); transition: var(--transition); cursor: pointer; }
+        .checklist-item:hover { background: var(--bg); }
+        .checklist-item input[type="checkbox"] { width: 20px; height: 20px; margin-top: 2px; accent-color: var(--primary); cursor: pointer; }
+        .checklist-item label { flex: 1; cursor: pointer; font-size: 0.95rem; }
+        .checklist-item.checked label { text-decoration: line-through; opacity: 0.6; }
+        .modal-footer { padding: 16px 24px; border-top: 1px solid var(--border); display: flex; gap: 12px; justify-content: flex-end; position: sticky; bottom: 0; background: var(--card-bg); }
+        .guides-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
+        .guide-card { background: var(--card-bg); border-radius: var(--radius); border: 2px solid var(--border); padding: 28px; transition: var(--transition); position: relative; overflow: hidden; }
+        .guide-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, var(--primary), var(--accent)); }
+        .guide-card:hover { border-color: var(--primary); transform: translateY(-2px); box-shadow: var(--shadow-lg); }
+        .guide-icon { width: 48px; height: 48px; border-radius: var(--radius-sm); background: var(--bg); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin-bottom: 16px; }
+        .guide-card h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 8px; }
+        .guide-card p { font-size: 0.9rem; color: var(--text-light); margin-bottom: 20px; }
+        .guide-meta { display: flex; gap: 12px; font-size: 0.8rem; color: var(--text-light); margin-bottom: 16px; }
+        .guide-meta span { display: flex; align-items: center; gap: 4px; }
+        .plan-builder { background: var(--card-bg); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; }
+        .plan-steps { display: flex; background: var(--bg); border-bottom: 1px solid var(--border); }
+        .plan-step { flex: 1; padding: 16px; text-align: center; font-weight: 600; font-size: 0.9rem; color: var(--text-light); position: relative; cursor: pointer; transition: var(--transition); }
+        .plan-step.active { color: var(--primary); background: var(--card-bg); }
+        .plan-step.completed { color: var(--success); }
+        .plan-step-num { display: inline-flex; width: 28px; height: 28px; border-radius: 50%; background: var(--border); color: var(--text-light); align-items: center; justify-content: center; font-size: 0.8rem; margin-right: 8px; font-weight: 700; }
+        .plan-step.active .plan-step-num { background: var(--primary); color: white; }
+        .plan-step.completed .plan-step-num { background: var(--success); color: white; }
+        .plan-content { padding: 32px; display: none; } .plan-content.active { display: block; }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; font-weight: 600; margin-bottom: 8px; font-size: 0.9rem; }
+        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 12px 16px; border: 2px solid var(--border); border-radius: var(--radius-sm); font-size: 1rem; background: var(--bg); color: var(--text); transition: var(--transition); }
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: none; border-color: var(--primary); }
+        .checkbox-group { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; }
+        .checkbox-option { display: flex; align-items: center; gap: 10px; padding: 12px; border: 2px solid var(--border); border-radius: var(--radius-sm); cursor: pointer; transition: var(--transition); }
+        .checkbox-option:hover { border-color: var(--primary); }
+        .checkbox-option input { width: 18px; height: 18px; accent-color: var(--primary); }
+        .checkbox-option.selected { border-color: var(--primary); background: rgba(26, 54, 93, 0.05); }
+        .plan-result { background: var(--bg); border-radius: var(--radius-sm); padding: 24px; margin-top: 24px; }
+        .plan-result h4 { font-size: 1.1rem; margin-bottom: 16px; color: var(--primary); }
+        .plan-result ul { list-style: none; }
+        .plan-result li { padding: 8px 0; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 8px; }
+        .plan-result li::before { content: '✓'; color: var(--success); font-weight: 700; }
+        .myth-fact-grid { display: grid; gap: 16px; }
+        .myth-fact-item { background: var(--card-bg); border-radius: var(--radius); border: 1px solid var(--border); overflow: hidden; }
+        .myth-fact-header { padding: 20px 24px; display: flex; align-items: center; gap: 16px; cursor: pointer; transition: var(--transition); }
+        .myth-fact-header:hover { background: var(--bg); }
+        .myth-fact-header .icon { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; }
+        .icon-myth { background: #fed7d7; } .icon-fact { background: #c6f6d5; }
+        .myth-fact-header h4 { font-size: 1rem; font-weight: 600; }
+        .myth-fact-body { padding: 0 24px 20px 80px; display: none; }
+        .myth-fact-item.open .myth-fact-body { display: block; } .myth-fact-item.open { border-color: var(--primary); }
+        .resources-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; }
+        .resource-card { background: var(--card-bg); border-radius: var(--radius); padding: 24px; border: 1px solid var(--border); transition: var(--transition); }
+        .resource-card:hover { box-shadow: var(--shadow); border-color: var(--primary); }
+        .resource-card h4 { font-size: 1rem; font-weight: 700; margin-bottom: 8px; color: var(--primary); }
+        .resource-card p { font-size: 0.9rem; color: var(--text-light); margin-bottom: 12px; }
+        .resource-card a { color: var(--primary); text-decoration: none; font-weight: 600; font-size: 0.9rem; display: flex; align-items: center; gap: 4px; }
+        .resource-card a:hover { text-decoration: underline; }
+        footer { background: var(--primary); color: white; padding: 48px 20px 24px; }
+        .footer-grid { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 32px; margin-bottom: 32px; }
+        .footer-col h4 { font-size: 1rem; font-weight: 700; margin-bottom: 16px; color: var(--accent); }
+        .footer-col ul { list-style: none; } .footer-col li { margin-bottom: 8px; }
+        .footer-col a { color: rgba(255,255,255,0.8); text-decoration: none; font-size: 0.9rem; transition: var(--transition); }
+        .footer-col a:hover { color: white; }
+        .footer-bottom { max-width: 1200px; margin: 0 auto; padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.1); text-align: center; font-size: 0.85rem; color: rgba(255,255,255,0.6); }
+        .toast-container { position: fixed; bottom: 24px; right: 24px; z-index: 3000; display: flex; flex-direction: column; gap: 8px; }
+        .toast { background: var(--card-bg); border-left: 4px solid var(--success); padding: 16px 20px; border-radius: var(--radius-sm); box-shadow: var(--shadow-lg); display: flex; align-items: center; gap: 12px; animation: slideInRight 0.3s ease; max-width: 400px; }
+        @keyframes slideInRight { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        .toast.error { border-left-color: var(--danger); } .toast.info { border-left-color: var(--info); }
+        @media print {
+            .top-bar, nav, .hero-actions, .theme-toggle, .mobile-menu-btn, .modal-overlay, .btn, .plan-steps { display: none !important; }
+            body { background: white; color: black; } .section { padding: 20px 0; }
+            .disaster-card, .guide-card, .resource-card { break-inside: avoid; box-shadow: none; border: 1px solid #ccc; }
+        }
+        @media (max-width: 768px) {
+            .nav-links { display: none; } .mobile-menu-btn { display: block; }
+            .hero { padding: 48px 16px; } .hero-actions { flex-direction: column; width: 100%; } .hero-actions .btn { width: 100%; }
+            .disaster-grid { grid-template-columns: 1fr; } .guides-grid { grid-template-columns: 1fr; }
+            .plan-steps { flex-direction: column; } .checkbox-group { grid-template-columns: 1fr; }
+            .footer-grid { grid-template-columns: 1fr; } .enso-container { flex-direction: column; align-items: flex-start; }
+            .modal { max-height: 95vh; }
+        }
     </style>
+<base target="_blank">
 </head>
-<body class="bg-zinc-950 text-zinc-200 tail-container">
+<body>
+    <div class="top-bar">
+        <span>🚨 Emergency Hotlines: <span class="hotline">911</span> (NECC) | <span class="hotline">143</span> (Red Cross) | <span class="hotline">8888</span> (Citizen Complaint)</span>
+        <span>📍 Last Updated: June 18, 2026</span>
+    </div>
 
-    <!-- NAVBAR -->
-    <nav class="bg-black border-b border-amber-500/30 sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-            <div class="flex items-center gap-3">
-                <div class="w-9 h-9 bg-amber-500 text-black font-bold text-3xl flex items-center justify-center rotate-12">⚡</div>
-                <span class="header-font text-3xl tracking-tighter">SHIELD</span>
+    <nav>
+        <div class="nav-container">
+            <a href="#" class="logo">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:32px;height:32px">
+                    <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/><circle cx="12" cy="12" r="3"/>
+                </svg>
+                Super El Niño Hub
+            </a>
+            <ul class="nav-links">
+                <li><a href="#disasters" class="active">Disasters</a></li>
+                <li><a href="#guides">Guides</a></li>
+                <li><a href="#myplan">My Plan</a></li>
+                <li><a href="#myths">Myths & Facts</a></li>
+                <li><a href="#resources">Resources</a></li>
+            </ul>
+            <div class="nav-actions">
+                <button class="theme-toggle" onclick="toggleTheme()" title="Toggle Dark Mode">🌙</button>
+                <a href="#myplan" class="btn btn-primary btn-sm">📝 My Plan</a>
+                <button class="mobile-menu-btn" onclick="toggleMobileMenu()">☰</button>
             </div>
-            <div class="flex items-center gap-6 text-sm uppercase tracking-widest">
-                <a href="#tiers" class="hover:text-amber-400">TIERS</a>
-                <a href="#checklist" class="hover:text-amber-400">CHECKLIST</a>
-                <a href="#inventory" onclick="openInventory()" class="hover:text-amber-400">INVENTORY</a>
-                <a href="#" onclick="openProfile()" class="hover:text-amber-400">PROFILE</a>
-            </div>
-            <button onclick="downloadWebsite()" 
-                    class="px-5 py-2 bg-zinc-900 border border-amber-400 hover:bg-amber-400 hover:text-black text-xs tracking-widest transition-all">
-                <i class="fa-solid fa-download"></i> OFFLINE
-            </button>
         </div>
     </nav>
 
-    <!-- HERO -->
-    <header class="hero-bg h-screen flex items-center relative">
-        <div class="max-w-4xl mx-auto px-6 text-center">
-            <h1 class="header-font text-6xl md:text-7xl font-bold tracking-tighter">THE STORM IS COMING</h1>
-            <p class="mt-6 text-xl text-amber-100">Prepare by your tier • Track your gear offline</p>
-            <button onclick="smoothScrollTo('tiers')" class="mt-10 px-10 py-5 bg-amber-500 text-black font-bold text-lg tracking-widest">START PREPPING</button>
-        </div>
-    </header>
-
-    <!-- INCOME TIERS (same as previous) -->
-    <section id="tiers" class="py-20 bg-black">
-        <div class="max-w-6xl mx-auto px-6">
-            <h2 class="header-font text-5xl text-center mb-12">PREPAREDNESS BY INCOME TIER</h2>
-            <div class="grid md:grid-cols-3 gap-8">
-                <!-- Bronze, Silver, Gold cards (same as last version) -->
-                <div class="bg-zinc-900 p-8 border border-amber-600/50 rounded-xl card-hover">
-                    <div class="text-6xl text-center mb-4">🥉</div>
-                    <h3 class="text-2xl font-bold text-center text-amber-300">BRONZE</h3>
-                    <p class="text-center text-sm text-zinc-400">Under $50k</p>
-                    <ul class="mt-8 space-y-3 text-sm">
-                        <li>30-day basics • Cash • Radio</li>
-                    </ul>
-                </div>
-                <div class="bg-zinc-900 p-8 border border-zinc-400/50 rounded-xl card-hover relative">
-                    <div class="absolute -top-3 right-6 bg-amber-500 text-black text-xs px-4 py-1">RECOMMENDED</div>
-                    <div class="text-6xl text-center mb-4">🥈</div>
-                    <h3 class="text-2xl font-bold text-center">SILVER</h3>
-                    <p class="text-center text-sm text-zinc-400">$50k – $150k</p>
-                </div>
-                <div class="bg-zinc-900 p-8 border border-yellow-500/50 rounded-xl card-hover">
-                    <div class="text-6xl text-center mb-4">🥇</div>
-                    <h3 class="text-2xl font-bold text-center text-yellow-300">GOLD</h3>
-                    <p class="text-center text-sm text-zinc-400">Over $150k</p>
-                </div>
+    <div class="enso-bar">
+        <div class="enso-container">
+            <span class="enso-label">ENSO Status</span>
+            <div class="enso-status">
+                <div class="enso-indicator"></div>
+                <span class="enso-text">STRONG EL NIÑO — Advisory Level 3</span>
             </div>
-        </div>
-    </section>
-
-    <!-- INVENTORY SYSTEM -->
-    <section id="inventory" class="py-20 bg-zinc-900 hidden">
-        <div class="max-w-5xl mx-auto px-6">
-            <div class="flex justify-between items-center mb-8">
-                <h2 class="header-font text-4xl">PERSONAL INVENTORY</h2>
-                <button onclick="addInventorySlot()" class="px-6 py-3 bg-amber-500 text-black font-bold flex items-center gap-2">
-                    <i class="fa-solid fa-plus"></i> ADD SLOT
-                </button>
+            <div style="flex:2">
+                <div class="enso-levels"><div class="level"></div><div class="level"></div><div class="level active"></div><div class="level"></div></div>
+                <div class="level-labels"><span>Advisory</span><span>Watch</span><span>Warning</span><span>Emergency</span></div>
             </div>
-            <div id="inventoryList" class="grid md:grid-cols-2 gap-6"></div>
-        </div>
-    </section>
-
-    <!-- PROFILE MODAL -->
-    <div id="profileModal" class="fixed inset-0 bg-black/90 hidden flex items-center justify-center z-50">
-        <div class="bg-zinc-900 border border-amber-500 w-full max-w-md mx-4 rounded-xl overflow-hidden">
-            <div class="p-6 border-b border-zinc-700 flex justify-between">
-                <h3 class="text-2xl font-bold">OPERATOR PROFILE</h3>
-                <button onclick="closeProfile()" class="text-3xl leading-none">×</button>
-            </div>
-            <div class="p-8 text-center">
-                <div onclick="document.getElementById('photoUpload').click()" class="cursor-pointer mx-auto w-40 h-40 rounded-2xl overflow-hidden border-4 border-amber-400 mb-6">
-                    <img id="profilePic" src="https://picsum.photos/id/64/300/300" class="w-full h-full object-cover">
-                </div>
-                <input type="file" id="photoUpload" accept="image/*" capture="environment" class="hidden" onchange="handlePhotoUpload(event)">
-                <p class="text-xs text-zinc-400">Tap image to change (Camera / Gallery)</p>
-
-                <div class="mt-10 space-y-6">
-                    <div>
-                        <label class="block text-xs mb-2 text-amber-400">CALLSIGN</label>
-                        <input id="callsign" type="text" value="SHADOW-7" 
-                               class="w-full bg-zinc-800 border border-zinc-700 p-4 text-center">
-                    </div>
-                    <div>
-                        <label class="block text-xs mb-2 text-amber-400">TIER</label>
-                        <select id="userTier" class="w-full bg-zinc-800 border border-zinc-700 p-4">
-                            <option>Bronze</option>
-                            <option selected>Silver</option>
-                            <option>Gold</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-            <div class="p-6 border-t border-zinc-700 flex gap-4">
-                <button onclick="saveProfile()" class="flex-1 py-5 bg-amber-500 text-black font-bold">SAVE PROFILE</button>
-                <button onclick="closeProfile()" class="flex-1 py-5 border border-zinc-600">CLOSE</button>
-            </div>
+            <span class="enso-date">Next Update: June 20, 2026</span>
         </div>
     </div>
 
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-badges">
+                <span class="badge">⚠️ Strong El Niño Active</span>
+                <span class="badge">🇵🇭 Philippines Focus</span>
+                <span class="badge">📱 Offline Ready</span>
+            </div>
+            <h1>Prepare for <span>Super El Niño</span></h1>
+            <p>Comprehensive disaster preparedness guides, real-time alerts, and personalized emergency plans to keep your family and community safe during the strongest El Niño event in decades.</p>
+            <div class="hero-actions">
+                <a href="#myplan" class="btn btn-primary">🛡️ Create My Emergency Plan</a>
+                <a href="#disasters" class="btn btn-secondary">📋 View Disaster Guides</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" id="disasters">
+        <div class="section-header">
+            <h2>Disaster Preparedness Guides</h2>
+            <p>Click any card to view complete before, during, and after action checklists. Downloadable PDFs available for each disaster type.</p>
+        </div>
+        <div class="disaster-grid">
+            <div class="disaster-card" onclick="openModal('drought')">
+                <div class="disaster-card-header"><div class="disaster-icon drought">☀️</div><div><h3>Drought & Water Shortage</h3><span class="risk-level risk-extreme">Extreme Risk</span></div></div>
+                <div class="disaster-card-body"><p>Extended dry periods causing water scarcity, agricultural failure, and health impacts. Critical for farming communities and urban areas alike.</p><div class="quick-actions"><span class="btn btn-secondary btn-sm">💧 Water Conservation</span><span class="btn btn-secondary btn-sm">🌾 Crop Protection</span></div></div>
+                <div class="disaster-card-footer"><span class="checklist-progress"><span id="prog-drought">0/24</span> items checked</span><span style="font-size:0.85rem;color:var(--text-light)">⬇ Download PDF</span></div>
+            </div>
+            <div class="disaster-card" onclick="openModal('flood')">
+                <div class="disaster-card-header"><div class="disaster-icon flood">🌊</div><div><h3>Severe Flooding & Flash Floods</h3><span class="risk-level risk-high">High Risk</span></div></div>
+                <div class="disaster-card-body"><p>Intense rainfall events leading to flash floods, river overflows, and urban inundation. Major risk in low-lying and coastal areas.</p><div class="quick-actions"><span class="btn btn-secondary btn-sm">🏠 Home Sealing</span><span class="btn btn-secondary btn-sm">🚗 Evacuation</span></div></div>
+                <div class="disaster-card-footer"><span class="checklist-progress"><span id="prog-flood">0/28</span> items checked</span><span style="font-size:0.85rem;color:var(--text-light)">⬇ Download PDF</span></div>
+            </div>
+            <div class="disaster-card" onclick="openModal('landslide')">
+                <div class="disaster-card-header"><div class="disaster-icon landslide">⛰️</div><div><h3>Landslides & Mudflows</h3><span class="risk-level risk-high">High Risk</span></div></div>
+                <div class="disaster-card-body"><p>Saturated slopes giving way during intense rains. High-risk in mountainous regions, deforested areas, and steep terrain.</p><div class="quick-actions"><span class="btn btn-secondary btn-sm">👁️ Early Signs</span><span class="btn btn-secondary btn-sm">🏃 Safe Zones</span></div></div>
+                <div class="disaster-card-footer"><span class="checklist-progress"><span id="prog-landslide">0/20</span> items checked</span><span style="font-size:0.85rem;color:var(--text-light)">⬇ Download PDF</span></div>
+            </div>
+            <div class="disaster-card" onclick="openModal('heat')">
+                <div class="disaster-card-header"><div class="disaster-icon heat">🌡️</div><div><h3>Extreme Heatwaves</h3><span class="risk-level risk-extreme">Extreme Risk</span></div></div>
+                <div class="disaster-card-body"><p>Prolonged periods of dangerous heat causing heat stroke, dehydration, and power grid failures. Vulnerable: elderly, children, outdoor workers.</p><div class="quick-actions"><span class="btn btn-secondary btn-sm">💦 Hydration</span><span class="btn btn-secondary btn-sm">🏥 Heat Stroke</span></div></div>
+                <div class="disaster-card-footer"><span class="checklist-progress"><span id="prog-heat">0/22</span> items checked</span><span style="font-size:0.85rem;color:var(--text-light)">⬇ Download PDF</span></div>
+            </div>
+            <div class="disaster-card" onclick="openModal('fire')">
+                <div class="disaster-card-header"><div class="disaster-icon fire">🔥</div><div><h3>Bushfires & Wildfires</h3><span class="risk-level risk-medium">Medium Risk</span></div></div>
+                <div class="disaster-card-body"><p>Dry vegetation and high temperatures sparking fast-moving fires. Risk in grasslands, forests, and areas with poor vegetation management.</p><div class="quick-actions"><span class="btn btn-secondary btn-sm">🌲 Defensible Space</span><span class="btn btn-secondary btn-sm">🏠 Ember-Proofing</span></div></div>
+                <div class="disaster-card-footer"><span class="checklist-progress"><span id="prog-fire">0/18</span> items checked</span><span style="font-size:0.85rem;color:var(--text-light)">⬇ Download PDF</span></div>
+            </div>
+            <div class="disaster-card" onclick="openModal('agri')">
+                <div class="disaster-card-header"><div class="disaster-icon agri">🌾</div><div><h3>Agricultural & Food Crisis</h3><span class="risk-level risk-extreme">Extreme Risk</span></div></div>
+                <div class="disaster-card-body"><p>Crop failures, livestock losses, and food supply chain disruptions. Critical for farming communities and food security.</p><div class="quick-actions"><span class="btn btn-secondary btn-sm">🌱 Drought Crops</span><span class="btn btn-secondary btn-sm">🐄 Livestock</span></div></div>
+                <div class="disaster-card-footer"><span class="checklist-progress"><span id="prog-agri">0/20</span> items checked</span><span style="font-size:0.85rem;color:var(--text-light)">⬇ Download PDF</span></div>
+            </div>
+            <div class="disaster-card" onclick="openModal('disease')">
+                <div class="disaster-card-header"><div class="disaster-icon disease">🦟</div><div><h3>Disease Outbreaks</h3><span class="risk-level risk-high">High Risk</span></div></div>
+                <div class="disaster-card-body"><p>Waterborne (cholera, leptospirosis) and vector-borne (dengue, malaria) diseases surge during floods and heatwaves.</p><div class="quick-actions"><span class="btn btn-secondary btn-sm">💉 Vaccination</span><span class="btn btn-secondary btn-sm">🚰 Sanitation</span></div></div>
+                <div class="disaster-card-footer"><span class="checklist-progress"><span id="prog-disease">0/24</span> items checked</span><span style="font-size:0.85rem;color:var(--text-light)">⬇ Download PDF</span></div>
+            </div>
+            <div class="disaster-card" onclick="openModal('power')">
+                <div class="disaster-card-header"><div class="disaster-icon power">⚡</div><div><h3>Power & Infrastructure</h3><span class="risk-level risk-high">High Risk</span></div></div>
+                <div class="disaster-card-body"><p>Grid failures from extreme heat demand, storm damage, and infrastructure overload. Prepare for extended blackouts.</p><div class="quick-actions"><span class="btn btn-secondary btn-sm">🔋 Backup Power</span><span class="btn btn-secondary btn-sm">📻 Communication</span></div></div>
+                <div class="disaster-card-footer"><span class="checklist-progress"><span id="prog-power">0/18</span> items checked</span><span style="font-size:0.85rem;color:var(--text-light)">⬇ Download PDF</span></div>
+            </div>
+            <div class="disaster-card" onclick="openModal('econ')">
+                <div class="disaster-card-header"><div class="disaster-icon econ">💰</div><div><h3>Economic Disruption</h3><span class="risk-level risk-medium">Medium Risk</span></div></div>
+                <div class="disaster-card-body"><p>Job losses, business closures, price spikes, and insurance claims. Financial preparedness is critical for recovery.</p><div class="quick-actions"><span class="btn btn-secondary btn-sm">📄 Insurance</span><span class="btn btn-secondary btn-sm">💵 Emergency Fund</span></div></div>
+                <div class="disaster-card-footer"><span class="checklist-progress"><span id="prog-econ">0/16</span> items checked</span><span style="font-size:0.85rem;color:var(--text-light)">⬇ Download PDF</span></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" id="guides" style="background:var(--bg)">
+        <div class="section-header"><h2>📥 Downloadable Preparedness Guides</h2><p>Complete PDF-ready guides you can save, print, and share. All guides include before/during/after action steps.</p></div>
+        <div class="guides-grid">
+            <div class="guide-card"><div class="guide-icon">🏠</div><h3>Home & Property Preparedness</h3><p>Interior sealing, roof inspection, drainage systems, sump pumps, document waterproofing, and structural reinforcement.</p><div class="guide-meta"><span>📄 12 pages</span><span>⏱ 30 min read</span></div><button class="btn btn-primary" onclick="downloadGuide('home')">⬇ Download PDF</button></div>
+            <div class="guide-card"><div class="guide-icon">🎒</div><h3>Family Emergency Plan & 72-Hour Kit</h3><p>Complete family communication plan, evacuation routes, and detailed 72-hour emergency supply checklist.</p><div class="guide-meta"><span>📄 16 pages</span><span>⏱ 45 min read</span></div><button class="btn btn-primary" onclick="downloadGuide('family')">⬇ Download PDF</button></div>
+            <div class="guide-card"><div class="guide-icon">👥</div><h3>Community Early Action Protocol</h3><p>Coordination with LGUs, barangay disaster teams, evacuation drills, early warning systems, and community mapping.</p><div class="guide-meta"><span>📄 20 pages</span><span>⏱ 60 min read</span></div><button class="btn btn-primary" onclick="downloadGuide('community')">⬇ Download PDF</button></div>
+            <div class="guide-card"><div class="guide-icon">🌾</div><h3>Agricultural Resilience Guide</h3><p>Crop calendars for drought, water harvesting techniques, community reservoirs, livestock fodder banks, and seed preservation.</p><div class="guide-meta"><span>📄 24 pages</span><span>⏱ 75 min read</span></div><button class="btn btn-primary" onclick="downloadGuide('agriculture')">⬇ Download PDF</button></div>
+            <div class="guide-card"><div class="guide-icon">🔄</div><h3>Post-Disaster Recovery & Insurance</h3><p>Damage documentation, temporary repairs, insurance claims filing, financial assistance programs, and mental health resources.</p><div class="guide-meta"><span>📄 14 pages</span><span>⏱ 35 min read</span></div><button class="btn btn-primary" onclick="downloadGuide('recovery')">⬇ Download PDF</button></div>
+            <div class="guide-card"><div class="guide-icon">🏥</div><h3>Health & Medical Preparedness</h3><p>First aid essentials, medication storage, heat illness recognition, water purification, and disease prevention protocols.</p><div class="guide-meta"><span>📄 18 pages</span><span>⏱ 50 min read</span></div><button class="btn btn-primary" onclick="downloadGuide('health')">⬇ Download PDF</button></div>
+        </div>
+    </section>
+
+    <section class="section" id="myplan">
+        <div class="section-header"><h2>🛡️ My Personalized Preparedness Plan</h2><p>Answer a few questions to generate your custom emergency preparedness checklist tailored to your location and situation.</p></div>
+        <div class="plan-builder">
+            <div class="plan-steps">
+                <div class="plan-step active" onclick="goToStep(0)"><span class="plan-step-num">1</span>Location</div>
+                <div class="plan-step" onclick="goToStep(1)"><span class="plan-step-num">2</span>Household</div>
+                <div class="plan-step" onclick="goToStep(2)"><span class="plan-step-num">3</span>Risks</div>
+                <div class="plan-step" onclick="goToStep(3)"><span class="plan-step-num">4</span>Plan</div>
+            </div>
+            <div class="plan-content active" id="step-0">
+                <h3 style="margin-bottom:20px">Where are you located?</h3>
+                <div class="form-group">
+                    <label>Region / Province</label>
+                    <select id="plan-region" onchange="updatePlan()">
+                        <option value="">Select your region...</option>
+                        <option value="ncr">National Capital Region (NCR)</option>
+                        <option value="car">Cordillera Administrative Region (CAR)</option>
+                        <option value="ilocos">Ilocos Region (Region I)</option>
+                        <option value="cagayan">Cagayan Valley (Region II)</option>
+                        <option value="cl">Central Luzon (Region III)</option>
+                        <option value="calabarzon">CALABARZON (Region IV-A)</option>
+                        <option value="mimaropa">MIMAROPA (Region IV-B)</option>
+                        <option value="bicol">Bicol Region (Region V)</option>
+                        <option value="western-visayas">Western Visayas (Region VI)</option>
+                        <option value="central-visayas">Central Visayas (Region VII)</option>
+                        <option value="eastern-visayas">Eastern Visayas (Region VIII)</option>
+                        <option value="zamboanga">Zamboanga Peninsula (Region IX)</option>
+                        <option value="northern-mindanao">Northern Mindanao (Region X)</option>
+                        <option value="davao">Davao Region (Region XI)</option>
+                        <option value="soccsksargen">SOCCSKSARGEN (Region XII)</option>
+                        <option value="caraga">Caraga (Region XIII)</option>
+                        <option value="barmm">BARMM</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Area Type</label>
+                    <div class="checkbox-group">
+                        <label class="checkbox-option" onclick="toggleCheckbox(this)"><input type="radio" name="area-type" value="urban" onchange="updatePlan()"> Urban / City</label>
+                        <label class="checkbox-option" onclick="toggleCheckbox(this)"><input type="radio" name="area-type" value="suburban" onchange="updatePlan()"> Suburban</label>
+                        <label class="checkbox-option" onclick="toggleCheckbox(this)"><input type="radio" name="area-type" value="rural" onchange="updatePlan()"> Rural / Farming</label>
+                        <label class="checkbox-option" onclick="toggleCheckbox(this)"><input type="radio" name="area-type" value="coastal" onchange="updatePlan()"> Coastal</label>
+                        <label class="checkbox-option" onclick="toggleCheckbox(this)"><input type="radio" name="area-type" value="mountain" onchange="updatePlan()"> Mountainous</label>
+                        <label class="checkbox-option" onclick="toggleCheckbox(this)"><input type="radio" name="area-type" value="floodplain" onchange="updatePlan()"> Flood Plain</label>
+                    </div>
+                </div>
+                <div style="text-align:right;margin-top:24px"><button class="btn btn-primary" onclick="nextStep()">Next →</button></div>
+            </div>
+            <div class="plan-content" id="step-1">
+                <h3 style="margin-bottom:20px">Tell us about your household</h3>
+                <div class="form-group"><label>Number of people in your household</label><input type="number" id="household-size" min="1" max="20" value="4" onchange="updatePlan()"></div>
+                <div class="form-group">
+                    <label>Vulnerable members (select all that apply)</label>
+                    <div class="checkbox-group">
+                        <label class="checkbox-option" onclick="toggleCheckbox(this)"><input type="checkbox" value="elderly" onchange="updatePlan()"> Elderly (60+)</label>
+                        <label class="checkbox-option" onclick="toggleCheckbox(this)"><input type="checkbox" value="infants" onchange="updatePlan()"> Infants / Toddlers</label>
+                        <label class="checkbox-option" onclick="toggleCheckbox(this)"><input type="checkbox" value="pwd" onchange="updatePlan()"> Persons with Disabilities</label>
+                        <label class="checkbox-option" onclick="toggleCheckbox(this)"><input type="checkbox" value="pregnant" onchange="updatePlan()"> Pregnant Women</label>
+                        <label class="checkbox-option" onclick="toggleCheckbox(this)"><input type="checkbox" value="chronic" onchange="updatePlan()"> Chronic Illness</label>
+                        <label class="checkbox-option" onclick="toggleCheckbox(this)"><input type="checkbox" value="pets" onchange="updatePlan()"> Pets / Livestock</label>
+                    </div>
+                </div>
+                <div class="form-group"><label>Housing type</label><select id="housing-type" onchange="updatePlan()"><option value="">Select...</option><option value="concrete">Concrete house</option><option value="wood">Wood / Bamboo</option><option value="apartment">Apartment / Condo</option><option value="informal">Informal settlement</option></select></div>
+                <div style="display:flex;justify-content:space-between;margin-top:24px"><button class="btn btn-secondary" onclick="prevStep()">← Back</button><button class="btn btn-primary" onclick="nextStep()">Next →</button></div>
+            </div>
+            <div class="plan-content" id="step-2">
+                <h3 style="margin-bottom:20px">What risks concern you most?</h3>
+                <div class="form-group">
+                    <label>Select your top concerns (we'll prioritize these)</label>
+                    <div class="checkbox-group">
+                        <label class="checkbox-option" onclick="toggleCheckbox(this)"><input type="checkbox" value="drought" checked onchange="updatePlan()"> Drought / Water shortage</label>
+                        <label class="checkbox-option" onclick="toggleCheckbox(this)"><input type="checkbox" value="flood" checked onchange="updatePlan()"> Flooding</label>
+                        <label class="checkbox-option" onclick="toggleCheckbox(this)"><input type="checkbox" value="landslide" onchange="updatePlan()"> Landslides</label>
+                        <label class="checkbox-option" onclick="toggleCheckbox(this)"><input type="checkbox" value="heat" checked onchange="updatePlan()"> Extreme heat</label>
+                        <label class="checkbox-option" onclick="toggleCheckbox(this)"><input type="checkbox" value="fire" onchange="updatePlan()"> Wildfires</label>
+                        <label class="checkbox-option" onclick="toggleCheckbox(this)"><input type="checkbox" value="disease" onchange="updatePlan()"> Disease outbreaks</label>
+                        <label class="checkbox-option" onclick="toggleCheckbox(this)"><input type="checkbox" value="power" onchange="updatePlan()"> Power outages</label>
+                        <label class="checkbox-option" onclick="toggleCheckbox(this)"><input type="checkbox" value="agri" onchange="updatePlan()"> Crop / livestock loss</label>
+                    </div>
+                </div>
+                <div style="display:flex;justify-content:space-between;margin-top:24px"><button class="btn btn-secondary" onclick="prevStep()">← Back</button><button class="btn btn-primary" onclick="generatePlan()">Generate My Plan ✨</button></div>
+            </div>
+            <div class="plan-content" id="step-3">
+                <h3 style="margin-bottom:20px">Your Personalized Preparedness Plan</h3>
+                <div id="plan-output">
+                    <div class="plan-result"><h4>🎯 Priority Actions for Your Area</h4><ul id="plan-priority"></ul></div>
+                    <div class="plan-result"><h4>📦 Recommended 72-Hour Kit</h4><ul id="plan-kit"></ul></div>
+                    <div class="plan-result"><h4>👨‍👩‍👧‍👦 Family-Specific Considerations</h4><ul id="plan-family"></ul></div>
+                    <div class="plan-result"><h4>📋 Complete Checklist</h4><ul id="plan-checklist"></ul></div>
+                </div>
+                <div style="display:flex;gap:12px;margin-top:24px;flex-wrap:wrap">
+                    <button class="btn btn-primary" onclick="downloadMyPlan()">⬇ Download My Plan (PDF)</button>
+                    <button class="btn btn-secondary" onclick="sharePlan()">🔗 Share Plan</button>
+                    <button class="btn btn-secondary" onclick="prevStep()">← Edit Answers</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" id="myths" style="background:var(--bg)">
+        <div class="section-header"><h2>🚫 Myths vs ✅ Facts</h2><p>Don't let misinformation put you at risk. Know the truth about El Niño and disaster preparedness.</p></div>
+        <div class="myth-fact-grid">
+            <div class="myth-fact-item" onclick="toggleMyth(this)">
+                <div class="myth-fact-header"><div class="icon icon-myth">❌</div><h4>"El Niño only causes drought — no floods."</h4></div>
+                <div class="myth-fact-body"><p><strong>Fact:</strong> El Niño disrupts normal weather patterns, causing both extreme drought AND intense rainfall events. The Philippines experienced devastating floods during past El Niño years due to altered monsoon patterns and tropical cyclone behavior. Prepare for BOTH drought and flood.</p></div>
+            </div>
+            <div class="myth-fact-item" onclick="toggleMyth(this)">
+                <div class="myth-fact-header"><div class="icon icon-myth">❌</div><h4>"If it didn't flood here before, it won't flood now."</h4></div>
+                <div class="myth-fact-body"><p><strong>Fact:</strong> Land use changes, deforestation, urbanization, and climate change are altering flood patterns. Areas that never flooded before are now at risk. Always check updated hazard maps from PAGASA and your local DRRMO.</p></div>
+            </div>
+            <div class="myth-fact-item" onclick="toggleMyth(this)">
+                <div class="myth-fact-header"><div class="icon icon-myth">❌</div><h4>"I can just buy supplies when the storm comes."</h4></div>
+                <div class="myth-fact-body"><p><strong>Fact:</strong> Stores sell out within hours of a warning. Roads may be impassable. Power and ATMs may be down. A 72-hour kit and early preparation are essential — you may be on your own for 3+ days before help arrives.</p></div>
+            </div>
+            <div class="myth-fact-item" onclick="toggleMyth(this)">
+                <div class="myth-fact-header"><div class="icon icon-myth">❌</div><h4>"Tap water is safe after a flood if it looks clear."</h4></div>
+                <div class="myth-fact-body"><p><strong>Fact:</strong> Floodwater contaminates water sources with bacteria, chemicals, and sewage. Always boil water for at least 1 minute (3 minutes at high altitude) or use water purification tablets. Clear appearance does NOT mean safe.</p></div>
+            </div>
+            <div class="myth-fact-item" onclick="toggleMyth(this)">
+                <div class="myth-fact-header"><div class="icon icon-myth">❌</div><h4>"Fans and open windows prevent heat stroke."</h4></div>
+                <div class="myth-fact-body"><p><strong>Fact:</strong> When temperatures exceed 35°C (95°F), fans can actually increase heat stress by blowing hot air over the body. Seek air-conditioned spaces, cool showers, and hydration. Fans are NOT sufficient during extreme heatwaves.</p></div>
+            </div>
+            <div class="myth-fact-item" onclick="toggleMyth(this)">
+                <div class="myth-fact-header"><div class="icon icon-myth">❌</div><h4>"My insurance covers all El Niño damage."</h4></div>
+                <div class="myth-fact-body"><p><strong>Fact:</strong> Most standard insurance policies exclude "acts of God" or require specific riders for flood, landslide, and drought damage. Review your policy NOW — don't wait for disaster. Document your property with photos/videos before any event.</p></div>
+            </div>
+            <div class="myth-fact-item" onclick="toggleMyth(this)">
+                <div class="myth-fact-header"><div class="icon icon-myth">❌</div><h4>"Landslides happen without warning."</h4></div>
+                <div class="myth-fact-body"><p><strong>Fact:</strong> Landslides give warning signs: new cracks in walls/ground, tilting trees/fences, sudden water gush from slopes, rumbling sounds, and doors/windows jamming. Evacuate immediately if you observe these signs. Don't wait for official orders.</p></div>
+            </div>
+            <div class="myth-fact-item" onclick="toggleMyth(this)">
+                <div class="myth-fact-header"><div class="icon icon-myth">❌</div><h4>"Dengue mosquitoes only breed in dirty water."</h4></div>
+                <div class="myth-fact-body"><p><strong>Fact:</strong> Aedes aegypti mosquitoes (dengue carriers) breed in CLEAN stagnant water — flower vases, tires, gutters, water storage containers. During drought, people store more water, creating MORE breeding sites. Clean and cover ALL water containers.</p></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" id="resources">
+        <div class="section-header"><h2>📞 Emergency Resources & Contacts</h2><p>Official agencies, hotlines, and tools for real-time monitoring and assistance.</p></div>
+        <div class="resources-grid">
+            <div class="resource-card"><h4>🌦️ PAGASA</h4><p>Philippine Atmospheric, Geophysical and Astronomical Services Administration. Weather forecasts, tropical cyclone warnings, and ENSO monitoring.</p><a href="https://www.pagasa.dost.gov.ph" target="_blank">Visit Website →</a></div>
+            <div class="resource-card"><h4>🏛️ NDRRMC</h4><p>National Disaster Risk Reduction and Management Council. Official disaster alerts, evacuation orders, and response coordination.</p><a href="https://www.ndrrmc.gov.ph" target="_blank">Visit Website →</a></div>
+            <div class="resource-card"><h4>🔬 DOST</h4><p>Department of Science and Technology. Project NOAH for flood mapping, hazard assessment, and early warning systems.</p><a href="https://www.dost.gov.ph" target="_blank">Visit Website →</a></div>
+            <div class="resource-card"><h4>❤️ Philippine Red Cross</h4><p>Emergency response, blood services, first aid training, and disaster relief operations nationwide.</p><a href="https://www.redcross.org.ph" target="_blank">Visit Website →</a></div>
+            <div class="resource-card"><h4>🏠 DSWD</h4><p>Department of Social Welfare and Development. Family food packs, cash assistance, and evacuation center management.</p><a href="https://www.dswd.gov.ph" target="_blank">Visit Website →</a></div>
+            <div class="resource-card"><h4>🚑 DOH</h4><p>Department of Health. Disease outbreak monitoring, health advisories, and medical response during disasters.</p><a href="https://www.doh.gov.ph" target="_blank">Visit Website →</a></div>
+            <div class="resource-card"><h4>🌾 DA</h4><p>Department of Agriculture. Crop damage assessment, livestock assistance, and agricultural intervention programs.</p><a href="https://www.da.gov.ph" target="_blank">Visit Website →</a></div>
+            <div class="resource-card"><h4>⚡ DOE</h4><p>Department of Energy. Power outage reports, restoration updates, and energy conservation advisories during peak demand.</p><a href="https://www.doe.gov.ph" target="_blank">Visit Website →</a></div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-col"><h4>Quick Links</h4><ul><li><a href="#disasters">Disaster Guides</a></li><li><a href="#guides">Downloadable PDFs</a></li><li><a href="#myplan">My Preparedness Plan</a></li><li><a href="#myths">Myths vs Facts</a></li></ul></div>
+            <div class="footer-col"><h4>Emergency Numbers</h4><ul><li><a href="tel:911">911 — National Emergency</a></li><li><a href="tel:143">143 — Red Cross</a></li><li><a href="tel:8888">8888 — Citizen Complaint</a></li><li><a href="tel:117">117 — PNP Hotline</a></li></ul></div>
+            <div class="footer-col"><h4>Resources</h4><ul><li><a href="https://www.pagasa.dost.gov.ph" target="_blank">PAGASA Weather</a></li><li><a href="https://www.ndrrmc.gov.ph" target="_blank">NDRRMC Alerts</a></li><li><a href="https://www.redcross.org.ph" target="_blank">Red Cross PH</a></li><li><a href="https://www.dswd.gov.ph" target="_blank">DSWD Assistance</a></li></ul></div>
+            <div class="footer-col"><h4>About This Hub</h4><ul><li><a href="#">Data Sources & Citations</a></li><li><a href="#">Accessibility Statement</a></li><li><a href="#">Privacy Policy</a></li><li><a href="#">Contact / Feedback</a></li></ul></div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2026 Super El Niño Preparedness Hub. Based on IFRC, UN OCHA, PAGASA, and NDRRMC protocols. Not a substitute for official emergency instructions.</p>
+            <p style="margin-top:8px">This site works offline — save it to your home screen for emergency access without internet.</p>
+        </div>
+    </footer>
+
+    <div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
+        <div class="modal" id="modal" onclick="event.stopPropagation()">
+            <div class="modal-header"><h3 id="modal-title">Disaster Guide</h3><button class="modal-close" onclick="closeModal()">✕</button></div>
+            <div class="modal-body" id="modal-body"></div>
+            <div class="modal-footer"><button class="btn btn-secondary" onclick="closeModal()">Close</button><button class="btn btn-primary" onclick="downloadCurrentGuide()">⬇ Download This Guide</button></div>
+        </div>
+    </div>
+
+    <div class="toast-container" id="toast-container"></div>
+
     <script>
-        // ==================== OFFLINE DOWNLOAD ====================
-        function downloadWebsite() {
-            const htmlContent = document.documentElement.outerHTML;
-            const blob = new Blob([htmlContent], { type: 'text/html' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'SHIELD-ElNino-Preparedness.html';
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
-            
-            alert("✅ Website saved! Open the downloaded file anytime — even without internet.");
-        }
 
-        // ==================== PROFILE ====================
-        function openProfile() {
-            document.getElementById('profileModal').classList.remove('hidden');
-            loadProfile();
-        }
+const disasterData={
+drought:{title:"☀️ Drought & Water Shortage",icon:"☀️",
+before:["Install rainwater harvesting system with first-flush diverter","Check and repair all plumbing leaks (toilets, faucets, pipes)","Install low-flow showerheads and faucet aerators","Stockpile water: 4 liters per person per day for 14 days minimum","Identify alternative water sources (deep well, spring, water delivery)","Mulch garden beds to retain soil moisture","Switch to drought-resistant native plants in landscaping","Service water pumps and generators","Clean gutters and downspouts for maximum rainwater capture","Install water meter to monitor usage and detect leaks early","Cover swimming pools to reduce evaporation","Prepare water purification methods (boiling, tablets, filters)"],
+during:["Implement strict water rationing: bucket baths, reuse greywater","Prioritize drinking water — do NOT ration hydration","Water crops early morning or evening to minimize evaporation","Group plants by water needs for efficient irrigation","Use drip irrigation instead of sprinklers","Collect and reuse aircon condensate and dehumidifier water","Check on elderly neighbors and vulnerable community members","Report water main breaks immediately to local water district","Avoid unnecessary water use (car washing, driveway cleaning)","Monitor livestock for dehydration signs — provide shade and extra water","Use sand or mulch instead of water for dust suppression"],
+after:["Test well water for contamination before resuming use","Inspect and clean rainwater harvesting systems","Repair any drought-related pipe damage from ground shifting","Restock emergency water supplies","Document crop/livestock losses for insurance/DA assistance","Replant with drought-resistant varieties","Deep water trees and shrubs to restore root systems","Schedule plumbing inspection for hidden leak damage","Review and update water conservation plan based on experience"]},
+flood:{title:"🌊 Severe Flooding & Flash Floods",icon:"🌊",
+before:["Know your evacuation route and alternate routes — practice the drill","Elevate electrical panels, sockets, and appliances above expected flood level","Install check valves in plumbing to prevent backflow","Waterproof basement walls and seal cracks in foundation","Prepare sandbags and know proper placement technique (tarp + stack)","Move important documents to waterproof, elevated storage","Install battery-powered sump pump with backup power","Clear drains, gutters, and downspouts of debris","Mark fuse box and learn how to shut off electricity, gas, and water","Stockpile drinking water (contamination risk during floods)","Prepare emergency kit with flotation devices","Identify highest ground in your area for evacuation","Keep vehicle fuel tank at least half full","Register for local SMS alert systems and weather apps"],
+during:["EVACUATE IMMEDIATELY if told by authorities — don't wait to see flood","Never walk, swim, or drive through floodwater — 15cm can sweep you away","If trapped in building, move to highest floor (NOT attic without exit)","If trapped in vehicle, abandon it and move to higher ground immediately","Avoid contact with floodwater — it contains sewage, chemicals, and debris","Do NOT touch electrical equipment if wet or standing in water","Listen to battery-powered radio for emergency updates","Text, don't call — SMS uses less bandwidth and preserves battery","Move valuables to upper floors if time permits","Turn off utilities at main switches if safe to do so","Avoid bridges over fast-moving water","Keep children and pets away from floodwater at all times"],
+after:["Wait for official 'all clear' before returning home","Document damage with photos/video before cleaning for insurance","Wear protective gear (boots, gloves, mask) when cleaning — floodwater is toxic","Discard food, medicine, and cosmetics that contacted floodwater","Pump out flooded basements gradually (1/3 per day) to prevent wall collapse","Clean and disinfect everything that got wet with bleach solution","Dry out home within 24-48 hours to prevent mold growth","Have electrical system inspected by licensed electrician before restoring power","Test well water and have septic system inspected","Beware of snakes and other wildlife displaced by flood","Watch for structural damage — sagging ceilings, cracked walls","Seek mental health support if experiencing trauma symptoms"]},
+landslide:{title:"⛰️ Landslides & Mudflows",icon:"⛰️",
+before:["Consult geohazard maps from MGB-DOST to know your risk level","Avoid building on or below steep slopes, especially cut/fill areas","Plant deep-rooted native trees and vegetation on slopes","Install proper drainage channels to divert water from slopes","Build retaining walls for steep slopes (engineer-designed)","Monitor slopes during heavy rain for early warning signs","Know your community's landslide early warning system","Identify safest evacuation route AWAY from slide path","Keep emergency bag ready with whistle, flashlight, and first aid","Avoid placing fill material at top of slopes","Direct roof runoff away from slopes via gutters and downspouts"],
+during:["EVACUATE if you hear unusual sounds (trees cracking, rumbling)","Watch for warning signs: new cracks in ground/walls, tilting trees/fences","If escape is not possible, curl into tight ball and protect your head","Move away from the path of the slide to the side of the slope","If driving and slide occurs, stay in vehicle with seatbelt on","Avoid river valleys and low-lying areas during intense rainfall","Listen for debris flow alarms or community warning sirens","Move to highest point possible if caught in mudflow path","Stay alert for hours after rain stops — slides can occur with delay"],
+after:["Stay away from slide area — additional slides are common","Check for injured or trapped people without entering slide zone","Report broken utility lines (gas, water, electric) immediately","Document damage for insurance and barangay/LGU records","Have structural engineer inspect home before re-entering","Replant damaged vegetation to stabilize slopes","Clear drainage channels blocked by debris","Watch for flooding caused by blocked rivers/streams","Seek professional geotechnical assessment before rebuilding","Consider relocating if area is designated high-risk by MGB"]},
+heat:{title:"🌡️ Extreme Heatwaves",icon:"🌡️",
+before:["Install air conditioning or identify cooling centers in your area","Stockpile oral rehydration salts and electrolyte drinks","Prepare light, loose-fitting cotton clothing","Install window shades, reflective film, or blackout curtains","Identify vulnerable family members (elderly, infants, chronic illness)","Learn heat illness symptoms: dizziness, nausea, confusion, no sweating","Prepare cool packs and damp cloths for emergency cooling","Check that fans are working (note: fans insufficient above 35°C)","Stock medications that require refrigeration with cool packs","Plan outdoor work for early morning or evening only","Identify nearby buildings with AC (malls, libraries, government offices)"],
+during:["Stay indoors during peak heat (10 AM — 4 PM)","Drink water every 15-20 minutes even if not thirsty","NEVER leave children or pets in parked vehicles — even with windows open","Check on elderly neighbors twice daily","Wear wide-brimmed hat, sunglasses, and SPF 30+ sunscreen outdoors","Take cool showers or baths to lower body temperature","Eat light meals — avoid heavy, hot foods and alcohol","Place damp towels on neck, wrists, and ankles for cooling","If no AC, stay on lowest floor of building (heat rises)","Limit physical exertion — rest in shade if working outdoors","Watch for heat stroke signs: hot dry skin, confusion, fainting — CALL 911","Keep pets indoors with plenty of water — paw pads burn on hot pavement"],
+after:["Continue hydration for 24-48 hours after heatwave ends","Check refrigerated medications for spoilage","Inspect air conditioning units for filter replacement","Review heat response plan — what worked, what didn't","Schedule medical checkup if you experienced heat illness symptoms","Restock emergency supplies used during heatwave","Plant shade trees strategically for future heat protection","Install permanent shade structures over outdoor work areas"]},
+fire:{title:"🔥 Bushfires & Wildfires",icon:"🔥",
+before:["Create defensible space: clear vegetation 10m around structures","Remove dead leaves, pine needles, and flammable debris from roof/gutters","Use fire-resistant building materials for roof and exterior","Install ember-resistant vents and screens","Keep garden hoses long enough to reach all sides of property","Have multiple evacuation routes planned from your area","Create emergency supply kit with N95 masks for smoke protection","Store flammable materials (propane, gas) away from structures","Maintain firebreaks if in agricultural area","Register for local fire alert SMS systems","Keep vehicle fueled and pointed toward escape route","Install battery-powered exterior lights for visibility in smoke"],
+during:["EVACUATE EARLY — don't wait to see the fire","If trapped: stay inside, close all windows/doors, fill sinks/tubs with water","Move to center of home away from windows and exterior walls","Wear long sleeves, pants, and N95 mask to protect from embers/smoke","Keep car windows closed and air recirculating if driving through smoke","If caught in vehicle: park in clearing, close windows, cover with wool blanket","If caught on foot: find clearing, lie face-down, cover body","Call 911 immediately if you see unattended fire or smoke","Do NOT attempt to fight large fires — leave to professionals","Keep lights on to help firefighters locate your home in smoke"],
+after:["Wait for official all-clear before returning","Check roof and exterior for embers and extinguishing them","Document all damage with photos before cleanup","Wear N95 mask during cleanup — ash is toxic","Have water tested if private well was affected","Replace HVAC filters immediately — they are full of ash","Dispose of food exposed to heat, smoke, or fire retardant chemicals","Watch for flash floods and mudflows in burn scar areas","Seek support for trauma — wildfire survival is psychologically intense"]},
+agri:{title:"🌾 Agricultural & Food Crisis",icon:"🌾",
+before:["Plant drought-resistant crop varieties (e.g., IR64 rice, mungbean)","Install water harvesting and small-scale irrigation systems","Build farm ponds and small reservoirs for water storage","Diversify crops to spread risk across different growing conditions","Establish community seed banks with drought-tolerant varieties","Insure crops and livestock through PCIC (Philippine Crop Insurance)","Build livestock fodder banks (hay, silage) before dry season","Practice conservation tillage to retain soil moisture","Install soil moisture sensors for precision irrigation","Create farm records for damage assessment and insurance claims","Join farmers' cooperatives for bulk purchasing and shared resources","Learn early harvest techniques for crops approaching critical heat stress"],
+during:["Implement deficit irrigation — prioritize high-value crops","Apply mulch heavily to reduce evaporation (rice straw, coconut husk)","Shift to early morning or evening watering only","Cull weak livestock early to preserve fodder for healthy animals","Sell market-ready livestock before conditions worsen","Harvest mature crops early to prevent total loss","Use shade nets for high-value vegetable crops","Monitor soil moisture daily — adjust irrigation accordingly","Apply anti-transpirant sprays to reduce plant water loss","Coordinate with DA for cloud seeding operations in your area","Document all losses with photos for PCIC claims"],
+after:["Test soil for nutrient depletion before replanting","Apply organic matter to restore soil structure and water retention","Replant with short-duration crops for quick cash flow recovery","File PCIC claims within required timeframe with complete documentation","Access DA calamity funds and rehabilitation programs","Restock fodder banks before next dry season","Review and adjust crop calendar based on climate patterns","Consider transitioning to climate-smart agriculture practices","Join or form community-based disaster risk management group","Seek agricultural extension services for technical guidance"]},
+disease:{title:"🦟 Disease Outbreaks",icon:"🦟",
+before:["Ensure routine vaccinations are up to date (MMR, flu, tetanus, Hep A)","Stockpile oral rehydration salts, zinc supplements, and water purification tablets","Install screens on windows and doors","Eliminate standing water breeding sites weekly (clean vases, tires, gutters)","Prepare mosquito nets (especially for infants and pregnant women)","Stock hand sanitizer, soap, and disinfectant bleach","Know symptoms of dengue (fever, rash, bleeding), cholera (watery diarrhea), leptospirosis (jaundice, muscle pain)","Identify nearest hospital with isolation facilities","Prepare family communication plan if quarantine is imposed","Store 14-day supply of chronic medications","Get typhoid and Hepatitis A vaccines if in flood-prone area"],
+during:["Boil all drinking water for 1 minute minimum (3 min at altitude)","Wash hands with soap after any contact with floodwater","Wear waterproof boots and gloves when wading through floodwater","Apply mosquito repellent (DEET or picaridin) during dawn and dusk","Sleep under insecticide-treated mosquito nets","Seek medical attention immediately for persistent fever or diarrhea","Separate sick family members when possible","Dispose of waste properly — don't contaminate water sources","Avoid eating raw or undercooked food","Use latrines or bury feces at least 30m from water sources","Keep food covered and refrigerated — discard if power out >4 hours","Report disease clusters to barangay health workers immediately"],
+after:["Continue water purification until water supply is certified safe","Complete full course of any prescribed antibiotics","Clean and disinfect all surfaces that contacted floodwater","Eliminate new mosquito breeding sites created by flooding","Monitor family for delayed symptoms (leptospirosis can appear 2-4 weeks after)","Restock medical supplies used during outbreak","Schedule follow-up medical appointments for anyone who was ill","Report any new illness to local health office for surveillance","Participate in community cleanup drives to prevent recurrence"]},
+power:{title:"⚡ Power & Infrastructure",icon:"⚡",
+before:["Install whole-house surge protector at electrical panel","Purchase battery backup (UPS) for critical medical devices","Stockpile batteries (AA, AAA, C, D) and test all flashlights","Prepare battery-powered or hand-crank radio for emergency broadcasts","Keep vehicle fuel tanks full — gas pumps need electricity","Store cash — ATMs and card readers won't work without power","Charge all power banks and devices when storm warnings are issued","Have non-electric cooking methods (gas stove, camping stove, charcoal)","Install solar-powered security lights for nighttime safety","Know how to manually open electric garage doors and gates","Prepare ice and coolers for refrigerator contents","Download offline maps and emergency information to phone","Have board games, books, and non-electronic entertainment ready"],
+during:["Unplug sensitive electronics to prevent surge damage when power returns","Keep refrigerator/freezer closed — food stays safe 4 hours (fridge) / 48 hours (full freezer)","Use generators ONLY outdoors, 20+ feet from windows — carbon monoxide kills","Limit cell phone use to emergencies — preserve battery","Use battery-powered lights instead of candles (fire hazard)","Check on neighbors with medical devices requiring power","If using car to charge devices, do so in well-ventilated area","Report downed power lines immediately — stay at least 10m away","Do NOT use gas stoves or charcoal grills indoors for heating","Keep one light switch ON so you know when power returns","Use text messages instead of calls to preserve phone battery"],
+after:["Wait 10-15 minutes after power returns before plugging in electronics","Check food safety — when in doubt, throw it out","Reset digital clocks, thermostats, and programmable devices","Inspect electrical system for damage before full restoration","Restock emergency supplies used during outage","Report any electrical damage to utility company","Consider installing solar panels with battery storage for future resilience","Review what worked and didn't — update preparedness plan","Have electrician inspect if you experienced surges or flickering"]},
+econ:{title:"💰 Economic Disruption",icon:"💰",
+before:["Build emergency fund: 3-6 months of expenses minimum","Review insurance policies: home, crop, livestock, vehicle, health","Document all property and possessions with photos/video for claims","Keep important documents in waterproof, portable container","Diversify income sources where possible","Maintain digital AND physical copies of financial records","Know your rights regarding work stoppage and disaster leave","Join or establish community savings and loan association","Stockpile non-perishable goods to avoid price spikes","Have small denominations of cash stored in multiple locations","Understand SSS, GSIS, and Pag-IBIG calamity loan procedures","Create business continuity plan if self-employed"],
+during:["Prioritize spending: food, water, shelter, medicine first","Contact creditors immediately if you cannot pay — many offer disaster forbearance","Apply for DSWD cash assistance and food packs at evacuation centers","File insurance claims ASAP — document everything with photos","Use emergency fund judiciously — recovery may take months","Avoid panic buying — it drives prices up for everyone","Check for price gouging and report to DTI","Access SSS/GSIS calamity loans online if internet is available","Preserve cash for essential purchases only","Continue paying minimums on debts to avoid penalties if possible","Seek temporary employment or livelihood assistance from DOLE"],
+after:["File complete insurance claims with all documentation within deadlines","Apply for DA crop/livestock insurance payouts if applicable","Access DSWD sustainable livelihood programs for recovery","Seek financial counseling from government or NGO services","Rebuild emergency fund as soon as income stabilizes","Review and update insurance coverage based on experience","Consider additional income protection insurance for future events","Participate in community recovery planning and advocacy","Document lessons learned for next disaster season","Support local businesses to help community economic recovery"]}
+};
 
-        function closeProfile() {
-            document.getElementById('profileModal').classList.add('hidden');
-        }
+const guideData={
+home:{title:"Home & Property Preparedness Guide",content:`HOME & PROPERTY PREPAREDNESS GUIDE
+Super El Niño Season 2026
 
-        function handlePhotoUpload(e) {
-            const file = e.target.files[0];
-            if (!file) return;
-            const reader = new FileReader();
-            reader.onload = function(ev) {
-                document.getElementById('profilePic').src = ev.target.result;
-            };
-            reader.readAsDataURL(file);
-        }
+═══════════════════════════════════════════════════════════════
 
-        function saveProfile() {
-            const callsign = document.getElementById('callsign').value;
-            const tier = document.getElementById('userTier').value;
-            const photo = document.getElementById('profilePic').src;
-            
-            localStorage.setItem('shield_callsign', callsign);
-            localStorage.setItem('shield_tier', tier);
-            localStorage.setItem('shield_photo', photo);
-            
-            alert("Profile saved to your device.");
-            closeProfile();
-        }
+SECTION 1: STRUCTURAL PREPAREDNESS
 
-        function loadProfile() {
-            const callsign = localStorage.getItem('shield_callsign') || "SHADOW-7";
-            const tier = localStorage.getItem('shield_tier') || "Silver";
-            const photo = localStorage.getItem('shield_photo');
-            
-            document.getElementById('callsign').value = callsign;
-            document.getElementById('userTier').value = tier;
-            if (photo) document.getElementById('profilePic').src = photo;
-        }
+Roof & Exterior:
+□ Inspect roof for loose tiles, leaks, and weak spots
+□ Clean gutters and downspouts thoroughly
+□ Trim overhanging branches near roof
+□ Secure or remove loose objects that could become projectiles
+□ Check and repair exterior caulking around windows and doors
+□ Install storm shutters or pre-cut plywood for windows
+□ Reinforce garage doors against wind and water pressure
 
-        // ==================== INVENTORY SYSTEM ====================
-        let inventory = [];
+Foundation & Basement:
+□ Seal cracks in foundation walls and floors
+□ Install sump pump with battery backup
+□ Elevate furnace, water heater, and electrical panel if in flood-prone area
+□ Install backflow valves on sewer lines
+□ Grade soil away from foundation (6-inch drop per 10 feet)
 
-        function loadInventory() {
-            const saved = localStorage.getItem('shield_inventory');
-            if (saved) inventory = JSON.parse(saved);
-            else {
-                inventory = [
-                    {id:1, name:"Water (gallons)", qty:120, category:"Water"},
-                    {id:2, name:"Rice (lbs)", qty:50, category:"Food"},
-                    {id:3, name:"First Aid Kit", qty:2, category:"Medical"}
-                ];
-            }
-            renderInventory();
-        }
+Electrical & Utilities:
+□ Label all circuit breakers clearly
+□ Install whole-house surge protector
+□ Know location of main gas, water, and electrical shutoffs
+□ Elevate outdoor AC compressor unit on platform
+□ Secure propane tanks and know how to shut off gas
 
-        function saveInventory() {
-            localStorage.setItem('shield_inventory', JSON.stringify(inventory));
-        }
+═══════════════════════════════════════════════════════════════
 
-        function renderInventory() {
-            const container = document.getElementById('inventoryList');
-            container.innerHTML = '';
-            
-            inventory.forEach(item => {
-                const div = document.createElement('div');
-                div.className = "bg-zinc-950 border border-zinc-700 p-6 rounded-xl";
-                div.innerHTML = `
-                    <div class="flex justify-between items-start">
-                        <div>
-                            <div class="font-bold">${item.name}</div>
-                            <div class="text-xs text-zinc-500">${item.category}</div>
-                        </div>
-                        <div class="text-right">
-                            <div class="text-3xl font-mono text-amber-400">${item.qty}</div>
-                        </div>
-                    </div>
-                    <div class="mt-6 flex gap-3">
-                        <button onclick="changeQty(${item.id}, -1)" class="flex-1 py-3 bg-zinc-800 hover:bg-red-900 text-sm">-</button>
-                        <button onclick="changeQty(${item.id}, 1)" class="flex-1 py-3 bg-zinc-800 hover:bg-emerald-900 text-sm">+</button>
-                        <button onclick="deleteItem(${item.id})" class="px-4 text-red-400"><i class="fa-solid fa-trash"></i></button>
-                    </div>
-                `;
-                container.appendChild(div);
-            });
-        }
+SECTION 2: INTERIOR PREPAREDNESS
 
-        function changeQty(id, delta) {
-            const item = inventory.find(i => i.id === id);
-            if (item) {
-                item.qty = Math.max(0, item.qty + delta);
-                renderInventory();
-                saveInventory();
-            }
-        }
+Waterproofing:
+□ Store important documents in waterproof, fireproof safe
+□ Elevate appliances on platforms or move to upper floors
+□ Install water alarms in basement and low areas
+□ Use water-resistant paint on basement walls
+□ Keep sandbags and plastic sheeting readily accessible
 
-        function deleteItem(id) {
-            if (confirm("Remove this item?")) {
-                inventory = inventory.filter(i => i.id !== id);
-                renderInventory();
-                saveInventory();
-            }
-        }
+Emergency Supplies Storage:
+□ Designate dry, accessible storage area for emergency kit
+□ Store supplies in waterproof containers
+□ Keep flashlight and radio in multiple locations
+□ Maintain 14-day supply of non-perishable food
+□ Store 4 liters of water per person per day
 
-        function addInventorySlot() {
-            const name = prompt("Item name (e.g. Canned Beans):");
-            if (!name) return;
-            const category = prompt("Category (Water / Food / Medical / Power / Other):", "Food") || "Other";
-            
-            const newItem = {
-                id: Date.now(),
-                name: name,
-                qty: 0,
-                category: category
-            };
-            inventory.push(newItem);
-            renderInventory();
-            saveInventory();
-        }
+═══════════════════════════════════════════════════════════════
 
-        function openInventory() {
-            document.getElementById('inventory').classList.remove('hidden');
-            document.getElementById('inventory').scrollIntoView({ behavior: 'smooth' });
-            loadInventory();
-        }
+SECTION 3: DOCUMENTATION
 
-        // ==================== UTILITIES ====================
-        function smoothScrollTo(id) {
-            document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
-        }
+Inventory & Records:
+□ Photograph/video all rooms and valuable items
+□ Keep receipts for major purchases
+□ Store copies of insurance policies off-site or in cloud
+□ Maintain list of serial numbers for electronics
+□ Document home improvements and repairs
 
-        // Init
-        window.onload = function() {
-            loadProfile();
-            console.log('%cSHIELD SYSTEM ONLINE — All data stored locally', 'color:#fbbf24; font-family:monospace');
-        };
+Important Documents to Protect:
+□ Property deeds and titles
+□ Insurance policies
+□ Birth certificates and passports
+□ Bank account records
+□ Medical records and prescriptions
+□ Wills and legal documents
+
+═══════════════════════════════════════════════════════════════
+
+SECTION 4: LANDSCAPING & DRAINAGE
+
+Water Management:
+□ Install French drains if yard holds water
+□ Create rain gardens to absorb runoff
+□ Ensure downspouts extend 6+ feet from foundation
+□ Clear drainage ditches and culverts
+□ Install dry wells for roof runoff
+
+Fire & Wind Protection:
+□ Create defensible space (10m clear) if in fire-prone area
+□ Remove dead vegetation and debris
+□ Choose fire-resistant plants for landscaping
+□ Secure fences and gates
+□ Anchor large trees with guy wires if needed
+
+═══════════════════════════════════════════════════════════════
+
+SECTION 5: MAINTENANCE SCHEDULE
+
+Monthly:
+□ Test smoke and carbon monoxide detectors
+□ Check emergency kit supplies (rotate food/water)
+□ Inspect sump pump operation
+□ Clear drains and gutters
+
+Seasonally (Before El Niño Peak):
+□ Professional roof inspection
+□ Tree trimming and dead branch removal
+□ Service generator and test operation
+□ Refresh sandbags and emergency supplies
+□ Review and practice evacuation plan with family
+
+═══════════════════════════════════════════════════════════════
+
+Emergency Contact Numbers:
+• 911 — National Emergency
+• 143 — Philippine Red Cross
+• Local Fire Department: ________________
+• Local Police: ________________
+• Utility Company: ________________
+• Insurance Agent: ________________
+• Neighbor Contact: ________________
+
+═══════════════════════════════════════════════════════════════
+Prepared: _______________  Reviewed: _______________`},
+family:{title:"Family Emergency Plan & 72-Hour Kit",content:`FAMILY EMERGENCY PLAN & 72-HOUR KIT
+Super El Niño Season 2026
+
+═══════════════════════════════════════════════════════════════
+
+SECTION 1: FAMILY COMMUNICATION PLAN
+
+Emergency Contacts:
+□ Out-of-area contact person: ___________________
+   Phone: ___________________  Relationship: ___________________
+
+□ Local emergency contact: ___________________
+   Phone: ___________________  Address: ___________________
+
+□ School/work contacts:
+   School: ___________________  Phone: ___________________
+   Work: ___________________  Phone: ___________________
+
+Meeting Places:
+□ Immediate (neighborhood): ___________________
+□ Out-of-neighborhood: ___________________
+□ Out-of-town: ___________________
+
+Communication Methods:
+□ Designate primary contact method (text preferred over calls)
+□ Establish check-in times if separated
+□ Teach children how to call 911 and give address
+□ Program ICE (In Case of Emergency) numbers in all phones
+□ Have battery-powered radio for emergency broadcasts
+
+═══════════════════════════════════════════════════════════════
+
+SECTION 2: EVACUATION PLAN
+
+Primary Route:
+From home to: ___________________
+Route: ___________________
+Estimated time: ___________________
+
+Alternate Route:
+From home to: ___________________
+Route: ___________________
+Estimated time: ___________________
+
+Transportation:
+□ Vehicle 1: ___________________  Fuel level checked: ___________________
+□ Vehicle 2: ___________________  Fuel level checked: ___________________
+□ If no vehicle, arrange with: ___________________
+
+Pets:
+□ Pet carrier ready: ___________________
+□ Pet supplies packed: ___________________
+□ Pet-friendly shelter identified: ___________________
+
+═══════════════════════════════════════════════════════════════
+
+SECTION 3: 72-HOUR EMERGENCY KIT
+
+WATER & FOOD:
+□ Water: 4 liters per person per day x 3 days = _____ liters total
+□ Non-perishable food: 3-day supply per person
+   Examples: canned goods, energy bars, dried fruit, nuts, crackers
+□ Manual can opener
+□ Paper plates, cups, utensils
+□ Water purification tablets or filter
+
+FIRST AID & MEDICINE:
+□ First aid kit (bandages, antiseptic, gauze, tape, scissors, tweezers)
+□ Prescription medications (7-day supply minimum)
+□ Over-the-counter: pain relievers, antihistamines, anti-diarrheal
+□ Personal medical equipment (glucose monitor, inhaler, etc.)
+□ Glasses/contact lenses and solution
+□ Medical records and vaccination cards
+
+TOOLS & SUPPLIES:
+□ Flashlight per person + extra batteries
+□ Battery-powered or hand-crank radio
+□ Multi-tool or Swiss Army knife
+□ Duct tape and plastic sheeting
+□ Rope or paracord (15 meters)
+□ Work gloves
+□ Dust masks (N95)
+□ Whistle (3 blasts = emergency signal)
+□ Waterproof matches and candles
+□ Fire extinguisher (ABC type)
+
+SANITATION & HYGIENE:
+□ Toilet paper and moist towelettes
+□ Soap, hand sanitizer, disinfectant
+□ Feminine hygiene products
+□ Diapers and baby wipes if needed
+□ Garbage bags and twist ties
+□ Portable toilet or bucket with lid
+□ Bleach (for sanitization: 8 drops per gallon)
+
+DOCUMENTS & MONEY:
+□ Copies of IDs and passports
+□ Insurance policies
+□ Bank account numbers
+□ Cash (small bills and coins)
+□ Emergency contact list
+□ Local maps
+
+COMFORT & SPECIAL NEEDS:
+□ Sleeping bag or warm blanket per person
+□ Change of clothes and sturdy shoes per person
+□ Rain gear
+□ Sunscreen and insect repellent
+□ Books, games, cards for children
+□ Infant formula, bottles, and diapers if needed
+□ Pet food and supplies if needed
+
+═══════════════════════════════════════════════════════════════
+
+SECTION 4: SPECIAL CONSIDERATIONS
+
+Elderly Family Members:
+□ Mobility aids readily accessible
+□ List of medications with dosages
+□ Medical alert bracelet/information
+□ Hearing aids with extra batteries
+□ Eyeglasses with current prescription
+
+Persons with Disabilities:
+□ Backup power for medical equipment
+□ Evacuation chair if wheelchair-bound
+□ Service animal supplies
+□ Communication aids (picture boards, etc.)
+□ Notify local DRRMO of special needs
+
+Infants & Young Children:
+□ Formula, bottles, and baby food
+□ Diapers and wipes (3-day supply)
+□ Change of clothes
+□ Favorite toy or comfort item
+□ Child identification with contact info
+
+═══════════════════════════════════════════════════════════════
+
+SECTION 5: PRACTICE DRILLS
+
+□ Conduct evacuation drill every 6 months
+□ Practice meeting at designated locations
+□ Time your evacuation — aim for under 10 minutes
+□ Test emergency kit — ensure everything works
+□ Update contact information quarterly
+□ Review plan with all family members
+
+═══════════════════════════════════════════════════════════════
+
+Emergency Contact Card (Cut out and carry):
++-------------------------------------------------+
+|  IN CASE OF EMERGENCY                           |
+|  Name: ______________________                   |
+|  Address: ______________________              |
+|  Blood Type: _____  Allergies: _____            |
+|                                                 |
+|  Contact 1: ______________________            |
+|  Phone: ______________________                  |
+|  Contact 2: ______________________            |
+|  Phone: ______________________                  |
+|                                                 |
+|  Medical Conditions: _______________            |
+|  Medications: ____________________              |
++-------------------------------------------------+`},
+community:{title:"Community Early Action Protocol",content:`COMMUNITY EARLY ACTION PROTOCOL
+Super El Niño Season 2026
+
+═══════════════════════════════════════════════════════════════
+
+SECTION 1: COMMUNITY ORGANIZATION
+
+Barangay Disaster Risk Reduction & Management Committee (BDRRMC):
+□ Chairperson: ___________________  Contact: ___________________
+□ Vice Chair: ___________________  Contact: ___________________
+□ Secretary: ___________________  Contact: ___________________
+□ Treasurer: ___________________  Contact: ___________________
+
+Sub-Committees:
+□ Early Warning: ___________________  Contact: ___________________
+□ Search & Rescue: ___________________  Contact: ___________________
+□ Evacuation: ___________________  Contact: ___________________
+□ Relief: ___________________  Contact: ___________________
+□ Medical: ___________________  Contact: ___________________
+□ Communications: ___________________  Contact: ___________________
+
+═══════════════════════════════════════════════════════════════
+
+SECTION 2: EARLY WARNING SYSTEM
+
+Alert Levels & Triggers:
+□ GREEN (Advisory): PAGASA issues El Niño watch
+  Actions: Information dissemination, preparedness checks
+
+□ YELLOW (Watch): 48-hour heavy rainfall forecast OR drought index critical
+  Actions: Pre-position supplies, alert vulnerable households, test equipment
+
+□ ORANGE (Warning): 24-hour severe weather OR flood/landslide imminent
+  Actions: Activate evacuation teams, prepare evacuation centers, mobilize transport
+
+□ RED (Emergency): Disaster occurring or imminent within hours
+  Actions: Mandatory evacuation, full BDRRMC activation, request external assistance
+
+Warning Dissemination Methods:
+□ Barangay radio/PA system
+□ Text blast to registered residents
+□ Door-to-door by BDRRMC volunteers
+□ Social media (Facebook barangay page)
+□ Church/mosque announcements
+□ Drum beating or whistle signals (for areas without signal)
+
+═══════════════════════════════════════════════════════════════
+
+SECTION 3: EVACUATION PLAN
+
+Evacuation Center 1:
+Name: ___________________
+Address: ___________________
+Capacity: ___________________ persons
+Facilities: ___________________
+In-charge: ___________________  Contact: ___________________
+
+Evacuation Center 2:
+Name: ___________________
+Address: ___________________
+Capacity: ___________________ persons
+Facilities: ___________________
+In-charge: ___________________  Contact: ___________________
+
+Transportation Plan:
+□ Available vehicles: ___________________
+□ Assembly point: ___________________
+□ Route to evacuation center: ___________________
+□ Special needs transport: ___________________
+
+Evacuation Priority:
+1. Persons with disabilities and elderly
+2. Pregnant women and infants
+3. Families in high-risk zones (flood, landslide)
+4. Remaining residents
+
+═══════════════════════════════════════════════════════════════
+
+SECTION 4: RESOURCE PRE-POSITIONING
+
+Emergency Supplies Stockpile:
+□ Family food packs: _____ packs
+□ Water containers: _____ liters
+□ Tents/tarpaulins: _____ pieces
+□ Medicines and first aid kits
+□ Flashlights and batteries
+□ Portable toilets
+□ Hygiene kits
+□ Kitchen utensils
+□ Mats and blankets
+
+Equipment:
+□ Rescue boat/kayak: _____ units
+□ Ropes and harnesses
+□ Chain saw and axe
+□ Generator set
+□ Two-way radios
+□ Megaphones
+
+═══════════════════════════════════════════════════════════════
+
+SECTION 5: VULNERABILITY MAPPING
+
+High-Risk Households:
+□ Households in flood zones: _____
+□ Households in landslide zones: _____
+□ Households with PWDs: _____
+□ Households with elderly alone: _____
+□ Households with infants: _____
+□ Informal settlers: _____
+
+Special Needs Registry:
+Name | Address | Needs | Contact
+___________________ | ___________________ | ___________________ | ___________________
+___________________ | ___________________ | ___________________ | ___________________
+___________________ | ___________________ | ___________________ | ___________________
+
+═══════════════════════════════════════════════════════════════
+
+SECTION 6: DRILLS & TRAINING
+
+Schedule:
+□ Quarterly BDRRMC meeting
+□ Bi-annual evacuation drill
+□ Annual first aid training
+□ Annual search and rescue training
+□ Pre-season preparedness check (March)
+
+Training Records:
+Date | Activity | Participants | Trainer
+___________________ | ___________________ | ___________________ | ___________________
+___________________ | ___________________ | ___________________ | ___________________
+
+═══════════════════════════════════════════════════════════════
+
+SECTION 7: EXTERNAL COORDINATION
+
+LGU Contacts:
+□ Municipal DRRMO: ___________________  Phone: ___________________
+□ Municipal Mayor's Office: ___________________  Phone: ___________________
+□ PNP: ___________________  Phone: ___________________
+□ BFP: ___________________  Phone: ___________________
+□ Rural Health Unit: ___________________  Phone: ___________________
+
+NGO/CSO Partners:
+□ Philippine Red Cross Chapter: ___________________
+□ Local NGOs: ___________________
+□ Faith-based organizations: ___________________
+
+═══════════════════════════════════════════════════════════════
+
+SECTION 8: POST-DISASTER ACTIONS
+
+Damage Assessment:
+□ Rapid assessment within 24 hours
+□ Detailed assessment within 72 hours
+□ Photo documentation
+□ Report to municipal DRRMO
+
+Relief Distribution:
+□ Needs assessment
+□ Fair distribution system
+□ Priority to most vulnerable
+□ Documentation and reporting
+
+Recovery Planning:
+□ Repair/rebuild damaged infrastructure
+□ Livelihood restoration
+□ Psychosocial support
+□ Lessons learned documentation
+
+═══════════════════════════════════════════════════════════════
+Document prepared by: ___________________  Date: ___________________`},
+agriculture:{title:"Agricultural Resilience Guide",content:`AGRICULTURAL RESILIENCE GUIDE
+Super El Niño Season 2026
+
+═══════════════════════════════════════════════════════════════
+
+SECTION 1: DROUGHT-RESISTANT CROP CALENDAR
+
+Rice (Modified for El Niño):
+□ Use early-maturing varieties (90-100 days): IR64, PSB Rc18
+□ Adjust planting: Start before dry season peak (October-November)
+□ Implement alternate wetting and drying (AWD) irrigation
+□ Shift to direct seeding to reduce water use by 30%
+
+Corn:
+□ Plant drought-tolerant hybrids: NK 505, DK 818
+□ Adjust planting to capture early rains
+□ Use mulching to reduce evaporation
+□ Intercrop with legumes (mungbean, cowpea) for soil improvement
+
+Vegetables:
+□ Prioritize heat-tolerant varieties
+□ Use shade nets for sensitive crops (lettuce, pechay)
+□ Shift to container gardening with controlled irrigation
+□ Focus on high-value, low-water crops: okra, eggplant, ampalaya
+
+Fruit Trees:
+□ Deep water during critical stages (flowering, fruit set)
+□ Apply mulch ring around base (2m diameter)
+□ Prune to reduce transpiration load
+□ Install drip irrigation for young trees
+
+═══════════════════════════════════════════════════════════════
+
+SECTION 2: WATER HARVESTING & CONSERVATION
+
+Farm Pond Construction:
+□ Site selection: lowest point in farm, clay soil preferred
+□ Size: minimum 10m x 10m x 2m depth
+□ Lining: clay compaction or plastic liner
+□ Inlet: grassed waterway to reduce siltation
+□ Overflow: spillway with rock protection
+
+Small Reservoir:
+□ Check dams in gullies
+□ Silt traps upstream
+□ Vegetated spillway
+□ Water level marker for monitoring
+
+Rainwater Collection:
+□ Roof catchment from farm buildings
+□ First-flush diverter
+□ Storage tank (minimum 5,000 liters)
+□ Filtration system
+
+Irrigation Efficiency:
+□ Drip irrigation: 90% efficiency vs 60% for furrow
+□ Sprinkler: 75% efficiency, good for orchards
+□ Schedule irrigation early morning (5-7 AM) or evening (5-7 PM)
+□ Use soil moisture sensors for precision timing
+
+═══════════════════════════════════════════════════════════════
+
+SECTION 3: LIVESTOCK MANAGEMENT
+
+Water Supply:
+□ Minimum 40-60 liters per head per day for cattle
+□ Multiple water points to prevent crowding
+□ Shade over water troughs to reduce evaporation
+□ Water quality testing monthly
+
+Heat Stress Prevention:
+□ Natural shade trees or constructed shade structures
+□ Adequate ventilation in housing
+□ Reduce handling/transport during hottest hours
+□ Electrolyte supplements in drinking water
+
+Fodder Banks:
+□ Establish before dry season: napier grass, guinea grass
+□ Silage production from excess wet season growth
+□ Hay making during dry spell windows
+□ Tree fodder: ipil-ipil, madre de cacao
+
+Early Destocking:
+□ Sell weak/unproductive animals before peak drought
+□ Maintain breeding stock only
+□ Preserve cash for feed purchase
+□ Coordinate with livestock auction markets
+
+═══════════════════════════════════════════════════════════════
+
+SECTION 4: SOIL MOISTURE CONSERVATION
+
+Conservation Tillage:
+□ Minimum or zero tillage for rice
+□ Retain crop residue as mulch
+□ Controlled traffic to reduce compaction
+
+Mulching:
+□ Rice straw: 5-10 tons per hectare
+□ Plastic mulch for high-value vegetables
+□ Living mulch: cover crops between rows
+
+Soil Amendments:
+□ Organic matter increases water holding capacity
+□ Biochar application: 5-10 tons per hectare
+□ Vermicompost: 2-3 tons per hectare
+
+Contour Farming:
+□ Plant along contour lines on slopes
+□ Contour bunds to slow runoff
+□ Grassed waterways for drainage
+
+═══════════════════════════════════════════════════════════════
+
+SECTION 5: SEED PRESERVATION & DIVERSITY
+
+Community Seed Bank:
+□ Store in airtight containers with desiccants
+□ Cool, dry, dark storage room
+□ Inventory system with planting dates and sources
+□ Regular germination testing
+
+Seed Sources:
+□ DA accredited seed growers
+□ PhilRice for rice varieties
+□ Local seed savers network
+□ International gene banks (IRRI, CIMMYT)
+
+Diversification Strategy:
+□ Multiple crop species to spread risk
+□ Different maturity dates
+□ Mix of cash crops and subsistence crops
+□ Integration of livestock, fish, and crops
+
+═══════════════════════════════════════════════════════════════
+
+SECTION 6: INSURANCE & FINANCIAL PROTECTION
+
+Philippine Crop Insurance Corporation (PCIC):
+□ Coverage: production cost or market value
+□ Premium: subsidized by government (farmer pays portion)
+□ Claims: documented damage assessment within 15 days
+□ Contact: ___________________
+
+Livestock Insurance:
+□ Coverage: mortality due to disease, accident, natural calamity
+□ Required: veterinary health certificate
+□ Premium: based on animal value and risk
+
+Emergency Loans:
+□ SSS/GSIS calamity loans
+□ Land Bank production loans
+□ Cooperative emergency funds
+□ Microfinance institutions
+
+═══════════════════════════════════════════════════════════════
+
+SECTION 7: POST-DROUGHT RECOVERY
+
+Soil Rehabilitation:
+□ Test soil for nutrient depletion
+□ Apply organic amendments heavily
+□ Deep ripping to break compaction
+□ Replant cover crops first
+
+Crop Recovery:
+□ Short-duration crops for quick cash flow
+□ Vegetable production in 45-60 days
+□ Fodder crops for livestock feed
+□ Seedling production for next season
+
+Livestock Recovery:
+□ Restock gradually with quality breeding stock
+□ Quarantine new animals
+□ Vaccination program before restocking
+□ Improved housing for future heat events
+
+═══════════════════════════════════════════════════════════════
+
+Emergency Contacts:
+□ DA Regional Field Office: ___________________
+□ PhilRice: ___________________
+□ PCIC: ___________________
+□ Municipal Agriculturist: ___________________
+□ Veterinarian: ___________________
+□ Irrigation Association: ___________________
+
+═══════════════════════════════════════════════════════════════
+Prepared by: ___________________  Date: ___________________`},
+recovery:{title:"Post-Disaster Recovery & Insurance",content:`POST-DISASTER RECOVERY & INSURANCE CLAIMS GUIDE
+Super El Niño Season 2026
+
+═══════════════════════════════════════════════════════════════
+
+SECTION 1: IMMEDIATE POST-DISASTER SAFETY
+
+Before Entering Property:
+□ Wait for official all-clear from authorities
+□ Check for structural damage: cracks, sagging, leaning
+□ Smell for gas leaks — if detected, leave immediately and call utility
+□ Look for electrical hazards: downed lines, exposed wires
+□ Wear protective gear: hard hat, boots, gloves, N95 mask, goggles
+□ Have fire extinguisher accessible
+□ Bring flashlight even in daylight (dark interiors)
+
+Entering Home:
+□ Enter cautiously — doors may be jammed from frame distortion
+□ Do NOT use matches, lighters, or candles (gas leak risk)
+□ Do NOT turn on electricity if water is present
+□ Take photos/video of EVERYTHING before touching or moving
+□ Check for animals: snakes, rodents, insects may have entered
+□ Open windows for ventilation if safe
+
+═══════════════════════════════════════════════════════════════
+
+SECTION 2: DAMAGE DOCUMENTATION
+
+Photo/Video Checklist:
+□ Wide shots of each room and exterior
+□ Close-ups of specific damage
+□ Brand names and model numbers of damaged appliances
+□ Serial numbers where visible
+□ Water level marks on walls
+□ Debris and destroyed items
+□ Damage to vehicles
+□ Landscaping and outdoor structures
+
+Written Inventory:
+□ List every damaged/destroyed item
+□ Include: description, age, purchase price, replacement cost
+□ Note pre-existing conditions
+□ Attach receipts if available
+□ Estimate values for items without receipts
+
+Keep Records Of:
+□ All cleanup and repair expenses (receipts!)
+□ Temporary housing costs
+□ Food replacement costs
+□ Transportation costs
+□ Medical expenses from disaster-related injuries
+□ Lost wages documentation
+
+═══════════════════════════════════════════════════════════════
+
+SECTION 3: INSURANCE CLAIMS PROCESS
+
+Immediate Actions (Within 24 Hours):
+□ Contact insurance company immediately
+□ Request claim number and adjuster contact
+□ Ask about emergency repairs coverage
+□ Inquire about temporary housing benefits
+□ Request advance payment for essentials if available
+
+Working with Adjuster:
+□ Be present during inspection
+□ Point out ALL damage — don't assume they'll find it
+□ Provide your documentation (photos, inventory, receipts)
+□ Get adjuster's report in writing
+□ Question low estimates — get independent contractor quotes
+□ Don't sign final settlement until you're satisfied
+
+Types of Coverage:
+□ Building/Structure: covers physical building
+□ Contents/Personal Property: covers belongings
+□ Additional Living Expenses: temporary housing
+□ Flood: separate policy required (not standard)
+□ Crop/Livestock: PCIC for farmers
+□ Business Interruption: for self-employed
+
+Common Claim Mistakes:
+□ Throwing away damaged items before documenting
+□ Making permanent repairs before adjuster inspection
+□ Accepting first offer without negotiation
+□ Not reading policy exclusions
+□ Missing claim filing deadlines
+□ Not keeping copies of all submitted documents
+
+═══════════════════════════════════════════════════════════════
+
+SECTION 4: FINANCIAL ASSISTANCE PROGRAMS
+
+Government Assistance:
+□ DSWD Family Food Packs: barangay hall or evacuation center
+□ DSWD Cash for Work: community cleanup programs
+□ DA Calamity Funds: crop/livestock damage
+□ SSS/GSIS Calamity Loans: up to PHP 20,000-50,000
+□ Pag-IBIG Calamity Loan: up to 80% of total savings
+□ DOLE TUPAD: emergency employment
+
+NGO Assistance:
+□ Philippine Red Cross: relief goods, psychosocial support
+□ Caritas Philippines: food and shelter assistance
+□ Local NGOs: ___________________
+□ International agencies: WFP, UNICEF (for major disasters)
+
+Private Sector:
+□ Employer assistance programs
+□ Bank loan restructuring/forbearance
+□ Cooperative emergency funds
+□ Community savings groups
+
+═══════════════════════════════════════════════════════════════
+
+SECTION 5: TEMPORARY REPAIRS
+
+Emergency Repairs (Covered by Insurance):
+□ Tarp roof to prevent further water damage
+□ Board up broken windows
+□ Remove wet drywall to prevent mold
+□ Pump out standing water
+□ Install temporary fencing for security
+
+Keep Records Of:
+□ Before photos of damage
+□ Receipts for all materials and labor
+□ Contractor names and license numbers
+□ Description of work performed
+□ After photos showing completed work
+
+Do NOT:
+□ Make permanent structural repairs yet
+□ Dispose of damaged building materials
+□ Sign contracts with door-to-door contractors (scam risk)
+□ Pay full amount upfront to contractors
+
+═══════════════════════════════════════════════════════════════
+
+SECTION 6: MENTAL HEALTH & PSYCHOSOCIAL SUPPORT
+
+Normal Reactions After Disaster:
+□ Shock and disbelief
+□ Fear and anxiety about future
+□ Sadness and grief for losses
+□ Anger and irritability
+□ Difficulty sleeping or concentrating
+□ Physical symptoms: headaches, fatigue, nausea
+
+When to Seek Help:
+□ Symptoms persist beyond 2-4 weeks
+□ Inability to perform daily tasks
+□ Thoughts of self-harm or harming others
+□ Substance abuse to cope
+□ Severe depression or panic attacks
+
+Available Support:
+□ DOH Crisis Hotline: 1553
+□ Philippine Red Cross Psychosocial Support
+□ Local health center counseling
+□ Faith-based counseling
+□ Community support groups
+
+Self-Care Strategies:
+□ Maintain routines as much as possible
+□ Connect with family and friends
+□ Limit media exposure to disaster coverage
+□ Exercise and eat regular meals
+□ Practice relaxation techniques
+□ Help others — community service aids recovery
+
+═══════════════════════════════════════════════════════════════
+
+SECTION 7: LONG-TERM RECOVERY PLANNING
+
+Rebuilding Decisions:
+□ Repair in place vs. relocate
+□ Elevate structure if in flood zone
+□ Use disaster-resistant building materials
+□ Improve drainage around property
+□ Install backup power systems
+
+Financial Recovery:
+□ Rebuild emergency fund
+□ Review and update insurance coverage
+□ Consider additional coverage types
+□ Improve credit score if damaged by missed payments
+□ Seek financial counseling
+
+Community Recovery:
+□ Participate in barangay recovery planning
+□ Advocate for improved infrastructure
+□ Support local businesses
+□ Join or form community disaster group
+□ Share lessons learned with neighbors
+
+═══════════════════════════════════════════════════════════════
+
+Important Contacts:
+□ Insurance Company: ___________________  Policy #: ___________________
+□ Insurance Agent: ___________________  Phone: ___________________
+□ Contractor: ___________________  License: ___________________
+□ Bank: ___________________  Account Officer: ___________________
+□ DSWD: ___________________
+□ SSS/GSIS: ___________________
+□ Mental Health Hotline: 1553
+
+═══════════════════════════════════════════════════════════════
+Document prepared: _______________  Claim filed: _______________`},
+health:{title:"Health & Medical Preparedness",content:`HEALTH & MEDICAL PREPAREDNESS GUIDE
+Super El Niño Season 2026
+
+═══════════════════════════════════════════════════════════════
+
+SECTION 1: FIRST AID ESSENTIALS
+
+Basic First Aid Kit:
+□ Adhesive bandages (various sizes)
+□ Sterile gauze pads and rolls
+□ Adhesive tape
+□ Elastic bandages
+□ Antiseptic wipes and solution
+□ Antibiotic ointment
+□ Hydrocortisone cream
+□ Tweezers and scissors
+□ Digital thermometer
+□ Disposable gloves (nitrile, multiple pairs)
+□ CPR face shield or mask
+□ Instant cold packs
+□ Eye wash solution
+□ Saline solution for wound cleaning
+□ Burn gel or aloe vera
+□ Splint and triangular bandages
+
+Advanced Items (if trained):
+□ Tourniquet
+□ Chest seals
+□ Nasopharyngeal airway
+□ Emergency blanket (space blanket)
+□ Blood pressure monitor
+□ Blood glucose meter and strips
+
+═══════════════════════════════════════════════════════════════
+
+SECTION 2: MEDICATION MANAGEMENT
+
+Prescription Medications:
+□ Maintain 14-30 day supply of ALL prescriptions
+□ Keep list with: name, dosage, prescribing doctor, pharmacy
+□ Store in waterproof container
+□ Keep refrigerated meds in cooler with ice packs during outages
+□ Ask doctor for emergency supply prescriptions
+
+Over-the-Counter Essentials:
+□ Pain relievers: paracetamol, ibuprofen
+□ Anti-diarrheal: loperamide
+□ Antihistamines: cetirizine, diphenhydramine
+□ Antacids
+□ Oral rehydration salts (ORS) — minimum 20 sachets
+□ Anti-nausea medication
+□ Electrolyte powder or tablets
+□ Multivitamins
+
+Special Medical Equipment:
+□ Extra batteries for hearing aids
+□ Backup glasses/contacts and solution
+□ Blood glucose testing supplies
+□ Asthma inhalers (spare)
+□ Nebulizer with backup
+□ CPAP battery backup
+□ Wheelchair repair kit
+□ Walker/cane if used regularly
+
+═══════════════════════════════════════════════════════════════
+
+SECTION 3: HEAT ILLNESS RECOGNITION & RESPONSE
+
+Heat Cramps:
+Symptoms: Muscle spasms, heavy sweating
+Response: Move to cool place, drink water/sports drink, gentle stretching
+
+Heat Exhaustion:
+Symptoms: Heavy sweating, weakness, nausea, headache, dizziness, muscle cramps
+Response:
+□ Move to air-conditioned or shaded area
+□ Loosen clothing
+□ Apply cool, wet cloths to skin
+□ Sip water or ORS slowly
+□ If symptoms worsen or don't improve in 1 hour — SEEK MEDICAL HELP
+
+Heat Stroke (MEDICAL EMERGENCY — CALL 911):
+Symptoms: High body temp (40°C+), hot dry skin OR heavy sweating, confusion, seizures, loss of consciousness
+Response:
+□ CALL 911 IMMEDIATELY
+□ Move to coolest place available
+□ Remove excess clothing
+□ Cool with ANY means available: ice bath, cold wet towels, fan
+□ Do NOT give fluids if unconscious or vomiting
+□ Monitor until help arrives
+
+═══════════════════════════════════════════════════════════════
+
+SECTION 4: WATER PURIFICATION
+
+Boiling (Most Reliable):
+□ Bring water to rolling boil for 1 minute
+□ At altitudes >2,000m: boil for 3 minutes
+□ Let cool naturally
+□ Store in clean, covered containers
+
+Chlorination:
+□ Use unscented household bleach (5-6% sodium hypochlorite)
+□ Add 8 drops per gallon (3.8 liters) of clear water
+□ Double for cloudy water
+□ Stir and let stand 30 minutes
+□ Should have slight chlorine smell — if not, repeat
+
+Water Purification Tablets:
+□ Follow manufacturer instructions exactly
+□ Usually 1-2 tablets per liter
+□ Wait time: typically 30 minutes
+□ Not effective against all parasites
+
+Filtration:
+□ Commercial filters: pore size 1 micron or smaller
+□ Ceramic filters: clean and maintain regularly
+□ Activated carbon: improves taste, removes chemicals
+□ UV purifiers: effective but need charged batteries
+
+Unsafe Sources to Avoid:
+□ Floodwater
+□ Water with unusual color or odor
+□ Wells submerged by floodwater (until tested)
+□ Swimming pool water (chemicals)
+□ Radiator water
+
+═══════════════════════════════════════════════════════════════
+
+SECTION 5: DISEASE PREVENTION
+
+Dengue Prevention:
+□ Search and destroy mosquito breeding sites weekly
+□ Cover water containers
+□ Use insecticide-treated mosquito nets
+□ Apply DEET or picaridin repellent
+□ Wear long sleeves and pants at dawn/dusk
+□ Install screens on windows/doors
+□ Fogging by local health office during outbreaks
+
+Cholera/Leptospirosis Prevention:
+□ Drink only boiled or purified water
+□ Wash hands with soap after bathroom use and before eating
+□ Cook food thoroughly
+□ Avoid wading through floodwater
+□ If unavoidable, wear waterproof boots and gloves
+□ Wash body with soap after flood exposure
+□ Seek medical attention for fever after flood exposure
+
+Respiratory Infections:
+□ Wear N95 masks during cleanup (ash, dust, mold)
+□ Ensure proper ventilation
+□ Avoid crowded areas during outbreaks
+□ Get flu vaccine annually
+□ Practice cough etiquette
+
+═══════════════════════════════════════════════════════════════
+
+SECTION 6: SPECIAL POPULATIONS
+
+Elderly:
+□ More susceptible to heat illness and dehydration
+□ Medications may increase heat sensitivity
+□ Reduced thirst sensation — schedule fluid intake
+□ Check on them twice daily during heatwaves
+□ Ensure air conditioning or cooling center access
+
+Infants & Children:
+□ Never leave in parked vehicles
+□ Dress in light, loose clothing
+□ Offer fluids frequently
+□ Watch for decreased urination, dry mouth, fussiness
+□ Use mosquito nets over cribs/playpens
+
+Pregnant Women:
+□ Higher risk of heat exhaustion
+□ Stay in coolest environment possible
+□ Hydrate more than usual
+□ Know nearest hospital with OB services
+□ Prepare hospital bag early
+
+Persons with Chronic Illness:
+□ Diabetes: monitor blood sugar more frequently, store insulin properly
+□ Heart disease: avoid exertion in heat, maintain medication schedule
+□ Respiratory disease: stay indoors during poor air quality
+□ Kidney disease: fluid restrictions may apply — consult doctor
+
+═══════════════════════════════════════════════════════════════
+
+SECTION 7: EMERGENCY MEDICAL CONTACTS
+
+Hospitals:
+□ Nearest hospital: ___________________  Phone: ___________________
+□ Hospital with ER: ___________________  Phone: ___________________
+□ OB/GYN hospital: ___________________  Phone: ___________________
+□ Pediatric hospital: ___________________  Phone: ___________________
+
+Doctors:
+□ Primary care: ___________________  Phone: ___________________
+□ Specialist: ___________________  Phone: ___________________
+□ Dentist: ___________________  Phone: ___________________
+
+Pharmacies:
+□ 24-hour pharmacy: ___________________  Phone: ___________________
+□ Regular pharmacy: ___________________  Phone: ___________________
+
+Emergency Hotlines:
+□ 911 — National Emergency
+□ 1553 — DOH Crisis Hotline
+□ 143 — Red Cross
+
+═══════════════════════════════════════════════════════════════
+Prepared by: ___________________  Date: ___________________`}
+};
+
+let currentModal=null,currentStep=0,planData={};
+
+function toggleTheme(){const h=document.documentElement,c=h.getAttribute('data-theme'),n=c==='dark'?'light':'dark';h.setAttribute('data-theme',n);localStorage.setItem('theme',n);document.querySelector('.theme-toggle').textContent=n==='dark'?'☀️':'🌙';}
+const savedTheme=localStorage.getItem('theme');if(savedTheme){document.documentElement.setAttribute('data-theme',savedTheme);document.querySelector('.theme-toggle').textContent=savedTheme==='dark'?'☀️':'🌙';}
+function toggleMobileMenu(){const n=document.querySelector('.nav-links');n.style.display=n.style.display==='flex'?'none':'flex';n.style.position='absolute';n.style.top='64px';n.style.left='0';n.style.right='0';n.style.background='var(--card-bg)';n.style.flexDirection='column';n.style.padding='16px';n.style.boxShadow='var(--shadow-lg)';}
+
+function openModal(type){currentModal=type;const d=disasterData[type],o=document.getElementById('modal-overlay'),b=document.getElementById('modal-body'),t=document.getElementById('modal-title');t.innerHTML=`${d.icon} ${d.title}`;const s=JSON.parse(localStorage.getItem('checklist-'+type)||'[]');b.innerHTML=`<div class="phase-tabs"><button class="phase-tab active" onclick="switchPhase(this,'before')">🛡️ Before</button><button class="phase-tab" onclick="switchPhase(this,'during')">⚡ During</button><button class="phase-tab" onclick="switchPhase(this,'after')">🔄 After</button></div><div class="phase-content active" id="phase-before">${renderChecklist(d.before,s,type,'before')}</div><div class="phase-content" id="phase-during">${renderChecklist(d.during,s,type,'during')}</div><div class="phase-content" id="phase-after">${renderChecklist(d.after,s,type,'after')}</div>`;o.classList.add('active');document.body.style.overflow='hidden';}
+function renderChecklist(items,saved,type,phase){return items.map((item,i)=>{const key=`${phase}-${i}`;const checked=saved.includes(key)?'checked':'';const cls=saved.includes(key)?'checked':'';return`<div class="checklist-item ${cls}" onclick="toggleCheck(this,'${type}','${key}')"><input type="checkbox" ${checked} onclick="event.stopPropagation()"><label>${item}</label></div>`;}).join('');}
+function switchPhase(btn,phase){document.querySelectorAll('.phase-tab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.phase-content').forEach(c=>c.classList.remove('active'));btn.classList.add('active');document.getElementById('phase-'+phase).classList.add('active');}
+function toggleCheck(el,type,key){const cb=el.querySelector('input');cb.checked=!cb.checked;el.classList.toggle('checked',cb.checked);let s=JSON.parse(localStorage.getItem('checklist-'+type)||'[]');if(cb.checked){if(!s.includes(key))s.push(key);}else{s=s.filter(k=>k!==key);}localStorage.setItem('checklist-'+type,JSON.stringify(s));updateProgress(type);}
+function updateProgress(type){const d=disasterData[type];const total=d.before.length+d.during.length+d.after.length;const s=JSON.parse(localStorage.getItem('checklist-'+type)||'[]');const el=document.getElementById('prog-'+type);if(el)el.textContent=`${s.length}/${total}`;}
+Object.keys(disasterData).forEach(type=>updateProgress(type));
+function closeModal(e){if(e&&e.target!==e.currentTarget)return;document.getElementById('modal-overlay').classList.remove('active');document.body.style.overflow='';currentModal=null;}
+
+function downloadGuide(type){const g=guideData[type];if(!g)return;const b=new Blob([g.content],{type:'text/plain'});const u=URL.createObjectURL(b);const a=document.createElement('a');a.href=u;a.download=`${type}-preparedness-guide.txt`;document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(u);showToast(`📥 Downloaded: ${g.title}`,'info');}
+function downloadCurrentGuide(){if(currentModal)downloadGuide(currentModal);}
+
+function goToStep(step){document.querySelectorAll('.plan-step').forEach((s,i)=>{s.classList.toggle('active',i===step);s.classList.toggle('completed',i<step);});document.querySelectorAll('.plan-content').forEach((c,i)=>c.classList.toggle('active',i===step));currentStep=step;}
+function nextStep(){if(currentStep<3)goToStep(currentStep+1);}
+function prevStep(){if(currentStep>0)goToStep(currentStep-1);}
+function toggleCheckbox(el){const cb=el.querySelector('input');if(cb.type==='radio'){document.querySelectorAll(`input[name="${cb.name}"]`).forEach(c=>c.closest('.checkbox-option').classList.remove('selected'));}el.classList.toggle('selected',cb.checked);}
+function updatePlan(){planData.region=document.getElementById('plan-region').value;planData.areaType=document.querySelector('input[name="area-type"]:checked')?.value;planData.householdSize=document.getElementById('household-size').value;planData.vulnerable=Array.from(document.querySelectorAll('#step-1 input[type="checkbox"]:checked')).map(cb=>cb.value);planData.housing=document.getElementById('housing-type').value;planData.risks=Array.from(document.querySelectorAll('#step-2 input[type="checkbox"]:checked')).map(cb=>cb.value);}
+
+function generatePlan(){
+updatePlan();
+const priorityActions=[];
+const regionRisks={'ncr':['flood','heat','power','disease'],'car':['landslide','flood','drought'],'ilocos':['drought','flood','heat'],'cagayan':['flood','drought','landslide'],'cl':['drought','flood','heat'],'calabarzon':['flood','heat','power','drought'],'mimaropa':['drought','flood','fire'],'bicol':['flood','landslide','drought'],'western-visayas':['drought','flood','heat'],'central-visayas':['flood','heat','landslide'],'eastern-visayas':['landslide','flood','drought'],'zamboanga':['drought','flood','fire'],'northern-mindanao':['flood','landslide','drought'],'davao':['flood','drought','landslide'],'soccsksargen':['drought','flood','heat'],'caraga':['landslide','flood','drought'],'barmm':['flood','drought','disease']};
+const region=planData.region;const risks=planData.risks||[];const areaType=planData.areaType;
+if(risks.includes('drought')||(regionRisks[region]&&regionRisks[region].includes('drought'))){priorityActions.push('Install rainwater harvesting system immediately');priorityActions.push('Stockpile drinking water: '+(planData.householdSize*4*14)+' liters minimum');priorityActions.push('Switch to drought-resistant landscaping');}
+if(risks.includes('flood')||(regionRisks[region]&&regionRisks[region].includes('flood'))){priorityActions.push('Know your evacuation route and practice the drill');priorityActions.push('Elevate electrical panel and appliances');priorityActions.push('Prepare sandbags and waterproof document storage');}
+if(risks.includes('heat')||(regionRisks[region]&&regionRisks[region].includes('heat'))){priorityActions.push('Identify cooling centers in your area');priorityActions.push('Stock oral rehydration salts and electrolytes');priorityActions.push('Schedule outdoor work for early morning only');}
+if(risks.includes('landslide')){priorityActions.push('Consult MGB geohazard map for your area');priorityActions.push('Clear drainage channels and observe slope stability');priorityActions.push('Know landslide early warning signs');}
+if(risks.includes('disease')){priorityActions.push('Eliminate all standing water breeding sites weekly');priorityActions.push('Ensure vaccinations are up to date');priorityActions.push('Stock water purification tablets and bleach');}
+if(risks.includes('power')){priorityActions.push('Install battery backup for medical devices');priorityActions.push('Stockpile batteries and test flashlights');priorityActions.push('Keep vehicle fuel tank at least half full');}
+if(areaType==='coastal'){priorityActions.push('Monitor storm surge warnings from PAGASA');priorityActions.push('Know highest ground evacuation route');}
+if(areaType==='mountain'){priorityActions.push('Monitor landslide warnings during heavy rain');priorityActions.push('Maintain clear drainage around property');}
+
+const kitItems=[];const size=parseInt(planData.householdSize)||4;
+kitItems.push(`${size*4*3} liters of drinking water (${size} people x 4L x 3 days)`);
+kitItems.push(`${size*3} days of non-perishable food`);kitItems.push(`${size} flashlights with extra batteries`);kitItems.push('Battery-powered or hand-crank radio');kitItems.push('First aid kit with essential medications');kitItems.push('Multi-tool, duct tape, and plastic sheeting');kitItems.push('Whistle (3 blasts = emergency signal)');kitItems.push('Dust masks (N95) for each person');kitItems.push('Sleeping bag or blanket per person');kitItems.push('Personal hygiene items and sanitation supplies');kitItems.push('Cash in small bills and coins');kitItems.push('Copies of important documents in waterproof container');
+if(planData.vulnerable?.includes('elderly')){kitItems.push('Extra medications and mobility aids');kitItems.push('Hearing aid batteries');kitItems.push('Medical alert information');}
+if(planData.vulnerable?.includes('infants')){kitItems.push(`Diapers and wipes (3-day supply for infant)`);kitItems.push('Formula, bottles, and baby food');kitItems.push('Pacifier and comfort item');}
+if(planData.vulnerable?.includes('pwd')){kitItems.push('Backup power for medical equipment');kitItems.push('Communication aids');kitItems.push('Evacuation chair if wheelchair-bound');}
+if(planData.vulnerable?.includes('chronic')){kitItems.push('14-day supply of ALL prescription medications');kitItems.push('Blood glucose monitor and strips (if diabetic)');kitItems.push('Inhaler/spacer (if asthmatic)');}
+if(planData.vulnerable?.includes('pets')){kitItems.push('Pet food and water (3-day supply)');kitItems.push('Pet carrier and leash');kitItems.push('Vaccination records and ID tags');}
+
+const familyItems=[];
+if(planData.vulnerable?.includes('elderly')){familyItems.push('Designate a family member to check on elderly relatives twice daily during heatwaves');familyItems.push('Ensure elderly have air conditioning or access to cooling center');familyItems.push('Keep list of all medications with dosages');}
+if(planData.vulnerable?.includes('infants')){familyItems.push('NEVER leave infant in parked vehicle — even for a minute');familyItems.push('Keep infant hydrated with frequent breastfeeding/formula');familyItems.push('Use mosquito nets over cribs and playpens');}
+if(planData.vulnerable?.includes('pregnant')){familyItems.push('Pregnant women are at higher risk for heat exhaustion — stay in coolest environment');familyItems.push('Know nearest hospital with OB services and prepare hospital bag early');familyItems.push('Increase fluid intake beyond normal levels');}
+if(planData.vulnerable?.includes('chronic')){familyItems.push('Maintain medication schedule — do NOT skip doses during disaster');familyItems.push('Store temperature-sensitive meds with cool packs during outages');familyItems.push('Have backup power plan for life-supporting medical devices');}
+if(planData.vulnerable?.includes('pwd')){familyItems.push('Register with local DRRMO for priority evacuation assistance');familyItems.push('Prepare evacuation chair and ensure route is wheelchair-accessible');familyItems.push('Have communication plan if speech/hearing impaired');}
+if(!familyItems.length){familyItems.push('All family members should know the emergency plan and meeting points');familyItems.push('Practice evacuation drill every 6 months');familyItems.push('Designate out-of-area emergency contact');}
+
+const checklist=[];
+checklist.push('☐ Know your evacuation route and practice it');checklist.push('☐ Identify nearest evacuation center');checklist.push('☐ Program emergency numbers in all phones (ICE contacts)');checklist.push('☐ Prepare 72-hour emergency kit');checklist.push('☐ Stock 14-day water supply');checklist.push('☐ Waterproof and elevate important documents');checklist.push('☐ Install battery-powered smoke and CO detectors');checklist.push('☐ Know how to shut off gas, water, and electricity');checklist.push('☐ Register for local SMS alert systems');checklist.push('☐ Review insurance policies and document property');checklist.push('☐ Identify vulnerable neighbors to check on');checklist.push('☐ Keep vehicle fueled and maintained');checklist.push('☐ Download offline maps and emergency info');checklist.push('☐ Prepare non-electric cooking methods');checklist.push('☐ Have cash reserves in small denominations');
+
+document.getElementById('plan-priority').innerHTML=priorityActions.map(a=>`<li>${a}</li>`).join('');
+document.getElementById('plan-kit').innerHTML=kitItems.map(i=>`<li>${i}</li>`).join('');
+document.getElementById('plan-family').innerHTML=familyItems.map(i=>`<li>${i}</li>`).join('');
+document.getElementById('plan-checklist').innerHTML=checklist.map(c=>`<li>${c}</li>`).join('');
+goToStep(3);showToast('✨ Your personalized plan is ready!','info');
+}
+
+function downloadMyPlan(){
+const region=document.getElementById('plan-region');const regionText=region.options[region.selectedIndex].text;
+const content=`MY PERSONALIZED EL NIÑO PREPAREDNESS PLAN\nGenerated: ${new Date().toLocaleDateString()}\n\n═══════════════════════════════════════════════════════════════\n\nYOUR PROFILE:\nRegion: ${regionText}\nHousehold Size: ${planData.householdSize||4} people\nArea Type: ${planData.areaType||'Not specified'}\nHousing: ${planData.housing||'Not specified'}\nVulnerable Members: ${planData.vulnerable?.join(', ')||'None specified'}\nPriority Risks: ${planData.risks?.join(', ')||'All'}\n\n═══════════════════════════════════════════════════════════════\n\nPRIORITY ACTIONS FOR YOUR AREA:\n${Array.from(document.querySelectorAll('#plan-priority li')).map(li=>'• '+li.textContent).join('\n')}\n\n═══════════════════════════════════════════════════════════════\n\nRECOMMENDED 72-HOUR KIT:\n${Array.from(document.querySelectorAll('#plan-kit li')).map(li=>'• '+li.textContent).join('\n')}\n\n═══════════════════════════════════════════════════════════════\n\nFAMILY-SPECIFIC CONSIDERATIONS:\n${Array.from(document.querySelectorAll('#plan-family li')).map(li=>'• '+li.textContent).join('\n')}\n\n═══════════════════════════════════════════════════════════════\n\nCOMPLETE CHECKLIST:\n${Array.from(document.querySelectorAll('#plan-checklist li')).map(li=>li.textContent).join('\n')}\n\n═══════════════════════════════════════════════════════════════\n\nEMERGENCY CONTACTS:\n• 911 — National Emergency\n• 143 — Philippine Red Cross\n• 8888 — Citizen Complaint Hotline\n• PAGASA: https://www.pagasa.dost.gov.ph\n• NDRRMC: https://www.ndrrmc.gov.ph\n\nKeep this plan accessible and review quarterly.\n`;
+const b=new Blob([content],{type:'text/plain'});const u=URL.createObjectURL(b);const a=document.createElement('a');a.href=u;a.download='my-el-nino-preparedness-plan.txt';document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(u);showToast('📥 Your plan has been downloaded!','info');
+}
+
+function sharePlan(){const text="I just created my personalized Super El Niño Preparedness Plan! Get yours at Super El Niño Preparedness Hub.";if(navigator.share){navigator.share({title:'My El Niño Plan',text:text});}else{navigator.clipboard.writeText(text);showToast('🔗 Plan link copied to clipboard!','info');}}
+function toggleMyth(el){el.classList.toggle('open');}
+function showToast(message,type='success'){const c=document.getElementById('toast-container');const t=document.createElement('div');t.className=`toast ${type}`;t.textContent=message;c.appendChild(t);setTimeout(()=>{t.style.opacity='0';t.style.transform='translateX(100%)';setTimeout(()=>t.remove(),300);},3000);}
+
+document.querySelectorAll('a[href^="#"]').forEach(anchor=>{anchor.addEventListener('click',function(e){e.preventDefault();const t=document.querySelector(this.getAttribute('href'));if(t)t.scrollIntoView({behavior:'smooth',block:'start'});});});
+const sections=document.querySelectorAll('section[id]');window.addEventListener('scroll',()=>{let current='';sections.forEach(section=>{const sectionTop=section.offsetTop;if(scrollY>=sectionTop-200)current=section.getAttribute('id');});document.querySelectorAll('.nav-links a').forEach(link=>link.classList.toggle('active',link.getAttribute('href')==='#'+current));});
+
+const observer=new IntersectionObserver((entries)=>{entries.forEach(entry=>{if(entry.isIntersecting){entry.target.style.opacity='1';entry.target.style.transform='translateY(0)';}});},{threshold:0.1});
+document.querySelectorAll('.disaster-card, .guide-card, .resource-card, .myth-fact-item').forEach(el=>{el.style.opacity='0';el.style.transform='translateY(20px)';el.style.transition='opacity 0.6s ease, transform 0.6s ease';observer.observe(el);});
+
+if('serviceWorker' in navigator){const swCode=`self.addEventListener('install',e=>self.skipWaiting());self.addEventListener('fetch',e=>e.respondWith(fetch(e.request).catch(()=>caches.match(e.request))));`;const swBlob=new Blob([swCode],{type:'application/javascript'});const swUrl=URL.createObjectURL(swBlob);navigator.serviceWorker.register(swUrl).catch(()=>{});}
+
+document.addEventListener('keydown',(e)=>{if(e.key==='Escape')closeModal();if(e.key==='t'&&e.ctrlKey){e.preventDefault();toggleTheme();}});
+console.log('🌊 Super El Niño Preparedness Hub loaded. Stay safe!');
     </script>
 </body>
 </html>
